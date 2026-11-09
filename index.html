@@ -23,9 +23,11 @@
     SUPABASE_KEY: "sb_publishable_5Cdxz7bSJD-nTjvOcoGflw_qXALBHFb",
 
     // Code demandé à l'ouverture. Vide = pas de code.
+    // On n'écrit pas le code lui-même mais son empreinte SHA-256
+    // (dans un Terminal : printf 'votre-code' | shasum -a 256).
     // Il évite qu'un visiteur de passage tombe sur le planning ;
     // ce n'est pas un mot de passe au sens strict (voir LISEZ-MOI).
-    CODE: "",
+    CODE: "e84313b661c88035b928c9a44e36c36106b6366d7652e205b974df054a9cb818",
 
     STUDIO: "281 route d'Arlon, L-8011 Strassen",
 
@@ -4376,6 +4378,12 @@
     setInterval(function(){ if(!document.hidden && VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); }, 30000);
     window.addEventListener("focus", function(){ if(VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); });
   }
+  // Le code n'est jamais écrit en clair : CONFIG.CODE contient son empreinte SHA-256.
+  function empreinte(txt){
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)).then(function(b){
+      return Array.prototype.map.call(new Uint8Array(b), function(x){ return ("0" + x.toString(16)).slice(-2); }).join("");
+    });
+  }
   function porte(){
     app.innerHTML = '<div class="porte"><h2>Régie</h2>'
       + '<p>Entrez le code de l\'équipe pour voir le planning.</p>'
@@ -4385,10 +4393,12 @@
     document.getElementById("porteF").addEventListener("submit", function(e){
       e.preventDefault();
       var v = document.getElementById("code").value.trim();
-      if(v === CFG.CODE){
-        try{ sessionStorage.setItem("sbtd-regie-ok", "1"); }catch(err){}
-        demarrer();
-      } else { toast("Code incorrect."); }
+      empreinte(v).then(function(h){
+        if(h === CFG.CODE){
+          try{ sessionStorage.setItem("sbtd-regie-ok", "1"); }catch(err){}
+          demarrer();
+        } else { toast("Code incorrect."); }
+      });
     });
     document.getElementById("code").focus();
   }
