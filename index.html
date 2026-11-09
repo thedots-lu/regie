@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Inter+Tight:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap">
 
 <!-- ===================================================================== -->
 <!--  CONFIGURATION — la seule partie à modifier                            -->
@@ -72,7 +72,7 @@
     background:var(--surface); border-bottom:1px solid var(--line);
   }
   .top-in{ max-width:820px; margin:0 auto; padding:10px 16px 0; }
-  .brand{ display:flex; align-items:baseline; gap:10px; }
+  .brand{ display:flex; align-items:center; gap:10px; }
   .brand h1{ font-family:"Poppins",sans-serif; font-size:18px; font-weight:800; margin:0; letter-spacing:-.02em; }
   .brand .k{ font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.18em;
              text-transform:uppercase; color:var(--muted); }
@@ -533,14 +533,77 @@
     .chk{ break-inside:avoid; }
     a{ color:#000; text-decoration:none; }
   }
-  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+
+  /* ---------- espaces : Régie / KSF ---------- */
+  .brand .espace{ display:inline-flex; align-items:center; gap:7px; border:1px solid transparent; background:transparent;
+                  color:var(--ink); font:inherit; padding:3px 10px 3px 6px; border-radius:999px; cursor:pointer; }
+  .brand .espace:hover{ border-color:var(--line); }
+  .brand .espace[aria-current="page"]{ background:var(--surface-3); border-color:var(--line); }
+  .brand .espace:focus-visible{ outline:2px solid var(--cyan); outline-offset:2px; }
+  .brand .espace img{ width:24px; height:24px; border-radius:50%; display:block; }
+  .brand .espace .nm{ font-family:"Space Mono",monospace; font-weight:700; font-size:14px; letter-spacing:.06em; }
+  .brand .espace .c{ font-family:"IBM Plex Mono",monospace; font-size:10.5px; background:var(--err); color:#fff;
+                     border-radius:999px; padding:0 6px; line-height:16px; }
+  .brand .sep{ width:1px; height:18px; background:var(--line); align-self:center; }
+
+  /* La direction artistique Kamel Sans Filtre : bleu pétrole strié, vert néon, codes de caméra. */
+  body.ksf{
+    --ground:#04202D; --surface:rgba(9,48,66,.86); --surface-2:rgba(12,58,78,.78); --surface-3:rgba(18,74,96,.9);
+    --ink:#EAF6F2; --ink-2:#B9D5DE; --muted:#7EA4B3; --line:rgba(140,200,220,.2);
+    --navy:#06283A; --lime:#A8FF1F; --lime-ink:#0A2600; --cyan:#7FD6FF;
+    --ok:#7BE3A6; --warn:#FFC266; --err:#FF7A5C;
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 14px 34px -24px rgba(0,0,0,.9);
+    color-scheme:dark;
+    background-color:#04202D;
+    background-image:
+      radial-gradient(120% 70% at 50% 0%, rgba(4,32,45,0) 0%, rgba(2,20,29,.85) 100%),
+      linear-gradient(90deg,
+        rgba(120,170,190,.10) 0 4%, rgba(0,0,0,0) 4% 9%, rgba(140,190,210,.16) 9% 12%, rgba(0,0,0,0) 12% 19%,
+        rgba(150,200,220,.22) 19% 22%, rgba(110,160,180,.08) 22% 28%, rgba(0,0,0,0) 28% 41%,
+        rgba(120,170,190,.12) 41% 44%, rgba(0,0,0,0) 44% 58%, rgba(130,180,200,.09) 58% 63%,
+        rgba(0,0,0,0) 63% 76%, rgba(120,170,190,.07) 76% 80%, rgba(0,0,0,0) 80%),
+      linear-gradient(180deg, #0B3D53 0%, #04202D 70%);
+    background-attachment:fixed;
+  }
+  body.ksf header.top{ background:rgba(3,26,37,.88); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
+  body.ksf :is(h1,h2,h3,h4){ font-family:"Inter Tight","IBM Plex Sans",sans-serif; }
+  body.ksf h2.sec{ font-family:"Space Mono",monospace; font-weight:700; letter-spacing:.14em; color:var(--lime); }
+  body.ksf .tab[aria-selected="true"]{ color:var(--lime); }
+  body.ksf .card, body.ksf .ligne{ -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+  body.ksf .btn.lime{ box-shadow:0 0 0 1px var(--lime), 0 0 22px -6px rgba(168,255,31,.6); }
+
+  .khero{ position:relative; margin-top:16px; border-radius:14px; overflow:hidden; height:clamp(120px, 27vw, 220px);
+          background:#05283A url("ksf-banniere.jpg") center/cover no-repeat;
+          border:1px solid rgba(140,200,220,.18); }
+  .khero .cn{ position:absolute; width:22px; height:22px; border:0 solid rgba(234,246,242,.75); }
+  .khero .cn.a{ top:10px; left:10px; border-top-width:2px; border-left-width:2px; }
+  .khero .cn.b{ top:10px; right:10px; border-top-width:2px; border-right-width:2px; }
+  .khero .cn.c{ bottom:10px; left:10px; border-bottom-width:2px; border-left-width:2px; }
+  .khero .cn.d{ bottom:10px; right:10px; border-bottom-width:2px; border-right-width:2px; }
+  .khero .lb{ position:absolute; font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.16em;
+              text-transform:uppercase; color:rgba(234,246,242,.85); }
+  .khero .lb.a{ top:15px; left:40px; display:flex; align-items:center; gap:6px; }
+  .khero .lb.a i{ width:8px; height:8px; border-radius:50%; background:var(--lime); box-shadow:0 0 10px var(--lime);
+                  animation:krec 1.6s steps(2, jump-none) infinite; }
+  .khero .lb.b{ top:15px; right:40px; }
+  .khero .lb.c{ bottom:15px; left:40px; color:var(--lime); }
+  .khero .lb.d{ bottom:15px; right:40px; }
+  @keyframes krec{ 50%{ opacity:.25; } }
+  @media (max-width:560px){
+    .khero .lb{ font-size:9.5px; letter-spacing:.1em; }
+    .khero .lb.a, .khero .lb.c{ left:30px; } .khero .lb.b, .khero .lb.d{ right:30px; }
+    .khero .lb.a, .khero .lb.b{ top:12px; } .khero .lb.c, .khero .lb.d{ bottom:12px; }
+    .brand .k{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } .khero .lb.a i{ animation:none; } }
 </style>
 </head>
 <body>
 
 <header class="top" id="top" hidden>
   <div class="top-in">
-    <div class="brand"><span class="dot"></span><h1>Régie</h1><span class="k">Studio by The Dots</span>
+    <div class="brand"><nav class="espaces" id="espaces" aria-label="Espaces" style="display:flex;gap:6px;align-items:center"></nav>
+      <span class="k" id="sousTitre">Studio by The Dots</span>
       <span class="etat" id="etat"></span></div>
     <div class="moi" id="moi"></div>
     <div class="tabs" role="tablist" id="tabs"></div>
@@ -820,6 +883,11 @@
   /* ---------- état ---------- */
   var EN_LIGNE = !!(CFG.SUPABASE_URL && CFG.SUPABASE_KEY);
   var P = [], CT = [], VUE = "avenir", ID = null, JOUR = null, PRET = false, ERREUR = "";
+  if(/^#ksf/.test(location.hash)) VUE = "ksf";   // lien direct vers l'espace KSF
+  window.addEventListener("hashchange", function(){
+    var k = /^#ksf/.test(location.hash);
+    if(k !== /^ksf/.test(VUE)){ VUE = k ? "ksf" : "avenir"; if(PRET) rendre(); }
+  });
   var CIBLE = null;                           // fiche contact en cours d'édition
   var BROUILLON = null;                       // projet en cours de saisie
   var RETOUR = null;                          // vue d'où la fiche a été ouverte
@@ -1518,22 +1586,61 @@
   var ONGLETS = [
     { id:"avenir", nom:"À venir" },
     { id:"cal",    nom:"Calendrier" },
-    { id:"ksf",    nom:"KSF" },
     { id:"suivi",  nom:"Après tournage" },
     { id:"tous",   nom:"Projets" },
     { id:"contacts", nom:"Contacts" },
     { id:"new",    nom:"+ Nouveau" }
   ];
+  /* KSF a son propre espace : ses rubriques prennent la place des onglets de la Régie. */
+  var K_ONGLETS = [["semaine","Cette semaine"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]];
+  var DERNIERE_REGIE = "avenir";
+  function estKsfVue(){ return /^ksf/.test(VUE); }
+  function rendreEspaces(){
+    var el = document.getElementById("espaces"); if(!el) return;
+    var ksf = estKsfVue(), late = KS.filter(function(p){ return kFlags(p).late; }).length;
+    el.innerHTML = '<button class="espace" data-espace="regie"' + (ksf ? '' : ' aria-current="page"') + '>'
+      + '<span class="dot"></span><h1>Régie</h1></button><span class="sep" aria-hidden="true"></span>'
+      + '<button class="espace" data-espace="ksf" title="Kamel Sans Filtre"' + (ksf ? ' aria-current="page"' : '') + '>'
+      + '<img src="ksf-logo.png" alt=""><span class="nm">KSF</span>'
+      + (late ? '<span class="c" title="Publications en retard">' + late + '</span>' : '') + '</button>';
+    document.getElementById("sousTitre").textContent = ksf ? "Kamel Sans Filtre" : "Studio by The Dots";
+    document.body.classList.toggle("ksf", ksf);
+    document.title = ksf ? "KSF — Régie" : "Régie — Studio by The Dots";
+    var hash = ksf ? "#ksf" : "";
+    if((location.hash || "") !== hash){ try{ history.replaceState(null, "", location.pathname + location.search + hash); }catch(e){} }
+    el.querySelectorAll("[data-espace]").forEach(function(b){
+      b.addEventListener("click", function(){
+        if(b.dataset.espace === "ksf"){ if(!estKsfVue()){ VUE = "ksf"; } else if(VUE !== "ksf-fiche"){ VUE = "ksf"; } }
+        else { VUE = DERNIERE_REGIE || "avenir"; }
+        rendre(); window.scrollTo(0,0);
+      });
+    });
+  }
   function rendreTabs(){
     var h = "";
+    rendreEspaces();
+    if(estKsfVue()){
+      K_ONGLETS.forEach(function(x){
+        h += '<button class="tab" role="tab" data-ksftab="' + x[0] + '" aria-selected="'
+           + (VUE === "ksf" && KSF.sous === x[0] ? "true" : "false") + '">' + esc(x[1]) + '</button>';
+      });
+      tabsEl.innerHTML = h;
+      tabsEl.querySelectorAll("[data-ksftab]").forEach(function(b){
+        b.addEventListener("click", function(){
+          if(VUE === "ksf-fiche" && KSF.sale){ toast("Enregistrez ou quittez la fiche avant de changer de rubrique."); return; }
+          KSF.sous = b.dataset.ksftab; VUE = "ksf"; rendre(); window.scrollTo(0,0);
+        });
+      });
+      return;
+    }
+    if(["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) DERNIERE_REGIE = VUE;
     ONGLETS.forEach(function(o){
       var n = o.id === "avenir" ? P.filter(function(p){ return !!prochaine(p); }).length
             : o.id === "suivi"  ? P.filter(enCours).length
             : o.id === "tous"   ? P.length
-            : o.id === "contacts" ? carnet().length
-            : o.id === "ksf" ? KS.filter(function(p){ return kFlags(p).late; }).length : null;
+            : o.id === "contacts" ? carnet().length : null;
       h += '<button class="tab" role="tab" data-vue="' + o.id + '"'
-         + ' aria-selected="' + ((VUE === o.id || (VUE === "fiche" && o.id === (RETOUR || "avenir")) || (o.id === "ksf" && /^ksf-/.test(VUE))) ? "true" : "false") + '">'
+         + ' aria-selected="' + ((VUE === o.id || (VUE === "fiche" && o.id === (RETOUR || "avenir"))) ? "true" : "false") + '">'
          + esc(o.nom) + (n ? '<span class="c">' + n + '</span>' : '') + '</button>';
     });
     tabsEl.innerHTML = h;
@@ -3465,11 +3572,7 @@
     if(VUE === "ksf-fiche") return kVueFiche();
     if(VUE === "ksf-gen") return kVueGen();
     if(VUE === "ksf-import") return kVueImport();
-    var h = '<h2 class="sec">Kamel sans Filtre — publications</h2>'
-      + '<div class="steps" role="tablist">'
-      + [["semaine","Cette semaine"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]].map(function(x){
-          return '<button class="step' + (KSF.sous === x[0] ? " on" : "") + '" data-ksous="' + x[0] + '">' + x[1] + '</button>';
-        }).join("") + '</div>'
+    var h = kHero()
       + '<div class="kbar"><button class="btn lime" data-knew="">+ Publication</button>'
       + '<button class="btn" data-kgo="ksf-gen">Générer un sujet</button>'
       + '<button class="btn" data-kgo="ksf-import">Importer l’Excel</button>'
@@ -3486,6 +3589,20 @@
     if(KSF.sous === "cal") return h + kFiltres() + kVueCal();
     if(KSF.sous === "sujets") return h + kFiltres() + kVueSujets();
     return h + kVueSemaine();
+  }
+
+  /* Bandeau façon viseur de caméra, repris de la DA de l'émission. */
+  function kHero(){
+    var nom = (K_ONGLETS.filter(function(x){ return x[0] === KSF.sous; })[0] || ["", "Publications"])[1];
+    var t = kAuj(), aVenir = KS.filter(function(p){ return p.date >= t; }).length;
+    var d = new Date(), j = ["DIM","LUN","MAR","MER","JEU","VEN","SAM"][d.getDay()];
+    function z(n){ return (n < 10 ? "0" : "") + n; }
+    return '<div class="khero" role="img" aria-label="Kamel Sans Filtre">'
+      + '<span class="cn a"></span><span class="cn b"></span><span class="cn c"></span><span class="cn d"></span>'
+      + '<span class="lb a"><i></i>CAM</span>'
+      + '<span class="lb b">' + j + ' ' + z(d.getDate()) + '.' + z(d.getMonth() + 1) + '.' + d.getFullYear() + '</span>'
+      + '<span class="lb c">' + esc(nom) + '</span>'
+      + '<span class="lb d">' + aVenir + ' à venir</span></div>';
   }
 
   function kVueSemaine(){
