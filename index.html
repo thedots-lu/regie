@@ -22,12 +22,8 @@
     SUPABASE_URL: "https://zqpogpipqozyzrxodszp.supabase.co",
     SUPABASE_KEY: "sb_publishable_5Cdxz7bSJD-nTjvOcoGflw_qXALBHFb",
 
-    // Code demandé à l'ouverture. Vide = pas de code.
-    // On n'écrit pas le code lui-même mais son empreinte SHA-256
-    // (dans un Terminal : printf 'votre-code' | shasum -a 256).
-    // Il évite qu'un visiteur de passage tombe sur le planning ;
-    // ce n'est pas un mot de passe au sens strict (voir LISEZ-MOI).
-    CODE: "e84313b661c88035b928c9a44e36c36106b6366d7652e205b974df054a9cb818",
+    // Le code d'équipe n'est plus dans la page : il est vérifié côté serveur par la fonction
+    // Supabase « regie-db », seule porte d'accès à la table (fermée à la clé publique).
 
     STUDIO: "281 route d'Arlon, L-8011 Strassen",
 
@@ -1330,6 +1326,13 @@
   }
 
   /* ---------- utilitaires ---------- */
+  /* Lien sûr : http(s), mailto ou tel uniquement (bloque « javascript: » et consorts). */
+  function lienSur(u){
+    u = String(u == null ? "" : u).trim();
+    if(/^(https?:\/\/|mailto:|tel:)/i.test(u)) return u;
+    if(/^www\./i.test(u)) return "https://" + u;
+    return "#";
+  }
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"]/g, function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
   function dateObj(iso){
@@ -1763,18 +1766,21 @@
   }
 
   /* ---------- couche données ---------- */
+  /* Tout passe par la fonction « regie-db », qui vérifie le code d'équipe côté serveur. */
+  function codeEquipe(){ try{ return sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){ return ""; } }
   function net(chemin, opts){
     opts = opts || {};
-    var h = {
-      "apikey": CFG.SUPABASE_KEY,
-      "Authorization": "Bearer " + CFG.SUPABASE_KEY,
-      "Content-Type": "application/json"
-    };
+    var h = { "apikey": CFG.SUPABASE_KEY, "Content-Type": "application/json", "x-regie-code": codeEquipe() };
     if(opts.retour) h["Prefer"] = "return=representation";
-    return fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/" + chemin, {
+    return fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/regie-db/" + chemin, {
       method: opts.method || "GET", headers: h,
       body: opts.body ? JSON.stringify(opts.body) : undefined
     }).then(function(r){
+      if(r.status === 401){   // code changé ou session effacée : on redemande le code
+        try{ sessionStorage.removeItem("sbtd-regie-ok"); sessionStorage.removeItem("sbtd-regie-code"); }catch(e){}
+        porte();
+        throw new Error("Code d'équipe demandé.");
+      }
       if(!r.ok) return r.text().then(function(t){ throw new Error(t || ("HTTP " + r.status)); });
       return r.status === 204 ? null : r.json();
     });
@@ -2890,7 +2896,7 @@
           + '<div class="kv"><span class="k">Forme de la remise</span><span class="v">' + val(p.photoForme) + '</span></div>'
           + (p.photoNotes ? '<div class="kv"><span class="k">Brief de retouche</span><span class="v">' + val(p.photoNotes) + '</span></div>' : '')
           + (p.photoLien ? '<div class="kv"><span class="k">Galerie</span><span class="v">'
-              + '<a href="' + esc(p.photoLien) + '" target="_blank" rel="noopener">' + esc(p.photoLien) + '</a></span></div>' : '')
+              + '<a href="' + esc(lienSur(p.photoLien)) + '" target="_blank" rel="noopener">' + esc(p.photoLien) + '</a></span></div>' : '')
           + (deux ? '<div class="kv"><span class="k">Ce qui va dedans</span><span class="v">'
               + listeDest(pourAlbum(p), "Rien de coché pour l'album.") + '</span></div>' : '')
           + '</div>';
@@ -2904,10 +2910,10 @@
         + '<div class="kv"><span class="k">' + (ph ? "Valide la sélection" : "Valide le montage") + '</span><span class="v">'
         + val(p.validant) + '</span></div>'
         + (aVideo ? '<div class="kv"><span class="k">Lien de visionnage</span><span class="v">'
-            + (p.livLien ? '<a href="' + esc(p.livLien) + '" target="_blank" rel="noopener">' + esc(p.livLien) + '</a>'
+            + (p.livLien ? '<a href="' + esc(lienSur(p.livLien)) + '" target="_blank" rel="noopener">' + esc(p.livLien) + '</a>'
                          : '<span class="manque">À créer</span>') + '</span></div>' : '')
         + (aPhoto && !aVideo ? '<div class="kv"><span class="k">Lien de la galerie</span><span class="v">'
-            + (p.photoLien ? '<a href="' + esc(p.photoLien) + '" target="_blank" rel="noopener">' + esc(p.photoLien) + '</a>'
+            + (p.photoLien ? '<a href="' + esc(lienSur(p.photoLien)) + '" target="_blank" rel="noopener">' + esc(p.photoLien) + '</a>'
                            : '<span class="manque">À créer</span>') + '</span></div>' : '')
         + (p.intervenants ? '<div class="kv"><span class="k">À l\'écran</span><span class="v">' + val(p.intervenants) + '</span></div>' : '')
         + (p.notes ? '<div class="kv"><span class="k">Consignes du projet</span><span class="v">' + val(p.notes) + '</span></div>' : '')
@@ -4722,7 +4728,7 @@
            return '<label class="chk kc' + (on ? " on" : "") + '"><input type="checkbox" data-kplat="' + x.k + '"' + (on ? " checked" : "") + '><span class="box"></span><span class="t">' + x.l + '</span></label>';
          }).join("") + '</div></div>'
        + '<div class="f"><label for="kf_link">Lien de la vidéo</label><input type="text" id="kf_link" data-kf="link" value="' + esc(p.link || "") + '" placeholder="https://…">'
-       + (p.link && /^https?:\/\//.test(p.link) ? '<a class="maps" href="' + esc(p.link) + '" target="_blank" rel="noopener">Ouvrir la vidéo ↗</a>' : '') + '</div>'
+       + (p.link && /^https?:\/\//.test(p.link) ? '<a class="maps" href="' + esc(lienSur(p.link)) + '" target="_blank" rel="noopener">Ouvrir la vidéo ↗</a>' : '') + '</div>'
        + '<div class="f"><label for="kf_notes">Notes</label><textarea id="kf_notes" data-kf="notes">' + esc(p.notes || "") + '</textarea></div></div>';
 
     h += '<div class="blk"><h3>Validations</h3>';
@@ -5456,11 +5462,11 @@
     setInterval(function(){ if(!document.hidden && VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie() && !tSaisie()) charger(true); }, 30000);
     window.addEventListener("focus", function(){ if(VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); });
   }
-  // Le code n'est jamais écrit en clair : CONFIG.CODE contient son empreinte SHA-256.
-  function empreinte(txt){
-    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(txt)).then(function(b){
-      return Array.prototype.map.call(new Uint8Array(b), function(x){ return ("0" + x.toString(16)).slice(-2); }).join("");
-    });
+  // Le code est vérifié par le serveur (fonction « regie-db ») : la page ne contient ni le code ni son empreinte.
+  function verifierCode(v){
+    return fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/regie-db?check=1",
+                 { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":v } })
+      .then(function(r){ return r.ok; }, function(){ return null; });
   }
   function porte(){
     app.innerHTML = '<div class="porte"><h2>Régie</h2>'
@@ -5470,12 +5476,15 @@
       + '<button class="btn lime" type="submit">Entrer</button></div></form></div>';
     document.getElementById("porteF").addEventListener("submit", function(e){
       e.preventDefault();
-      var v = document.getElementById("code").value.trim();
-      empreinte(v).then(function(h){
-        if(h === CFG.CODE){
+      var v = document.getElementById("code").value.trim(), bt = this.querySelector("button");
+      if(!v) return;
+      bt.disabled = true;
+      verifierCode(v).then(function(ok){
+        bt.disabled = false;
+        if(ok){
           try{ sessionStorage.setItem("sbtd-regie-ok", "1"); sessionStorage.setItem("sbtd-regie-code", v); }catch(err){}
           demarrer();
-        } else { toast("Code incorrect."); }
+        } else toast(ok === null ? "Connexion impossible, réessayez." : "Code incorrect.");
       });
     });
     document.getElementById("code").focus();
@@ -5484,7 +5493,7 @@
   var deja = false;
   // Le code est gardé pour la session : il ouvre aussi l'agenda Outlook.
   try{ deja = sessionStorage.getItem("sbtd-regie-ok") === "1" && !!sessionStorage.getItem("sbtd-regie-code"); }catch(e){}
-  if(CFG.CODE && !deja) porte(); else demarrer();
+  if(EN_LIGNE && !deja) porte(); else demarrer();
 })();
 </script>
 </body>
