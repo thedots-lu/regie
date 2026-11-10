@@ -655,6 +655,66 @@
   body.studio .porte h2{ font-family:"Unbounded",sans-serif; font-weight:700; font-size:24px; }
   .pill:empty{ display:none; }
 
+  /* ---------- animations : chiffres qui défilent, tuiles qui apparaissent, barres qui montent ---------- */
+  .rv{ opacity:0; transform:translateY(18px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .rv.vu{ opacity:1; transform:none; }
+  .kstat.anim .kbars .st{ animation:pousse 1s cubic-bezier(.2,.7,.2,1) both; transform-origin:50% 100%; }
+  @keyframes pousse{ from{ transform:scaleY(0); } to{ transform:none; } }
+  @media (prefers-reduced-motion: reduce){ .rv{ opacity:1; transform:none; transition:none; } .kstat.anim .kbars .st{ animation:none; } }
+
+  /* ---------- Stats KSF : grands chiffres et tuiles, façon pages de référence ---------- */
+  .kstat .intro{ padding-top:clamp(26px, 5vw, 52px); }
+  .intro p.lead b.up{ color:var(--lime); } .intro p.lead b.down{ color:var(--err); }
+  .ks-mois{ display:flex; gap:6px; overflow-x:auto; margin-top:24px; padding-bottom:2px; scrollbar-width:none; }
+  .ks-mois button{ flex:none; border:1px solid var(--line); background:transparent; color:var(--ink-2); font:inherit; font-size:13px;
+                   padding:7px 15px; border-radius:999px; cursor:pointer; white-space:nowrap; }
+  .ks-mois button:hover{ border-color:rgba(255,255,255,.3); color:var(--ink); }
+  .ks-mois button.on{ background:var(--lime); border-color:var(--lime); color:var(--lime-ink); font-weight:600; }
+  .ks-pf, .ks-tile, .ks-top, .ks-m, .ks-rank{ background:var(--surface); border:1px solid var(--line); border-radius:22px; }
+  .ks-pf, .ks-top, .ks-m{ padding:20px 22px; }
+  .ks-tile{ padding:20px 22px; }
+  .ks-pfs{ display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-top:22px; }
+  .ks-pf .i, .ks-top .i, .ks-m .i{ font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .ks-pf .n, .ks-top .n{ font-family:"Inter Tight",sans-serif; font-weight:600; letter-spacing:-.045em; line-height:1;
+                         font-size:clamp(40px, 5.6vw, 60px); color:var(--lime); margin-top:18px; }
+  .ks-pf .u, .ks-top .u{ color:var(--ink-2); font-size:14px; margin-top:8px; }
+  .ks-mini{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px; padding-top:16px; border-top:1px solid var(--line); }
+  .ks-mini b{ display:block; font-family:"Inter Tight",sans-serif; font-weight:600; font-size:22px; letter-spacing:-.02em; }
+  .ks-mini span{ display:block; font-size:12px; color:var(--muted); margin-top:2px; }
+  .ks-best{ display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; }
+  .ks-top{ grid-column:span 2; grid-row:span 2; display:flex; flex-direction:column; }
+  .ks-top blockquote{ margin:auto 0 0; padding-top:18px; margin-top:22px; border-top:1px solid var(--line);
+                      font-size:16px; line-height:1.45; color:var(--ink); }
+  .ks-m b{ display:block; font-family:"Inter Tight",sans-serif; font-weight:600; font-size:clamp(19px, 2.2vw, 24px);
+           letter-spacing:-.02em; line-height:1.15; margin-top:16px; }
+  .ks-m span{ display:block; font-size:12.5px; color:var(--muted); margin-top:8px; }
+  .ks-rank{ list-style:none; margin:0; padding:0; overflow:hidden; }
+  .ks-rank li{ display:grid; grid-template-columns:44px minmax(0,1fr) auto; gap:14px; align-items:center; padding:16px 22px; border-top:1px solid var(--line); }
+  .ks-rank li:first-child{ border-top:0; }
+  .ks-rank .r{ font-family:"Space Mono",monospace; font-size:13px; color:var(--lime); }
+  .ks-rank .t b{ display:block; font-weight:500; font-size:15px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ks-rank .t span{ display:block; font-size:12.5px; color:var(--muted); margin-top:2px; }
+  .ks-rank .v{ font-family:"Inter Tight",sans-serif; font-weight:600; font-size:26px; letter-spacing:-.03em; text-align:right; line-height:1; }
+  .ks-rank .v small{ display:block; font-family:"IBM Plex Sans",sans-serif; font-weight:400; font-size:11px; letter-spacing:0; color:var(--muted); margin-top:4px; }
+  .ks-tile .kbars{ gap:10px; padding-top:6px; }
+  .ks-tile .kbars button{ border-radius:14px; padding:8px 0 6px; }
+  .ks-tile .kbars button.on{ background:rgba(255,255,255,.05); }
+  .ks-tile .kbars button.on .ml{ color:var(--lime); font-weight:600; }
+  .ks-tile .kbars .st{ width:30px; border-radius:8px 8px 3px 3px; }
+  .ks-tile .kheat{ gap:5px; } .ks-tile .kheat .hc{ border-radius:10px; padding:10px 2px; }
+  .ks-reco{ list-style:none; margin:0; padding:0; counter-reset:r; }
+  .ks-reco li{ counter-increment:r; display:grid; grid-template-columns:40px 1fr; gap:10px; padding:14px 0; border-top:1px solid var(--line); font-size:15px; line-height:1.5; }
+  .ks-reco li:first-child{ border-top:0; padding-top:2px; }
+  .ks-reco li::before{ content:counter(r, decimal-leading-zero); font-family:"Space Mono",monospace; font-size:12px; color:var(--lime); padding-top:3px; }
+  .ks-reco b{ color:var(--lime); font-weight:600; }
+  @media (max-width:760px){
+    .ks-pfs{ grid-template-columns:1fr; }
+    .ks-best{ grid-template-columns:1fr 1fr; }
+    .ks-top{ grid-column:span 2; grid-row:auto; }
+    .ks-rank li{ grid-template-columns:30px minmax(0,1fr) auto; padding:14px 16px; gap:10px; }
+    .ks-rank .v{ font-size:21px; }
+  }
+
   /* ---------- mise en page épurée (références : Apple, Podspace, 45 Studio) ---------- */
   .wrap, .top-in{ max-width:960px; }
   .wrap{ padding-inline:20px; }
@@ -2920,6 +2980,47 @@
         }).join("") + '</div>';
   }
 
+  /* Animations d'entrée, jouées seulement à l'ouverture d'une rubrique (pas aux rafraîchissements). */
+  var CHIFFRES = ".intro.anim .cnt, .tile .n, .ks-pf .n, .ks-top .n, .ks-mini b, .ks-rank .v";
+  var REVELES = ".tile, .ks-pf, .ks-top, .ks-m, .ks-rank li, .ks-tile, .kstat h2.sec, .shero.grand";
+  function compter(el){
+    var txt = el.firstChild && el.firstChild.nodeType === 3 ? el.firstChild.nodeValue : null;
+    var m = txt && txt.match(/^([\d\s  ]+(?:,\d+)?)(.*)$/); if(!m) return;
+    var dec = m[1].indexOf(",") >= 0, cible = parseFloat(m[1].replace(/[\s  ]/g, "").replace(",", "."));
+    if(!isFinite(cible) || cible === 0) return;
+    var noeud = el.firstChild, fin = m[2], t0 = null, duree = cible > 999 ? 1600 : 1100;
+    function f(v){ return dec ? v.toFixed(1).replace(".", ",") : Math.round(v).toLocaleString("fr-FR"); }
+    noeud.nodeValue = f(0) + fin;
+    function pas(t){
+      if(t0 === null) t0 = t;
+      var k = Math.min(1, (t - t0) / duree), e = 1 - Math.pow(2, -10 * k);   // départ rapide, arrivée douce
+      noeud.nodeValue = (k < 1 ? f(cible * e) : m[1]) + fin;
+      if(k < 1) requestAnimationFrame(pas);
+    }
+    requestAnimationFrame(pas);
+  }
+  function animer(){
+    if(!app.querySelector(".intro.anim")) return;
+    if(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var vus = app.querySelectorAll(REVELES), nums = app.querySelectorAll(CHIFFRES);
+    if(!("IntersectionObserver" in window)){ nums.forEach(compter); return; }
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        io.unobserve(e.target);
+        if(e.target.classList.contains("rv")) e.target.classList.add("vu");
+        else compter(e.target);
+      });
+    }, { rootMargin:"0px 0px -8% 0px" });
+    vus.forEach(function(el, i){
+      el.classList.add("rv");
+      el.style.transitionDelay = Math.min(i % 4, 3) * 70 + "ms";
+      io.observe(el);
+    });
+    nums.forEach(function(el){ io.observe(el); });
+    app.querySelectorAll(".kstat.anim .kbars .st").forEach(function(el, i){ el.style.animationDelay = i * 60 + "ms"; });
+  }
+
   /* ---------- rendu ---------- */
   function rendre(){
     var h = "";
@@ -2954,6 +3055,9 @@
     rendreTabs();
     rendreMoi();
     lier();
+    var moisOn = app.querySelector(".ks-mois .on");   // garder le mois choisi visible dans la rangée
+    if(moisOn) moisOn.parentNode.scrollLeft = moisOn.offsetLeft - moisOn.parentNode.offsetLeft - 24;
+    animer();
   }
 
   function lier(){
@@ -4462,20 +4566,25 @@
     var mp = all.filter(function(x){ return x.month === sm && x.kind !== "Annonce"; });
     var change = sm >= cur ? null : prev && prev.views ? Math.round((row.views / prev.views - 1) * 100) : null;
 
-    var h = '<div class="kstat"><div class="calbar" style="margin-top:16px"><h2 class="tt">Statistiques</h2>'
-      + '<select data-kmois="1" aria-label="Mois" style="width:auto">' + months.slice().reverse().map(function(m){
-          return '<option value="' + m + '"' + (m === sm ? " selected" : "") + '>' + kMoisL(m) + (m >= cur ? " (en cours)" : "") + '</option>'; }).join("") + '</select></div>'
-      + '<p class="klead"><b>' + kMoisL(sm) + '</b> : <b>' + kNf(row.posts) + '</b> publications et <b>' + kNf(row.views) + '</b> vues sur Instagram et YouTube'
-      + (sm >= cur ? ' (mois en cours, pas encore comparable).' : change == null ? '.' : ', <b style="color:' + (change >= 0 ? "var(--ok)" : "var(--err)") + '">' + (change > 0 ? "+" : "") + change + ' %</b> par rapport au mois précédent.') + '</p>';
+    var anim = S_INTRO_VU !== "ksf-stats-" + sm; S_INTRO_VU = "ksf-stats-" + sm;
+    var mPrev = prev ? kMoisL(prev.m).split(" ")[0].toLowerCase() : "";
+    var h = '<div class="kstat' + (anim ? ' anim' : '') + '"><section class="intro' + (anim ? ' anim' : '') + '"><div class="kick">05 — Stats</div>'
+      + '<h2 class="big"><span class="dim">' + esc(kMoisL(sm)) + ',</span> <span class="cnt">' + kNf(row.views) + '</span> vues.</h2>'
+      + '<p class="lead">' + kNf(row.posts) + ' publications sur Instagram et YouTube'
+      + (sm >= cur ? ' · mois en cours, pas encore comparable' : change == null ? '' : ' · <b class="' + (change >= 0 ? 'up' : 'down') + '">' + (change > 0 ? '+' : '') + kNf(change) + ' %</b> par rapport à ' + esc(mPrev))
+      + '.</p></section>'
+      + '<div class="ks-mois" role="tablist" aria-label="Mois">' + months.slice(-8).map(function(m){
+          return '<button role="tab" aria-selected="' + (m === sm) + '" class="' + (m === sm ? "on" : "") + '" data-kmoisb="' + m + '">'
+            + esc(kMoisL(m)) + (m >= cur ? ' · en cours' : '') + '</button>'; }).join("") + '</div>';
 
-    function carte(pf, unite){
+    function tuile(i, pf, unite){
       var x = mp.filter(function(p){ return p.platform === pf; }), sh = x.filter(function(p){ return p.kind === "Short"; }).map(function(p){ return p.metric; });
-      return '<div><div class="pf">' + pf + '</div><div class="big">' + kNf(x.reduce(function(a, p){ return a + p.metric; }, 0)) + '</div>'
-           + '<div class="kpied" style="margin:0 0 6px">' + unite + ' dans le mois</div>'
-           + '<div class="kv"><span class="k">Médiane par short</span><span class="v">' + kNf(kMed(sh)) + '</span></div>'
-           + '<div class="kv"><span class="k">Publications</span><span class="v">' + x.length + '</span></div></div>';
+      return '<div class="ks-pf"><div class="i">' + i + ' · ' + pf + '</div>'
+        + '<div class="n">' + kNf(x.reduce(function(a, p){ return a + p.metric; }, 0)) + '</div><div class="u">' + unite + ' dans le mois</div>'
+        + '<div class="ks-mini"><div><b>' + kNf(kMed(sh)) + '</b><span>médiane par short</span></div>'
+        + '<div><b>' + x.length + '</b><span>publications</span></div></div></div>';
     }
-    h += '<div class="kcards">' + carte("Instagram", "vues") + carte("YouTube", "vues") + carte("Facebook", "affichages") + '</div>';
+    h += '<div class="ks-pfs">' + tuile("01", "Instagram", "vues") + tuile("02", "YouTube", "vues") + tuile("03", "Facebook", "affichages") + '</div>';
 
     var top = mp.slice().sort(function(a, b){ return b.metric - a.metric; })[0], g = {};
     mp.forEach(function(p){ if(p.platform !== "Facebook" && p.guest !== "Non identifié") g[p.guest] = (g[p.guest] || 0) + p.metric; });
@@ -4489,24 +4598,29 @@
     var bh = meilleur(ig, function(p){ return p.hook; }, 2)[0], bs = meilleur(ig, function(p){ return kCren(p.hour); }, 2)[0], bd = meilleur(ig, function(p){ return K_JOURS[p.dow]; }, 2)[0];
     function item(l, v, d){ return '<div><span class="k">' + esc(l) + '</span><b>' + esc(v || "—") + '</b><span class="d">' + esc(d || "") + '</span></div>'; }
     function sous(x){ return x ? kNf(x.m) + " vues médianes · " + x.n + " shorts" : "pas assez de shorts"; }
-    h += '<h2 class="sec">Ce qui a le mieux marché ce mois-ci</h2><div class="kbests">'
-       + item("Publication la plus vue", top ? top.text.replace(/\s+/g, " ").slice(0, 70) : "", top ? kNf(top.metric) + " " + (top.platform === "Facebook" ? "affichages" : "vues") + " · " + top.platform + " · " + top.guest : "")
-       + item("Invité le plus vu", bg && bg[0], bg ? kNf(bg[1]) + " vues Instagram + YouTube" : "")
-       + item("Meilleure accroche (Instagram)", bh && bh.k, sous(bh))
-       + item("Meilleur créneau (Instagram)", bs && bs.k, sous(bs))
-       + item("Meilleur jour (Instagram)", bd && bd.k, sous(bd)) + '</div>'
-       + '<p class="legende">Accroche, créneau et jour ne comparent que les groupes d’au moins 2 shorts dans le mois.</p>';
+    function mini(l, v, d){ return '<div class="ks-m"><div class="i">' + esc(l) + '</div><b>' + esc(v || "—") + '</b><span>' + esc(d || "") + '</span></div>'; }
+    h += '<h2 class="sec">Le meilleur du mois</h2><div class="ks-best">'
+       + '<div class="ks-top"><div class="i">Publication la plus vue</div>'
+       + '<div class="n">' + (top ? kNf(top.metric) : "—") + '</div>'
+       + '<div class="u">' + (top ? (top.platform === "Facebook" ? "affichages" : "vues") + " · " + top.platform + " · " + esc(top.guest) : "") + '</div>'
+       + (top ? '<blockquote>' + esc(top.text.replace(/\s+/g, " ").slice(0, 150)) + (top.text.length > 150 ? "…" : "") + '</blockquote>' : '') + '</div>'
+       + mini("Invité le plus vu", bg && bg[0], bg ? kNf(bg[1]) + " vues Instagram + YouTube" : "")
+       + mini("Meilleure accroche", bh && bh.k, sous(bh))
+       + mini("Meilleur créneau", bs && bs.k, sous(bs))
+       + mini("Meilleur jour", bd && bd.k, sous(bd)) + '</div>'
+       + '<p class="legende">Accroche, créneau et jour : shorts Instagram, groupes d’au moins 2 shorts dans le mois.</p>';
 
-    h += '<h2 class="sec">Top 5 du mois</h2><div class="blk kscroll"><table class="ktable"><thead><tr><th>Date</th><th>Plateforme</th><th>Invité</th><th>Vues</th><th>Début du texte</th></tr></thead><tbody>'
-       + mp.slice().sort(function(a, b){ return b.metric - a.metric; }).slice(0, 5).map(function(p){
-           return '<tr><td class="n">' + esc(jourCourt(p.date)) + '</td><td>' + p.platform + '</td><td>' + esc(p.guest) + '</td><td class="n">' + kNf(p.metric) + (p.platform === "Facebook" ? " aff." : "")
-                + '</td><td>' + esc(p.text.replace(/\s+/g, " ").slice(0, 110)) + '</td></tr>';
-         }).join("") + '</tbody></table></div>';
+    h += '<h2 class="sec">Top 5 du mois</h2><ol class="ks-rank">'
+       + mp.slice().sort(function(a, b){ return b.metric - a.metric; }).slice(0, 5).map(function(p, i){
+           return '<li><span class="r">0' + (i + 1) + '</span><div class="t"><b>' + esc(p.text.replace(/\s+/g, " ").slice(0, 110)) + '</b>'
+                + '<span>' + esc(jourCourt(p.date)) + ' · ' + p.platform + ' · ' + esc(p.guest) + '</span></div>'
+                + '<span class="v">' + kK(p.metric) + '<small>' + (p.platform === "Facebook" ? "affichages" : "vues") + '</small></span></li>';
+         }).join("") + '</ol>';
 
     var maxV = Math.max.apply(null, [1].concat(byMonth.map(function(r){ return r.views; })));
-    h += '<h2 class="sec">Vues par mois</h2><div class="blk"><div class="kbars" role="img" aria-label="Vues Instagram et YouTube par mois">'
+    h += '<h2 class="sec">Vues par mois</h2><div class="ks-tile"><div class="kbars" role="img" aria-label="Vues Instagram et YouTube par mois">'
        + byMonth.map(function(r){
-           var ht = Math.max(2, r.views / maxV * 140);
+           var ht = Math.max(3, r.views / maxV * 180);
            return '<button class="' + (r.m === sm ? "on" : "") + '" data-kmoisb="' + r.m + '" title="' + esc(kMoisL(r.m) + " : " + kNf(r.ig) + " vues Instagram, " + kNf(r.yt) + " vues YouTube") + '">'
                 + '<span class="mv">' + kK(r.views) + '</span><span class="st" style="height:' + ht + 'px">'
                 + '<i style="flex:' + r.yt + ' 0 0;background:var(--lime)"></i><i style="flex:' + r.ig + ' 0 0;background:var(--cyan)"></i></span>'
@@ -4516,13 +4630,13 @@
     var igAll = all.filter(function(p){ return p.platform === "Instagram" && p.kind === "Short"; }), ordre = [1,2,3,4,5,6,0], cells = [];
     ordre.forEach(function(d){ K_CREN.forEach(function(c){ var v = igAll.filter(function(p){ return p.dow === d && p.hour >= c[1] && p.hour <= c[2]; }).map(function(p){ return p.metric; }); cells.push({ d:d, s:c[0], n:v.length, m:kMed(v) }); }); });
     var maxM = Math.max.apply(null, [1].concat(cells.map(function(c){ return c.m || 0; })));
-    h += '<h2 class="sec">Meilleurs horaires sur Instagram</h2><div class="blk kscroll"><div class="kheat" role="img" aria-label="Vues médianes des shorts Instagram par jour et créneau"><span></span>'
+    h += '<h2 class="sec">Meilleurs horaires sur Instagram</h2><div class="ks-tile kscroll"><div class="kheat" role="img" aria-label="Vues médianes des shorts Instagram par jour et créneau"><span></span>'
        + K_CREN.map(function(c){ return '<span class="hh">' + c[0] + '</span>'; }).join("")
        + ordre.map(function(d){
            return '<span class="hd">' + K_JOURS[d] + '</span>' + K_CREN.map(function(c){
              var x = cells.filter(function(y){ return y.d === d && y.s === c[0]; })[0], r = x.n ? Math.sqrt(x.m / maxM) : 0;
              return '<span class="hc" title="' + esc(K_JOURS[d] + " · " + c[0] + " : " + (x.n ? kNf(x.m) + " vues médianes, " + x.n + " short" + (x.n > 1 ? "s" : "") : "aucun short")) + '"'
-                  + (x.n ? ' style="background:color-mix(in srgb, var(--cyan) ' + Math.round(12 + 80 * r) + '%, var(--surface));' + (r > 0.6 ? "color:#fff" : "") + '"' : '') + '>'
+                  + (x.n ? ' style="background:color-mix(in srgb, var(--lime) ' + Math.round(10 + 80 * r) + '%, var(--surface));' + (r > 0.55 ? "color:var(--lime-ink);font-weight:700" : "") + '"' : '') + '>'
                   + (x.n ? kK(x.m) + " · " + x.n : "") + '</span>';
            }).join("");
          }).join("") + '</div><p class="legende">Vues médianes des shorts Instagram, sur toute la période, heure de Luxembourg. Le petit chiffre est le nombre de shorts.</p></div>';
@@ -4541,8 +4655,8 @@
       rp && "Miser d’abord sur " + B(rp.b.k) + " pour les shorts : " + B(kNf(rp.b.m)) + " vues médianes, contre " + B(kNf(rp.w.m)) + " sur " + esc(rp.w.k) + ".",
       rf && "Sur YouTube, le format " + B(rf.b.k) + " fait " + B(kNf(rf.b.m)) + " vues médianes, contre " + B(kNf(rf.w.m)) + " pour le format " + esc(rf.w.k) + "."
     ].filter(Boolean);
-    h += '<h2 class="sec">Ce qui devrait marcher les prochains mois</h2><div class="blk">'
-       + (reco.length ? '<ul class="kreco">' + reco.map(function(r){ return "<li>" + r + "</li>"; }).join("") + '</ul>' : '<p class="kpied" style="margin:0">Pas encore assez de publications pour dégager une tendance.</p>')
+    h += '<h2 class="sec">Ce qui devrait marcher les prochains mois</h2><div class="ks-tile">'
+       + (reco.length ? '<ol class="ks-reco">' + reco.map(function(r){ return "<li><span>" + r + "</span></li>"; }).join("") + '</ol>' : '<p class="kpied" style="margin:0">Pas encore assez de publications pour dégager une tendance.</p>')
        + '<p class="legende">Tendances des ' + last3.length + ' derniers mois, sur ' + recent.length + ' publications. Peu de shorts par groupe : à confirmer mois après mois.</p></div>';
     return h + pied + '</div>';
   }
