@@ -343,6 +343,45 @@
   .mp-box ul{ margin:0; padding-left:18px; color:var(--muted); font-size:14px; display:flex; flex-direction:column; gap:5px; }
   .mp-box ul b{ color:var(--ink); }
   .mp-vide{ margin:0; color:var(--muted); font-size:14px; }
+  .mp-hbar{ display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px 16px; }
+  .mp-seg{ display:inline-flex; border:1px solid var(--line); border-radius:999px; padding:2px; }
+  .mp-seg button{ font:inherit; font-size:12.5px; background:none; border:0; color:var(--muted); padding:4px 12px; border-radius:999px; cursor:pointer; }
+  .mp-seg button[aria-pressed="true"]{ background:var(--lime); color:var(--lime-ink); font-weight:600; }
+  .tk-add{ display:grid; grid-template-columns:2fr 1fr 1fr auto auto; gap:8px; }
+  .tk-add input, .tk-add select{ font:inherit; font-size:14px; min-width:0; padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--ink); }
+  .tk-cols{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px; align-items:start; }
+  .tk-col h4, .tk-fini summary{ margin:0 0 8px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-family:"Space Mono",monospace; color:var(--muted); font-weight:400; }
+  .tk-col h4 span, .tk-fini summary span{ color:var(--ink); margin-left:4px; }
+  .tk-col.encours h4{ color:var(--lime); }
+  .tk-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .tk{ border:1px solid var(--line); border-radius:12px; background:var(--surface); padding:11px 13px; display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .tk.encours{ border-color:color-mix(in srgb, var(--lime) 55%, var(--line)); }
+  .tk.attente{ border-style:dashed; }
+  .tk.retard{ box-shadow:inset 3px 0 0 #FF8A5B; }
+  .tk.terminee{ opacity:.72; }
+  .tk.terminee .tk-t{ text-decoration:line-through; text-decoration-color:var(--muted); }
+  .tk-l1{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; }
+  .tk-t{ font:inherit; font-weight:600; color:var(--ink); background:none; border:0; padding:0; text-align:left; cursor:pointer; }
+  .tk-p{ font-size:12px; color:var(--muted); border:1px solid var(--line); border-radius:6px; padding:1px 7px; }
+  .tk-l2{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
+  .tk-qui select{ font:inherit; font-family:"Inter Tight",sans-serif; font-size:12.5px; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:2px 8px; }
+  .tk-d{ margin:0; color:var(--muted); font-size:13.5px; }
+  .tk-pts{ margin:0; padding-left:18px; color:var(--muted); font-size:13.5px; }
+  .tk-st{ display:flex; flex-wrap:wrap; gap:4px; }
+  .tk-st button{ font:inherit; font-size:12px; padding:3px 10px; border-radius:999px; border:1px solid var(--line); background:none; color:var(--muted); cursor:pointer; }
+  .tk-st button[aria-pressed="true"]{ background:var(--ink); color:var(--surface); border-color:var(--ink); font-weight:600; }
+  .tk-st button[data-tstat="encours"][aria-pressed="true"]{ background:var(--lime); border-color:var(--lime); color:var(--lime-ink); }
+  .tk-st button[data-tstat="terminee"][aria-pressed="true"]{ background:var(--ok); border-color:var(--ok); color:#fff; }
+  .tk-st button:focus-visible, .tk-t:focus-visible, .mp-seg button:focus-visible{ outline:2px solid var(--lime); outline-offset:2px; }
+  .tk-fini{ border-top:1px solid var(--line); padding-top:12px; }
+  .tk-fini summary{ cursor:pointer; margin:0; }
+  .tk-fini[open] summary{ margin-bottom:8px; }
+  .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .kp-liv{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .kp-liv button{ width:100%; font:inherit; color:var(--ink); text-align:left; display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; padding:11px 14px; border-radius:12px; border:1px solid var(--line); background:var(--surface); cursor:pointer; }
+  .kp-liv .kp-d{ font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); }
+  .kp-liv .kp-retard{ font-family:"Space Mono",monospace; font-size:12px; color:#FF8A5B; }
+  @media (max-width:640px){ .tk-add{ grid-template-columns:1fr 1fr; } .tk-add #tk_t{ grid-column:1 / -1; } }
   .mp-src{ margin:0; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
   @media (max-width:560px){ .mp-day{ grid-template-columns:1fr; gap:6px; } .mp-day .dt b{ display:inline; margin-right:6px; font-size:17px; } .mp-ev{ grid-template-columns:1fr; gap:2px; } }
   .case .ev.outlook .q{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; overflow-wrap:anywhere; }
@@ -1708,11 +1747,14 @@
      contacts saisis à la main (marqués kind:"contact"). */
   function estContact(x){ return !!x && x.kind === "contact"; }
   function estKsf(x){ return !!x && /^ksf-/.test(x.kind || ""); }
+  var TA = [];
+  function estTache(x){ return !!x && x.kind === "tache"; }
   function repartir(tous){
     CT = (tous || []).filter(estContact);
+    TA = (tous || []).filter(estTache);
     KS = (tous || []).filter(function(x){ return x.kind === "ksf-post"; });
     KE = (tous || []).filter(function(x){ return x.kind === "ksf-episode"; });
-    P  = (tous || []).filter(function(x){ return !estContact(x) && !estKsf(x); }).map(normaliser);
+    P  = (tous || []).filter(function(x){ return !estContact(x) && !estKsf(x) && !estTache(x); }).map(normaliser);
   }
 
   function charger(silencieux){
@@ -1730,7 +1772,7 @@
     });
   }
   function creer(d){
-    var quoi = estContact(d) ? "Contact créé." : "Projet créé.";
+    var quoi = estContact(d) ? "Contact créé." : estTache(d) ? "Tâche ajoutée." : "Projet créé.";
     if(!EN_LIGNE){
       d.id = "loc-" + Date.now(); var a = local(); a.push(d); localSet(a);
       repartir(local()); rendre(); toast(quoi); return;
@@ -1840,7 +1882,7 @@
   var PL = { pour:"", data:null, maj:"", at:0, enCours:false };
   function plCharger(force){
     var qui = String(MOI || "").trim().split(/\s+/)[0].toLowerCase();
-    if(!qui){ if(PL.data){ PL.data = null; PL.pour = ""; if(VUE === "planning") VUE = "avenir"; rendreTabs(); } return; }
+    if(!qui){ if(PL.data){ PL.data = null; PL.pour = ""; rendre(); } return; }
     if(!EN_LIGNE || PL.enCours) return;
     if(!force && PL.pour === qui && Date.now() - PL.at < 5 * 60e3) return;
     var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
@@ -1853,43 +1895,144 @@
         var avant = !!PL.data;
         PL.data = x.ok && x.j && x.j.planning ? x.j.planning : null;
         PL.maj = x.ok && x.j ? x.j.maj : "";
-        if(!PL.data && VUE === "planning") VUE = "avenir";
         if(VUE === "planning" || avant !== !!PL.data) rendre(); else rendreTabs();
       }, function(){ PL.enCours = false; });
   }
+  /* ---------- tâches ----------
+     Lignes kind:"tache" : { titre, projet, detail, points[], assigne, statut, echeance, source, cle, cree, termineLe }.
+     statut : "avenir" | "encours" | "attente" | "terminee". */
+  var T_STATUTS = [["avenir","À venir"],["encours","En cours"],["attente","En attente"],["terminee","Terminée"]];
+  var TV = { tous:false, ouvert:"" };
+  function tQui(n){ return String(n || "").trim().split(/\s+/)[0].toLowerCase(); }
+  function mesTaches(){
+    var q = tQui(MOI);
+    return TA.filter(function(t){ return !q || TV.tous || tQui(t.assigne) === q; });
+  }
+  function tEnRetard(t){ return !!t.echeance && t.echeance < iso(new Date()) && t.statut !== "terminee"; }
+  function tSaisie(){ var a = document.activeElement; return !!(a && a.closest && a.closest(".tk-add")); }
+  function tTri(a, b){
+    var ea = a.echeance || "9999", eb = b.echeance || "9999";
+    return ea.localeCompare(eb) || String(a.cree || "").localeCompare(String(b.cree || ""));
+  }
+  function tCarte(t){
+    var st = t.statut || "avenir", retard = tEnRetard(t), ouvert = TV.ouvert === t.id;
+    var equipe = equipeConnue(); if(t.assigne && equipe.indexOf(t.assigne) < 0) equipe.push(t.assigne);
+    var h = '<li class="tk ' + esc(st) + (retard ? ' retard' : '') + '" data-tache="' + esc(t.id) + '">'
+      + '<div class="tk-l1"><button type="button" class="tk-t" data-touvre="' + esc(t.id) + '" aria-expanded="' + (ouvert ? "true" : "false") + '">' + esc(t.titre || "Tâche") + '</button>'
+      + (t.projet ? '<span class="tk-p">' + esc(t.projet) + '</span>' : '')
+      + (retard ? '<span class="mp-chip late">En retard</span>' : '')
+      + (st === "attente" ? '<span class="mp-chip info">En attente</span>' : '')
+      + '</div>'
+      + '<div class="tk-l2">'
+      + (t.echeance ? '<span>Échéance ' + esc(jourCourt(t.echeance)) + '</span>' : '')
+      + (st === "terminee" && t.termineLe ? '<span>Terminée le ' + esc(jourCourt(String(t.termineLe).slice(0,10))) + '</span>' : '')
+      + '<label class="tk-qui"><span class="sr">Attribuée à</span><select data-tassigne="' + esc(t.id) + '">'
+      + '<option value="">Personne</option>'
+      + equipe.map(function(n){ return '<option' + (n === t.assigne ? " selected" : "") + '>' + esc(n) + '</option>'; }).join("")
+      + '</select></label></div>';
+    if(ouvert || st !== "terminee"){
+      if(t.detail) h += '<p class="tk-d">' + esc(t.detail) + '</p>';
+      if(t.points && t.points.length) h += '<ul class="tk-pts">' + t.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>';
+    }
+    h += '<div class="tk-st" role="group" aria-label="Statut">' + T_STATUTS.map(function(x){
+        return '<button type="button" data-tstat="' + x[0] + '" data-tid="' + esc(t.id) + '" aria-pressed="' + (st === x[0] ? "true" : "false") + '">' + x[1] + '</button>';
+      }).join("") + '</div></li>';
+    return h;
+  }
+  function tGroupes(liste, ajout){
+    var av = liste.filter(function(t){ return (t.statut || "avenir") === "avenir"; }).sort(tTri);
+    var ec = liste.filter(function(t){ return t.statut === "encours" || t.statut === "attente"; })
+                  .sort(function(a, b){ return (a.statut === "attente") - (b.statut === "attente") || tTri(a, b); });
+    var fi = liste.filter(function(t){ return t.statut === "terminee"; })
+                  .sort(function(a, b){ return String(b.termineLe || "").localeCompare(String(a.termineLe || "")); });
+    function col(titre, cls, l, vide){
+      return '<section class="tk-col ' + cls + '"><h4>' + titre + ' <span>' + l.length + '</span></h4>'
+        + (l.length ? '<ul class="tk-list">' + l.map(tCarte).join("") + '</ul>' : '<p class="mp-vide">' + vide + '</p>') + '</section>';
+    }
+    return '<div class="tk-cols">'
+      + col("À venir", "avenir", av, "Rien à venir.")
+      + col("En cours", "encours", ec, "Rien en cours.")
+      + '</div>'
+      + '<details class="tk-fini"' + (fi.length && fi.length < 4 ? " open" : "") + '><summary>Terminées <span>' + fi.length + '</span></summary>'
+      + (fi.length ? '<ul class="tk-list">' + fi.slice(0, 40).map(tCarte).join("") + '</ul>' : '<p class="mp-vide">Aucune tâche terminée pour l’instant.</p>')
+      + '</details>';
+  }
+  function tFormAjout(){
+    var equipe = equipeConnue();
+    return '<form class="tk-add" id="tkAdd">'
+      + '<input type="text" id="tk_t" placeholder="Nouvelle tâche…" aria-label="Nouvelle tâche" required>'
+      + '<input type="text" id="tk_p" placeholder="Projet" aria-label="Projet">'
+      + '<select id="tk_a" aria-label="Attribuer à"><option value="">Personne</option>'
+      + equipe.map(function(n){ return '<option' + (n === MOI ? " selected" : "") + '>' + esc(n) + '</option>'; }).join("") + '</select>'
+      + '<input type="date" id="tk_e" aria-label="Échéance">'
+      + '<button class="btn lime" type="submit">Ajouter</button></form>';
+  }
+  function lierTaches(){
+    app.querySelectorAll("[data-tstat]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var t = TA.filter(function(x){ return x.id === b.dataset.tid; })[0]; if(!t) return;
+        var v = b.dataset.tstat; if(t.statut === v) return;
+        t.statut = v;
+        t.termineLe = v === "terminee" ? new Date().toISOString() : "";
+        enregistrer(t, true); toast(v === "terminee" ? "Tâche terminée." : "Statut : " + T_STATUTS.filter(function(x){ return x[0] === v; })[0][1] + ".");
+        rendre();
+      });
+    });
+    app.querySelectorAll("[data-tassigne]").forEach(function(sel){
+      sel.addEventListener("change", function(){
+        var t = TA.filter(function(x){ return x.id === sel.dataset.tassigne; })[0]; if(!t) return;
+        t.assigne = sel.value; enregistrer(t, true);
+        toast(sel.value ? "Attribuée à " + sel.value + "." : "Tâche sans attribution."); rendre();
+      });
+    });
+    app.querySelectorAll("[data-touvre]").forEach(function(b){
+      b.addEventListener("click", function(){ TV.ouvert = TV.ouvert === b.dataset.touvre ? "" : b.dataset.touvre; rendre(); });
+    });
+    app.querySelectorAll("[data-ttous]").forEach(function(b){
+      b.addEventListener("click", function(){ TV.tous = b.dataset.ttous === "1"; rendre(); });
+    });
+    var f = app.querySelector("#tkAdd");
+    if(f) f.addEventListener("submit", function(e){
+      e.preventDefault();
+      var titre = f.querySelector("#tk_t").value.trim(); if(!titre) return;
+      creer({ kind:"tache", titre:titre, projet:f.querySelector("#tk_p").value.trim(), detail:"", points:[],
+              assigne:f.querySelector("#tk_a").value, statut:"avenir", echeance:f.querySelector("#tk_e").value,
+              source:"Régie", cle:"", cree:new Date().toISOString(), termineLe:"" });
+    });
+  }
   function vuePlanning(){
     var D = PL.data;
-    if(!D) return vide("Pas de planning personnel pour " + (MOI || "cette personne") + ".");
     var fmtJ = new Intl.DateTimeFormat("fr-FR", { weekday:"short" });
     var fmtM = new Intl.DateTimeFormat("fr-FR", { day:"numeric", month:"long" });
     var fmtMaj = new Intl.DateTimeFormat("fr-FR", { weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit" });
     function jr(x){ return new Date(x + "T12:00:00"); }
     var auj = iso(new Date());
-    var CH = { late:["late","En retard"], todo:["todo","À faire"], done:["done","Rendu"] };
     var h = '<div class="mp">';
-    h += '<p class="mp-meta">' + (D.du && D.au ? 'Du ' + esc(fmtM.format(jr(D.du))) + ' au ' + esc(fmtM.format(jr(D.au))) + ' · ' : '')
-       + (D.majLe ? 'mis à jour ' + esc(fmtMaj.format(new Date(D.majLe))) : '') + '</p>';
 
-    h += '<h3 class="mp-h">Ce que vous devez faire <span>' + (D.priorites || []).length + '</span></h3>';
-    if((D.priorites || []).length){
-      h += '<ol class="mp-tasks">';
-      D.priorites.forEach(function(p, i){
-        var c = CH[p.etat] || ["info", "Info"];
-        h += '<li><span class="rk">' + pad2(i + 1) + '</span><div><div class="t">' + esc(p.titre)
-          + ' <span class="mp-chip ' + c[0] + '">' + c[1] + '</span></div>'
-          + (p.detail ? '<div class="d">' + esc(p.detail) + '</div>' : '')
-          + (p.points && p.points.length ? '<ul>' + p.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : '')
-          + '</div></li>';
-      });
-      h += '</ol>';
-    } else h += '<p class="mp-vide">Rien en attente.</p>';
+    var liste = mesTaches();
+    h += '<div class="mp-hbar"><h3 class="mp-h">' + (MOI && !TV.tous ? 'Mes tâches' : 'Tâches de l’équipe') + '</h3>'
+       + (MOI ? '<div class="mp-seg"><button type="button" data-ttous="0" aria-pressed="' + (!TV.tous) + '">Les miennes</button>'
+              + '<button type="button" data-ttous="1" aria-pressed="' + TV.tous + '">Toute l’équipe</button></div>' : '')
+       + '</div>' + tFormAjout() + tGroupes(liste);
 
-    h += '<h3 class="mp-h">Agenda</h3><div class="mp-leg">'
-       + '<span><i class="tournage"></i>Tournage</span><span><i class="montage"></i>Montage</span>'
-       + '<span><i class="rdv"></i>Rendez-vous</span><span><i class="ksf"></i>KSF</span><span><i class="alerte"></i>À arbitrer</span></div>'
-       + '<div class="mp-days">';
-    (D.jours || []).forEach(function(j){
-      var d = jr(j.date), passe = j.date < auj;
+    if(D){
+      h += '<h3 class="mp-h">Agenda</h3><p class="mp-meta">' + (D.du && D.au ? 'Du ' + esc(fmtM.format(jr(D.du))) + ' au ' + esc(fmtM.format(jr(D.au))) + ' · ' : '')
+         + (D.majLe ? 'mis à jour ' + esc(fmtMaj.format(new Date(D.majLe))) : '') + '</p>'
+         + '<div class="mp-leg"><span><i class="tournage"></i>Tournage</span><span><i class="montage"></i>Montage</span>'
+         + '<span><i class="rdv"></i>Rendez-vous</span><span><i class="ksf"></i>KSF</span><span><i class="alerte"></i>À arbitrer</span></div>'
+         + mpJours(D.jours || [], auj, fmtJ);
+      function liste2(a, v){ return a && a.length ? '<ul>' + a.map(function(x){ return '<li>' + (typeof x === "string" ? esc(x) : '<b>' + esc(x.titre) + '</b>' + (x.detail ? ' — ' + esc(x.detail) : '')) + '</li>'; }).join("") + '</ul>' : '<p class="mp-vide">' + v + '</p>'; }
+      h += '<div class="mp-cols"><div class="mp-box"><h4>Rendu ou validé depuis lundi dernier</h4>'
+         + liste2(D.rendu, "Rien encore. Les projets passés en « Publié » et les livraisons envoyées par mail apparaîtront ici.") + '</div>'
+         + '<div class="mp-box"><h4>À vérifier dans la Régie</h4>' + liste2(D.aVerifier, "Tout est à jour.") + '</div></div>'
+         + '<p class="mp-src">Sources : ' + esc(D.sources || "") + '. Agenda refait chaque lundi matin.</p>';
+    }
+    return h + '</div>';
+  }
+  function mpJours(jours, auj, fmtJ){
+    var h = '<div class="mp-days">';
+    jours.forEach(function(j){
+      var d = new Date(j.date + "T12:00:00"), passe = j.date < auj;
       h += '<div class="mp-day' + (j.date === auj ? ' auj' : '') + (passe ? ' passe' : '') + '"><div class="dt"><b>' + d.getDate() + '</b>'
          + esc(fmtJ.format(d)) + (j.date === auj ? ' · aujourd\'hui' : '') + '</div><div class="evs">';
       (j.evs || []).forEach(function(e){
@@ -1898,13 +2041,59 @@
       });
       h += '</div></div>';
     });
-    h += '</div>';
+    return h + '</div>';
+  }
 
-    function liste(a, v){ return a && a.length ? '<ul>' + a.map(function(x){ return '<li>' + (typeof x === "string" ? esc(x) : '<b>' + esc(x.titre) + '</b>' + (x.detail ? ' — ' + esc(x.detail) : '')) + '</li>'; }).join("") + '</ul>' : '<p class="mp-vide">' + v + '</p>'; }
-    h += '<div class="mp-cols"><div class="mp-box"><h4>Rendu ou validé depuis lundi dernier</h4>'
-       + liste(D.rendu, "Rien encore. Les projets passés en « Publié » et les livraisons envoyées par mail apparaîtront ici.") + '</div>'
-       + '<div class="mp-box"><h4>À vérifier dans la Régie</h4>' + liste(D.aVerifier, "Tout est à jour.") + '</div></div>';
-    h += '<p class="mp-src">Sources : ' + esc(D.sources || "") + '. Mis à jour chaque lundi matin.</p></div>';
+  /* ---------- planning KSF (rubrique KSF) ----------
+     Tournages et montages de l'émission : projets « Kamel Sans Filtre » de la Régie (en direct)
+     + rendez-vous KSF repérés dans Outlook (planning « ksf », refait chaque lundi). */
+  var PK = { data:null, at:0, enCours:false };
+  function pkCharger(force){
+    if(!EN_LIGNE || PK.enCours || (!force && Date.now() - PK.at < 5 * 60e3)) return;
+    var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
+    PK.enCours = true;
+    fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=ksf", { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(x){ PK.enCours = false; PK.at = Date.now(); PK.data = x.ok && x.j ? x.j.planning : null; if(VUE === "ksf" && KSF.sous === "planning") rendre(); },
+            function(){ PK.enCours = false; });
+  }
+  function estKsfProjet(p){ return /kamel\s*sans\s*filtre|\bksf\b/i.test((p.client || "") + " " + (p.projet || "")); }
+  function kVuePlanning(){
+    pkCharger(false);
+    var auj = iso(new Date()), fmtJ = new Intl.DateTimeFormat("fr-FR", { weekday:"short" });
+    var parJour = {};
+    function ajoute(date, ev){ (parJour[date] = parJour[date] || []).push(ev); }
+    var projets = P.filter(estKsfProjet);
+    projets.forEach(function(p){
+      (p.jours || []).forEach(function(j){
+        if(j.date && j.date >= auj) ajoute(j.date, { h:[j.heureEquipe, j.heureFin].filter(Boolean).join("–"), titre:"Tournage — " + (p.projet || p.client), lieu:(j.lieu || "") + (equipeDe(j).length ? " · " + equipeDe(j).join(", ") : ""), type:"tournage" });
+      });
+      if(p.livDate && p.livDate >= auj && p.statut !== "Publié") ajoute(p.livDate, { h:"", titre:"Livraison — " + (p.projet || p.client), type:"montage" });
+    });
+    ((PK.data && PK.data.evs) || []).forEach(function(e){
+      if(e.date >= auj && !(parJour[e.date] || []).some(function(x){ return x.titre.toLowerCase() === String(e.titre).toLowerCase(); })) ajoute(e.date, e);
+    });
+    var jours = Object.keys(parJour).sort().map(function(d){ return { date:d, evs:parJour[d].sort(function(a, b){ return String(a.h || "99").localeCompare(String(b.h || "99")); }) }; });
+    var aLivrer = projets.filter(function(p){ return ["Tourné","Montage","En validation"].indexOf(p.statut) >= 0; })
+                         .sort(function(a, b){ return String(a.livDate || "9999").localeCompare(String(b.livDate || "9999")); });
+    var taches = TA.filter(function(t){ return /ksf|kamel/i.test((t.projet || "") + " " + (t.titre || "")); });
+
+    var h = '<div class="mp" style="margin-top:18px">';
+    h += '<h3 class="mp-h">Tournages et montages à venir</h3>'
+       + '<div class="mp-leg"><span><i class="tournage"></i>Tournage</span><span><i class="montage"></i>Montage / livraison</span><span><i class="rdv"></i>Rendez-vous</span></div>'
+       + (jours.length ? mpJours(jours, auj, fmtJ) : '<p class="mp-vide">Aucun tournage ni montage KSF prévu.</p>');
+    h += '<h3 class="mp-h">En post-production <span>' + aLivrer.length + '</span></h3>';
+    if(aLivrer.length){
+      h += '<ul class="kp-liv">' + aLivrer.map(function(p){
+        var retard = p.livDate && p.livDate < auj;
+        return '<li><button type="button" data-id="' + esc(p.id) + '"><b>' + esc(p.projet || p.client) + '</b>'
+          + '<span class="pill ' + (CLASSE[p.statut] || "") + '">' + esc(p.statut) + '</span>'
+          + (p.livDate ? '<span class="' + (retard ? 'kp-retard' : 'kp-d') + '">' + (retard ? 'Livraison prévue le ' : 'Livraison ') + esc(jourCourt(p.livDate)) + '</span>' : '')
+          + '</button></li>';
+      }).join("") + '</ul>';
+    } else h += '<p class="mp-vide">Rien en post-production.</p>';
+    h += '<h3 class="mp-h">Tâches KSF</h3>' + tGroupes(taches);
+    h += '<p class="mp-src">Tournages et livraisons : projets « Kamel Sans Filtre » de la Régie, en direct. Rendez-vous : agendas Outlook, refaits chaque lundi.</p></div>';
     return h;
   }
   function legendeOutlook(){
@@ -2023,7 +2212,7 @@
     { id:"new",    nom:"+ Nouveau projet" }
   ];
   /* KSF a son propre espace : ses rubriques prennent la place des onglets de la Régie. */
-  var K_ONGLETS = [["semaine","Cette semaine"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]];
+  var K_ONGLETS = [["semaine","Cette semaine"],["planning","Tournages & montages"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]];
   var DERNIERE_REGIE = "avenir";
   function estKsfVue(){ return /^ksf/.test(VUE); }
   function rendreEspaces(){
@@ -2067,15 +2256,14 @@
     }
     if(["avenir","cal","planning","suivi","tous","contacts"].indexOf(VUE) >= 0) DERNIERE_REGIE = VUE;
     ONGLETS.forEach(function(o){
-      if(o.id === "planning" && !PL.data) return;   // seulement pour qui a un planning personnel
-      var n = o.id === "planning" ? (PL.data.priorites || []).filter(function(x){ return x.etat === "late"; }).length
+      var n = o.id === "planning" ? mesTaches().filter(function(t){ return t.statut !== "terminee" && tEnRetard(t); }).length
             : o.id === "avenir" ? P.filter(function(p){ return !!prochaine(p); }).length
             : o.id === "suivi"  ? P.filter(enCours).length
             : o.id === "tous"   ? P.length
             : o.id === "contacts" ? carnet().length : null;
       h += '<button class="tab' + (o.id === "new" ? ' nouveau' : '') + '" role="tab" data-vue="' + o.id + '"'
          + ' aria-selected="' + ((VUE === o.id || (VUE === "fiche" && o.id === (RETOUR || "avenir"))) ? "true" : "false") + '">'
-         + esc(o.nom) + (n ? '<span class="c">' + n + '</span>' : '') + '</button>';
+         + esc(o.id === "planning" && !MOI ? "Tâches" : o.nom) + (n ? '<span class="c">' + n + '</span>' : '') + '</button>';
     });
     tabsEl.innerHTML = h;
     tabsEl.querySelectorAll("[data-vue]").forEach(function(b){
@@ -3192,7 +3380,7 @@
   var S_INTRO = {
     avenir:   ["01", "À venir",        "Les prochains",  "tournages.", "Tout ce qui passe devant les caméras du studio, jour par jour."],
     cal:      ["02", "Calendrier",     "Le mois",        "d'un coup d'œil.", ""],
-    planning: ["", "Mon planning",     "Mes deux",       "semaines.", "Tâches, tournages, montages et rendez-vous, refaits chaque lundi à partir d'Outlook, de vos mails, de DotsFlow et de la Régie."],
+    planning: ["", "Mon planning",     "Mes tâches",     "et mes deux semaines.", "Les tâches de l'équipe, à attribuer et à faire avancer ici. L'agenda est refait chaque lundi à partir d'Outlook, des mails, de DotsFlow et de la Régie."],
     suivi:    ["03", "Après tournage", "Du rush",        "à la livraison.", "Montage, validation, publication : ce qui reste à livrer."],
     tous:     ["04", "Projets",        "Tous les",       "projets.", ""],
     contacts: ["05", "Contacts",       "Le carnet",      "de l'équipe.", ""]
@@ -3292,6 +3480,7 @@
     app.querySelectorAll("[data-tile]").forEach(function(b){
       b.addEventListener("click", function(){ VUE = b.dataset.tile; rendre(); window.scrollTo(0,0); });
     });
+    lierTaches();
     rendreTabs();
     rendreMoi();
     lier();
@@ -4126,6 +4315,7 @@
     }
     if(KSF.sous === "stats") return h + kVueStats();
     if(KSF.sous === "episodes") return h + kVueEpisodes();
+    if(KSF.sous === "planning") return h + kVuePlanning();
     h += kRetards();
     if(KSF.sous === "cal") return h + kFiltres() + kVueCal();
     if(KSF.sous === "sujets") return h + kFiltres() + kVueSujets();
@@ -5046,7 +5236,7 @@
     olCharger(false);
     plCharger(false);
     setInterval(function(){ if(!document.hidden){ olCharger(false); plCharger(false); } }, 5 * 60e3);
-    setInterval(function(){ if(!document.hidden && VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); }, 30000);
+    setInterval(function(){ if(!document.hidden && VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie() && !tSaisie()) charger(true); }, 30000);
     window.addEventListener("focus", function(){ if(VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); });
   }
   // Le code n'est jamais écrit en clair : CONFIG.CODE contient son empreinte SHA-256.
