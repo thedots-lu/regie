@@ -655,6 +655,57 @@
   body.studio .porte h2{ font-family:"Unbounded",sans-serif; font-weight:700; font-size:24px; }
   .pill:empty{ display:none; }
 
+  /* ---------- « + Nouveau projet » visible, formulaire en étapes ---------- */
+  .tab.nouveau{ margin-left:auto; margin-right:0; align-self:center; background:var(--lime); color:var(--lime-ink) !important;
+                border-radius:999px; padding:7px 16px; border-bottom:0 !important; font-weight:600; }
+  .tab.nouveau:hover{ filter:brightness(1.06); }
+  .tab.nouveau[aria-selected="true"]{ box-shadow:0 0 0 3px rgba(228,230,59,.25); }
+  .fab{ display:none; }
+  @media (max-width:760px){
+    .tab.nouveau{ display:none; }
+    .fab{ display:flex; position:fixed; right:18px; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); z-index:30;
+          align-items:center; gap:8px; border:0; border-radius:999px; padding:14px 20px; font:inherit; font-weight:700; font-size:15px;
+          background:var(--lime); color:var(--lime-ink); box-shadow:0 10px 30px -8px rgba(0,0,0,.7); cursor:pointer; }
+  }
+  .raccourci{ display:flex; width:100%; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; text-align:left;
+              margin-top:22px; padding:14px 18px; border-radius:16px; border:1px dashed var(--line); background:transparent;
+              color:var(--ink-2); font:inherit; font-size:14px; cursor:pointer; }
+  .raccourci b{ color:var(--lime); font-weight:600; white-space:nowrap; }
+  .raccourci:hover{ border-color:var(--lime); }
+  .fnew .blk{ margin-top:16px; }
+  .etape{ display:flex; gap:14px; align-items:flex-start; margin-bottom:6px; }
+  .etape .no{ font-family:"Space Mono",monospace; font-size:12px; color:var(--lime-ink); background:var(--lime);
+              border-radius:999px; padding:3px 9px; margin-top:3px; flex:none; }
+  .etape h3{ font-family:"Inter Tight","IBM Plex Sans",sans-serif; font-size:21px; font-weight:600; letter-spacing:-.02em; margin:0; }
+  .etape p{ margin:2px 0 0; font-size:13.5px; color:var(--muted); }
+  .f.puces select{ position:absolute; opacity:0; pointer-events:none; width:1px; height:1px; }
+  .pc{ display:flex; flex-wrap:wrap; gap:7px; }
+  .pc button{ border:1px solid var(--line); background:transparent; color:var(--ink-2); font:inherit; font-size:14px;
+              padding:8px 14px; border-radius:999px; cursor:pointer; transition:background .15s, border-color .15s, color .15s; }
+  .pc button:hover{ border-color:rgba(255,255,255,.3); color:var(--ink); }
+  .pc button[aria-checked="true"]{ background:var(--lime); border-color:var(--lime); color:var(--lime-ink); font-weight:600; }
+  .pc button:focus-visible{ outline:2px solid var(--lime); outline-offset:2px; }
+  .fnew .jour-f{ border-radius:16px; padding:14px 16px; }
+  .fnew .row3{ grid-template-columns:1.3fr 1fr 1fr; }
+  @media (max-width:560px){ .fnew .row3{ grid-template-columns:1fr 1fr; } .fnew .row3 > .f:first-child{ grid-column:span 2; } }
+  details.plie{ border-top:1px solid var(--line); margin-top:12px; }
+  details.plie > summary{ list-style:none; display:flex; align-items:baseline; gap:10px; padding:13px 0 11px; cursor:pointer; }
+  details.plie > summary::-webkit-details-marker{ display:none; }
+  details.plie > summary::before{ content:"+"; font-family:"Space Mono",monospace; color:var(--lime); width:14px; flex:none; }
+  details.plie[open] > summary::before{ content:"–"; }
+  details.plie > summary .t{ font-weight:600; font-size:15px; }
+  details.plie > summary .s{ font-size:12.5px; color:var(--muted); }
+  details.plie > .pin{ padding:0 0 10px 24px; }
+  details.plie .blk{ border:0; background:none; padding:0; margin:0; box-shadow:none; }
+  details.plie .blk > h3{ display:none; }
+  .jour-f details.plie{ margin-top:6px; }
+  .ajout{ width:100%; margin-top:12px; padding:12px; border-radius:14px; border:1px dashed var(--line); background:transparent;
+          color:var(--ink-2); font:inherit; font-size:14px; cursor:pointer; }
+  .ajout:hover{ border-color:var(--lime); color:var(--ink); }
+  .envoi{ position:sticky; bottom:0; z-index:5; display:flex; gap:10px; align-items:center; margin-top:18px; padding:14px 0 calc(14px + env(safe-area-inset-bottom, 0px));
+          background:linear-gradient(180deg, rgba(9,9,14,0), var(--ground) 35%); }
+  .envoi .btn.lime{ padding:12px 26px; font-size:15.5px; }
+
   /* ---------- animations : chiffres qui défilent, tuiles qui apparaissent, barres qui montent ---------- */
   .rv{ opacity:0; transform:translateY(18px); transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
   .rv.vu{ opacity:1; transform:none; }
@@ -1786,7 +1837,7 @@
     { id:"suivi",  nom:"Après tournage" },
     { id:"tous",   nom:"Projets" },
     { id:"contacts", nom:"Contacts" },
-    { id:"new",    nom:"+ Nouveau" }
+    { id:"new",    nom:"+ Nouveau projet" }
   ];
   /* KSF a son propre espace : ses rubriques prennent la place des onglets de la Régie. */
   var K_ONGLETS = [["semaine","Cette semaine"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]];
@@ -1837,7 +1888,7 @@
             : o.id === "suivi"  ? P.filter(enCours).length
             : o.id === "tous"   ? P.length
             : o.id === "contacts" ? carnet().length : null;
-      h += '<button class="tab" role="tab" data-vue="' + o.id + '"'
+      h += '<button class="tab' + (o.id === "new" ? ' nouveau' : '') + '" role="tab" data-vue="' + o.id + '"'
          + ' aria-selected="' + ((VUE === o.id || (VUE === "fiche" && o.id === (RETOUR || "avenir"))) ? "true" : "false") + '">'
          + esc(o.nom) + (n ? '<span class="c">' + n + '</span>' : '') + '</button>';
     });
@@ -2771,91 +2822,91 @@
     return h + '<div class="actions"><button type="button" class="btn" data-addc="1">+ Ajouter une ligne</button></div></div>';
   }
 
+  /* Choix en pastilles : le <select> reste la source (lu par lireForm), les pastilles le pilotent. */
+  function puces(l, n, opts, v, hint){
+    return '<div class="f puces"><label for="i_' + n + '">' + esc(l) + (hint ? '<span class="hint">' + esc(hint) + '</span>' : '') + '</label>'
+      + '<select id="i_' + n + '" name="' + n + '" tabindex="-1" aria-hidden="true">'
+      + (opts.indexOf(v) < 0 ? '<option value="" selected>— à préciser —</option>' : '')   // valeur absente : on ne l'invente pas
+      + opts.map(function(o){
+          return '<option value="' + esc(o) + '"' + (o === v ? " selected" : "") + '>' + esc(o) + '</option>'; }).join("") + '</select>'
+      + '<div class="pc" role="radiogroup" aria-label="' + esc(l) + '">' + opts.map(function(o){
+          return '<button type="button" role="radio" aria-checked="' + (o === v) + '" data-puce="' + n + '" data-v="' + esc(o) + '">' + esc(o) + '</button>'; }).join("")
+      + '</div></div>';
+  }
+  /* Bloc repliable, qui se souvient d'être ouvert d'un redessin à l'autre. */
+  var PLIES = {};
+  function plie(id, titre, sous, contenu){
+    return '<details class="plie" data-plie="' + id + '"' + (PLIES[id] ? " open" : "") + '><summary><span class="t">' + esc(titre) + '</span>'
+      + (sous ? '<span class="s">' + esc(sous) + '</span>' : '') + '</summary><div class="pin">' + contenu + '</div></details>';
+  }
+  function etape(n, titre, sous){
+    return '<div class="etape"><span class="no">' + n + '</span><div><h3>' + esc(titre) + '</h3>' + (sous ? '<p>' + esc(sous) + '</p>' : '') + '</div></div>';
+  }
+
   function vueForm(){
     var b = BROUILLON || neufProjet();
     var neuf = !ID, mtg = estMontage(b);
-    var h = '<h2 class="sec">' + (neuf ? "Nouveau projet" : "Modifier le projet") + '</h2>'
-      + (neuf ? '<div class="repri"><span>Vous avez reçu une demande depuis le formulaire de préparation ?</span>'
-                + '<button type="button" class="btn" data-go="import">La coller ici</button></div>' : '')
-      + '<form id="form">'
-      + '<div class="blk">'
-      + champ("Client", "client", b.client)
-      + champ("Nom du projet", "projet", b.projet)
-      + choix("Type de prestation", "type", TYPES, b.type)
-      + (mtg ? '' : choix("Photo ou vidéo ?", "media", MEDIAS, mediaDe(b)))
-      + choix("Format", "format", FORMATS, b.format)
-      + (mtg ? '' : choix("Dispositif image", "dispositif", DISPOS, b.dispositif))
-      + '</div>'
-      + (mtg ? '' : blocCaptations(b));
+    var h = '<section class="intro"><div class="kick">' + (neuf ? '+ — Nouveau projet' : 'Modifier') + '</div>'
+      + '<h2 class="big">' + (neuf ? '<span class="dim">Un nouveau</span> projet.' : '<span class="dim">Modifier</span> ' + esc(b.client || "le projet") + '.') + '</h2>'
+      + (neuf ? '<p class="lead">L’essentiel en deux étapes. Le reste peut attendre : tout se complète plus tard depuis la fiche.</p>' : '')
+      + '</section>'
+      + (neuf ? '<button type="button" class="raccourci" data-go="import"><span>Vous avez reçu une demande via le formulaire de préparation ?</span><b>La coller ici →</b></button>' : '')
+      + '<form id="form" class="fnew">';
 
-    h += '<div class="blk"><h3>' + (mtg ? 'Journées de montage' : 'Journées de tournage') + '</h3>'
-      + '<p class="kitmeta">' + (mtg
-          ? 'Une ligne par journée de travail ou par échéance.'
-          : 'Une journée par date. Chacune a son lieu, ses horaires et sa propre checklist matériel.')
-      + '</p>';
-    b.jours.forEach(function(j, i){
-      h += '<div class="jour-f"><div class="jh"><h4>Jour ' + (i+1) + '</h4>'
-         + (b.jours.length > 1 ? '<button type="button" data-delj="' + i + '">Retirer</button>' : '')
-         + '</div>'
-         + champ("Date", "j" + i + "_date", j.date, "date")
-         + '<div class="row3">'
-         + champ("Arrivée équipe", "j" + i + "_heureEquipe", j.heureEquipe, "time")
-         + (mtg ? '<div class="f"></div>' : champ("PAT", "j" + i + "_heurePat", j.heurePat, "time", "Prêt à tourner."))
-         + champ("Fin prévue", "j" + i + "_heureFin", j.heureFin, "time")
-         + '</div>'
-         + champ(mtg ? "Durée" : "Durée sur place", "j" + i + "_duree", j.duree, "text", "Par exemple : 2 h, ou la journée.")
-         + (mtg ? '' :
-             choix("Lieu", "j" + i + "_lieu", LIEUX, j.lieu)
-           + champ("Adresse complète", "j" + i + "_adresse", j.adresse)
-           + champ("Accès", "j" + i + "_acces", j.acces, "text", "Étage, code, interphone, parking.")
-           + '<div class="row2">'
-           + champ("Contact sur place", "j" + i + "_contactNom", j.contactNom)
-           + champ("Son téléphone", "j" + i + "_contactTel", j.contactTel, "tel")
-           + '</div>')
-         + blocEquipe(j, i)
-         + zone("Ce jour-là", "j" + i + "_note", j.note, "Ce qui ne concerne que cette journée : chargement, démontage, horaires particuliers.")
-         + '</div>';
-    });
-    h += '<div class="actions"><button type="button" class="btn" data-addj="1">+ Ajouter une journée</button></div>'
+    /* 01 — l'essentiel */
+    h += '<div class="blk">' + etape("01", "L’essentiel", "Pour qui, et quoi.")
+      + '<div class="row2">' + champ("Client", "client", b.client) + champ("Nom du projet", "projet", b.projet) + '</div>'
+      + puces("Type de prestation", "type", TYPES, b.type)
+      + (mtg ? '' : puces("Photo ou vidéo ?", "media", MEDIAS, mediaDe(b)))
+      + puces("Format", "format", FORMATS, b.format)
+      + (mtg ? '' : puces("Dispositif image", "dispositif", DISPOS, b.dispositif))
       + '</div>';
 
-    /* Le matériel au moment de la création : facultatif, parce que
-       celui qui ouvre la fiche n'est pas toujours celui qui prépare
-       la camionnette. */
-    if(!mtg){
-      h += '<div class="blk"><h3>Le matériel</h3>'
-        + '<p class="kitmeta">Qui s\'en occupe ? Le kit « ' + esc(b.type || "") + ' » s\'applique '
-        + 'de toute façon par défaut ; il reste modifiable plus tard depuis la fiche du projet.</p>'
-        + '<div class="bascules">'
-        + '<button type="button" class="btn' + (MAT_FORM ? '' : ' lime') + '" data-matform="0">'
-        + 'La prod s\'en charge</button>'
-        + '<button type="button" class="btn' + (MAT_FORM ? ' lime' : '') + '" data-matform="1">'
-        + 'Je mets le matériel maintenant</button>'
-        + '</div></div>'
-        + (MAT_FORM ? blocMateriel(b) : '');
-    }
+    /* 02 — quand et où */
+    h += '<div class="blk">' + etape("02", mtg ? "Quand" : "Quand et où", mtg ? "Une ligne par journée de travail ou par échéance." : "Une journée par date.");
+    b.jours.forEach(function(j, i){
+      var plus = (mtg ? '' : champ("PAT — prêt à tourner", "j" + i + "_heurePat", j.heurePat, "time"))
+        + champ(mtg ? "Durée" : "Durée sur place", "j" + i + "_duree", j.duree, "text", "Par exemple : 2 h, ou la journée.")
+        + (mtg ? '' :
+            champ("Adresse complète", "j" + i + "_adresse", j.adresse)
+          + champ("Accès", "j" + i + "_acces", j.acces, "text", "Étage, code, interphone, parking.")
+          + '<div class="row2">' + champ("Contact sur place", "j" + i + "_contactNom", j.contactNom)
+          + champ("Son téléphone", "j" + i + "_contactTel", j.contactTel, "tel") + '</div>')
+        + blocEquipe(j, i)
+        + zone("Ce jour-là", "j" + i + "_note", j.note, "Chargement, démontage, horaires particuliers.");
+      h += '<div class="jour-f"><div class="jh"><h4>' + (b.jours.length > 1 ? 'Jour ' + (i + 1) : 'La journée') + '</h4>'
+         + (b.jours.length > 1 ? '<button type="button" data-delj="' + i + '">Retirer</button>' : '') + '</div>'
+         + '<div class="row3">' + champ("Date", "j" + i + "_date", j.date, "date")
+         + champ("Arrivée équipe", "j" + i + "_heureEquipe", j.heureEquipe, "time")
+         + champ("Fin prévue", "j" + i + "_heureFin", j.heureFin, "time") + '</div>'
+         + (mtg ? '' : puces("Lieu", "j" + i + "_lieu", LIEUX, j.lieu))
+         + plie("j" + i, mtg ? "Durée, équipe, note" : "Adresse, contact, équipe, note", "facultatif", plus)
+         + '</div>';
+    });
+    h += '<button type="button" class="ajout" data-addj="1">+ Ajouter une journée</button></div>';
 
-    h += '<div class="blk"><h3>Le projet</h3>'
-      + (mtg || !aInterview(b) ? '' :
+    /* 03 — le reste, replié */
+    var mat = '<p class="kitmeta">Le kit « ' + esc(b.type || "") + ' » s’applique par défaut ; il reste modifiable depuis la fiche.</p>'
+      + '<div class="bascules"><button type="button" class="btn' + (MAT_FORM ? '' : ' lime') + '" data-matform="0">La prod s’en charge</button>'
+      + '<button type="button" class="btn' + (MAT_FORM ? ' lime' : '') + '" data-matform="1">Je le règle maintenant</button></div>'
+      + (MAT_FORM ? blocMateriel(b) : '');
+    var proj = (mtg || !aInterview(b) ? '' :
           zone("Intervenants", "intervenants", b.intervenants, "Un par ligne : prénom, nom, fonction à afficher.")
         + champ("Qui pose les questions", "questions", b.questions))
-      + zone("À savoir", "notes", b.notes, mtg
-          ? "Le brief de montage : durée visée, rythme, ce qu'il faut garder ou couper."
-          : "Ce qui vaut pour toutes les journées.")
-      + '</div>'
-      + blocLivraisonForm(b)
-      + '<div class="blk"><h3>Suivi</h3>'
-      + choix("Statut", "statut", statutsDe(b), b.statut, function(s){ return libStatut(b, s); })
-      + champ(photoSeule(b) ? "Fichiers photo" : "Rushes", "ssd", b.ssd, "text",
-              photoSeule(b) ? "Sur quel SSD ou disque, et où il se trouve."
-                            : "Sur quel SSD ou disque, et où il se trouve.")
-      + champ(photoSeule(b) ? "Valide la sélection" : "Valide le montage", "validant", b.validant,
-              "text", "Nom et e-mail de l'interlocuteur.")
-      + '</div>'
-      + '<div class="actions"><button type="submit" class="btn lime">'
-      + (neuf ? "Créer le projet" : "Enregistrer") + '</button>'
-      + '<button type="button" class="btn ghost" data-go="' + (neuf ? "avenir" : "fiche") + '">Annuler</button>'
-      + '</div></form>';
+      + zone("À savoir", "notes", b.notes, mtg ? "Le brief de montage : durée visée, rythme, ce qu'il faut garder ou couper." : "Ce qui vaut pour toutes les journées.");
+    var suivi = choix("Statut", "statut", statutsDe(b), b.statut, function(s){ return libStatut(b, s); })
+      + champ(photoSeule(b) ? "Fichiers photo" : "Rushes", "ssd", b.ssd, "text", "Sur quel SSD ou disque, et où il se trouve.")
+      + champ(photoSeule(b) ? "Valide la sélection" : "Valide le montage", "validant", b.validant, "text", "Nom et e-mail de l'interlocuteur.");
+    h += '<div class="blk">' + etape("03", "Les détails", "Facultatif — à remplir maintenant ou plus tard.")
+      + (mtg ? '' : plie("caps", "À réaliser", "les prises à produire", blocCaptations(b)))
+      + (mtg ? '' : plie("mat", "Matériel", MAT_FORM ? "réglé maintenant" : "kit par défaut", mat))
+      + plie("proj", mtg ? "Brief de montage" : "Intervenants et notes", "", proj)
+      + plie("liv", "Montage et livraison", "", blocLivraisonForm(b))
+      + plie("suivi", "Suivi", libStatut(b, b.statut), suivi)
+      + '</div>';
+
+    h += '<div class="envoi"><button type="submit" class="btn lime">' + (neuf ? "Créer le projet →" : "Enregistrer") + '</button>'
+      + '<button type="button" class="btn ghost" data-go="' + (neuf ? "avenir" : "fiche") + '">Annuler</button></div></form>';
     return h;
   }
 
@@ -3038,6 +3089,8 @@
     else if(VUE === "tous"){ h = vueTous(); }
     else { h = vueAvenir(); }
     if(PRET && ["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
+    if(PRET && ["avenir","cal","suivi","tous","contacts","fiche","contact"].indexOf(VUE) >= 0)
+      h += '<button type="button" class="fab" data-go="new" aria-label="Nouveau projet">+ Nouveau projet</button>';
 
     if(PRET && !EN_LIGNE){
       h += '<div class="bandeau"><b>Mode démonstration.</b> Les projets saisis ici restent '
@@ -3310,6 +3363,18 @@
     });
     app.querySelectorAll("[data-mode]").forEach(function(bt){
       bt.addEventListener("click", function(){ CAL.mode = bt.dataset.mode; rendre(); });
+    });
+
+    app.querySelectorAll("[data-puce]").forEach(function(bt){
+      bt.addEventListener("click", function(){
+        var sel = app.querySelector("#i_" + bt.dataset.puce); if(!sel || sel.value === bt.dataset.v) return;
+        sel.value = bt.dataset.v;
+        bt.parentNode.querySelectorAll("[data-puce]").forEach(function(x){ x.setAttribute("aria-checked", x === bt ? "true" : "false"); });
+        sel.dispatchEvent(new Event("change"));
+      });
+    });
+    app.querySelectorAll("details[data-plie]").forEach(function(d){
+      d.addEventListener("toggle", function(){ PLIES[d.dataset.plie] = d.open; });
     });
 
     var selMedia = app.querySelector("#i_media");
