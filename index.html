@@ -299,6 +299,10 @@
   .ev.montage { border-left-color:var(--cyan); }
   .ev.valid   { border-left-color:var(--warn); }
   .ev.publie  { border-left-color:var(--ok); }
+  .ev.outlook{ border-left-color:#9B7BFF; background:color-mix(in srgb, #9B7BFF 13%, var(--surface)); cursor:default; }
+  .ev.outlook .q{ font-weight:500; }
+  .ev.outlook.libre{ opacity:.6; border-left-style:dashed; }
+  .leg-ol{ color:#9B7BFF; }
 
   .sem{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface); }
   .sem .ligne{ display:flex; gap:12px; padding:9px 13px; border-bottom:1px solid var(--line); }
@@ -1738,13 +1742,54 @@
         (m[j.date] = m[j.date] || []).push({ p:p, j:j });
       });
     });
+    OL.evs.forEach(function(o){
+      var d = o.du, garde = 0;
+      while(d && d <= o.au && garde++ < 62){
+        (m[d] = m[d] || []).push({ o:o });
+        d = iso(plusJours(new Date(d + "T12:00:00"), 1));
+      }
+    });
+    function cle(x){ return x.o ? (x.o.journee ? "00" : x.o.h) : String(x.j.heureEquipe || "99"); }
     Object.keys(m).forEach(function(k){
-      m[k].sort(function(a, b){ return String(a.j.heureEquipe || "99").localeCompare(String(b.j.heureEquipe || "99")); });
+      m[k].sort(function(a, b){ return cle(a).localeCompare(cle(b)); });
     });
     return m;
   }
 
+  /* ---------- agenda Outlook ----------
+     Une fonction Supabase (outlook-agenda) lit l'agenda publié par Outlook et
+     ne le renvoie qu'avec le code d'équipe. */
+  var OL = { evs:[], at:0, err:"", enCours:false };
+  var OL_CLE = "sbtd-outlook";
+  (function(){ try{ var v = JSON.parse(sessionStorage.getItem(OL_CLE) || "null"); if(v && v.evs){ OL.evs = v.evs; OL.at = v.at || 0; } }catch(e){} })();
+  function olCharger(force){
+    if(!EN_LIGNE || OL.enCours) return;
+    if(!force && Date.now() - OL.at < 5 * 60e3) return;
+    var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
+    OL.enCours = true;
+    fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/outlook-agenda" + (force ? "?force=1" : ""),
+          { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(x){
+        OL.enCours = false;
+        if(!x.ok || !x.j || !x.j.evs){ OL.err = (x.j && x.j.error) || "outlook"; return; }
+        OL.evs = x.j.evs; OL.at = Date.now(); OL.err = "";
+        try{ sessionStorage.setItem(OL_CLE, JSON.stringify({ at:OL.at, evs:OL.evs })); }catch(e){}
+        if(VUE === "cal") rendre();
+      }, function(){ OL.enCours = false; OL.err = "reseau"; });
+  }
+  function evOutlook(o, avecLieu){
+    var heure = o.journee ? "Journée" : o.h + (o.hFin && o.au === o.du ? "–" + o.hFin : "");
+    return '<div class="ev outlook' + (o.occupe === "FREE" ? " libre" : "") + '" title="'
+      + esc("Outlook · " + o.titre + (o.lieu ? " — " + o.lieu : "") + (o.journee ? "" : " · " + o.h + "–" + o.hFin)) + '">'
+      + '<span class="h">' + esc(heure) + '</span> '
+      + '<span class="q">' + esc(o.titre) + '</span>'
+      + (avecLieu ? '<span class="l">Outlook' + (o.lieu ? " · " + esc(o.lieu) : "") + '</span>' : '')
+      + '</div>';
+  }
+
   function evenement(x, avecLieu){
+    if(x.o) return evOutlook(x.o, avecLieu);
     var p = x.p, j = x.j;
     var tot = (p.jours || []).length, rang = (p.jours || []).indexOf(j) + 1;
     var lieu = j.lieu === "Notre studio" ? "Studio" : (j.adresse || "");
@@ -1795,7 +1840,7 @@
     }
     h += '</div>';
     h += '<p class="legende">Cliquez sur une journée pour ouvrir sa fiche. '
-       + 'La couleur suit le statut du projet.</p>';
+       + 'La couleur suit le statut du projet. <span class="leg-ol">En violet : votre agenda Outlook.</span></p>';
     return h;
   }
 
@@ -1820,7 +1865,7 @@
   }
 
   function vueCalendrier(){
-    if(!P.length) return '<h2 class="sec">Calendrier</h2>' + vide("Aucun projet enregistré.");
+    if(!P.length && !OL.evs.length) return '<h2 class="sec">Calendrier</h2>' + vide("Aucun projet enregistré.");
     return CAL.mode === "semaine" ? vueSemaine() : vueMois();
   }
 
@@ -4856,6 +4901,8 @@
     top.hidden = false;
     rendre();
     charger();
+    olCharger(false);
+    setInterval(function(){ if(!document.hidden) olCharger(false); }, 5 * 60e3);
     setInterval(function(){ if(!document.hidden && VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); }, 30000);
     window.addEventListener("focus", function(){ if(VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); });
   }
@@ -4876,7 +4923,7 @@
       var v = document.getElementById("code").value.trim();
       empreinte(v).then(function(h){
         if(h === CFG.CODE){
-          try{ sessionStorage.setItem("sbtd-regie-ok", "1"); }catch(err){}
+          try{ sessionStorage.setItem("sbtd-regie-ok", "1"); sessionStorage.setItem("sbtd-regie-code", v); }catch(err){}
           demarrer();
         } else { toast("Code incorrect."); }
       });
@@ -4885,7 +4932,8 @@
   }
 
   var deja = false;
-  try{ deja = sessionStorage.getItem("sbtd-regie-ok") === "1"; }catch(e){}
+  // Le code est gardé pour la session : il ouvre aussi l'agenda Outlook.
+  try{ deja = sessionStorage.getItem("sbtd-regie-ok") === "1" && !!sessionStorage.getItem("sbtd-regie-code"); }catch(e){}
   if(CFG.CODE && !deja) porte(); else demarrer();
 })();
 </script>
