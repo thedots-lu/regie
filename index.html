@@ -21,7 +21,6 @@
   window.CONFIG = {
     SUPABASE_URL: "https://zqpogpipqozyzrxodszp.supabase.co",
     SUPABASE_KEY: "sb_publishable_5Cdxz7bSJD-nTjvOcoGflw_qXALBHFb",
-    PLANNING_JORDAN: "https://claude.ai/artifact/7WvvY6DYx7AAgJrV4Z56wM",
 
     // Code demandé à l'ouverture. Vide = pas de code.
     // On n'écrit pas le code lui-même mais son empreinte SHA-256
@@ -302,7 +301,50 @@
   .ev.publie  { border-left-color:var(--ok); }
   .ev.outlook{ --olc:#9B7BFF; border-left-color:var(--olc); background:color-mix(in srgb, var(--olc) 13%, var(--surface)); cursor:default; }
   .ev.outlook .q{ font-weight:500; }
-  a.bascule.planning{ text-decoration:none; display:inline-flex; align-items:center; border-color:var(--lime); color:var(--lime); }
+  /* Mon planning */
+  .mp{ display:flex; flex-direction:column; gap:16px; margin-bottom:40px; }
+  .mp-meta{ margin:0; font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); }
+  .mp-h{ margin:14px 0 0; font-family:"Unbounded","Poppins",sans-serif; font-size:17px; font-weight:600; display:flex; align-items:baseline; gap:10px; }
+  .mp-h span{ font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); font-weight:400; }
+  .mp-tasks{ list-style:none; margin:0; padding:0; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface); }
+  .mp-tasks > li{ display:grid; grid-template-columns:auto 1fr; gap:14px; padding:13px 16px; border-top:1px solid var(--line); }
+  .mp-tasks > li:first-child{ border-top:0; }
+  .mp-tasks .rk{ font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); padding-top:2px; }
+  .mp-tasks .t{ font-weight:600; display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; }
+  .mp-tasks .d{ color:var(--muted); font-size:14px; margin-top:3px; }
+  .mp-tasks ul{ margin:6px 0 0; padding-left:18px; color:var(--muted); font-size:14px; }
+  .mp-chip{ font-family:"Space Mono",monospace; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; padding:2px 8px; border-radius:999px; border:1px solid currentColor; font-weight:400; white-space:nowrap; }
+  .mp-chip.late{ color:#FF8A5B; } .mp-chip.todo{ color:var(--lime); } .mp-chip.done{ color:var(--ok); } .mp-chip.info{ color:var(--muted); }
+  .mp-leg{ display:flex; flex-wrap:wrap; gap:6px 16px; font-size:12.5px; color:var(--muted); }
+  .mp-leg span{ display:inline-flex; align-items:center; gap:6px; }
+  .mp-leg i{ width:10px; height:10px; border-radius:3px; display:inline-block; }
+  .mp-days{ display:flex; flex-direction:column; gap:8px; }
+  .mp-day{ display:grid; grid-template-columns:84px 1fr; gap:14px; padding:11px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--line); }
+  .mp-day.auj{ border-color:var(--lime); }
+  .mp-day.passe{ opacity:.55; }
+  .mp-day .dt{ font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); text-transform:capitalize; line-height:1.3; }
+  .mp-day .dt b{ display:block; font-family:"Unbounded","Poppins",sans-serif; font-size:20px; color:var(--ink); font-weight:500; }
+  .mp-day.auj .dt b{ color:var(--lime); }
+  .mp-day .evs{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .mp-ev{ --c:#9B7BFF; display:grid; grid-template-columns:86px 1fr; gap:10px; align-items:baseline; padding:6px 10px; border-left:3px solid var(--c); background:var(--surface-2); border-radius:0 8px 8px 0; min-width:0; }
+  .mp-ev .h{ font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); }
+  .mp-ev .w{ min-width:0; overflow-wrap:anywhere; }
+  .mp-ev .w small{ display:block; color:var(--muted); font-size:13px; }
+  .mp-ev.tournage, .mp-leg i.tournage{ --c:var(--lime); background-color:var(--c); }
+  .mp-ev.tournage{ background:var(--surface-2); } .mp-ev.tournage .w{ font-weight:600; }
+  .mp-ev.montage, .mp-leg i.montage{ --c:#FF7EB6; }
+  .mp-ev.ksf, .mp-leg i.ksf{ --c:#A8FF1F; }
+  .mp-ev.alerte, .mp-leg i.alerte{ --c:#FF8A5B; }
+  .mp-leg i{ background:var(--c, #9B7BFF); }
+  .mp-ev.libre{ opacity:.7; }
+  .mp-cols{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin-top:8px; }
+  .mp-box{ border:1px solid var(--line); border-radius:14px; padding:14px 16px; min-width:0; }
+  .mp-box h4{ margin:0 0 8px; font-size:14px; }
+  .mp-box ul{ margin:0; padding-left:18px; color:var(--muted); font-size:14px; display:flex; flex-direction:column; gap:5px; }
+  .mp-box ul b{ color:var(--ink); }
+  .mp-vide{ margin:0; color:var(--muted); font-size:14px; }
+  .mp-src{ margin:0; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
+  @media (max-width:560px){ .mp-day{ grid-template-columns:1fr; gap:6px; } .mp-day .dt b{ display:inline; margin-right:6px; font-size:17px; } .mp-ev{ grid-template-columns:1fr; gap:2px; } }
   .case .ev.outlook .q{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; overflow-wrap:anywhere; }
   .ev.outlook.libre{ opacity:.6; border-left-style:dashed; }
   .leg-ol{ display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin-left:6px; }
@@ -1791,6 +1833,80 @@
         if(VUE === "cal") rendre();
       }, function(){ OL.enCours = false; OL.err = "reseau"; });
   }
+  /* ---------- planning personnel ----------
+     Refait chaque lundi par une tâche de Claude (agenda Outlook, mails, DotsFlow, Régie)
+     et rangé dans la table « plannings », lisible seulement via la fonction « planning »
+     avec le code d'équipe. L'onglet n'apparaît que pour la personne choisie dans « Vous êtes ». */
+  var PL = { pour:"", data:null, maj:"", at:0, enCours:false };
+  function plCharger(force){
+    var qui = String(MOI || "").trim().split(/\s+/)[0].toLowerCase();
+    if(!qui){ if(PL.data){ PL.data = null; PL.pour = ""; if(VUE === "planning") VUE = "avenir"; rendreTabs(); } return; }
+    if(!EN_LIGNE || PL.enCours) return;
+    if(!force && PL.pour === qui && Date.now() - PL.at < 5 * 60e3) return;
+    var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
+    PL.enCours = true;
+    fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=" + encodeURIComponent(qui),
+          { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(x){
+        PL.enCours = false; PL.pour = qui; PL.at = Date.now();
+        var avant = !!PL.data;
+        PL.data = x.ok && x.j && x.j.planning ? x.j.planning : null;
+        PL.maj = x.ok && x.j ? x.j.maj : "";
+        if(!PL.data && VUE === "planning") VUE = "avenir";
+        if(VUE === "planning" || avant !== !!PL.data) rendre(); else rendreTabs();
+      }, function(){ PL.enCours = false; });
+  }
+  function vuePlanning(){
+    var D = PL.data;
+    if(!D) return vide("Pas de planning personnel pour " + (MOI || "cette personne") + ".");
+    var fmtJ = new Intl.DateTimeFormat("fr-FR", { weekday:"short" });
+    var fmtM = new Intl.DateTimeFormat("fr-FR", { day:"numeric", month:"long" });
+    var fmtMaj = new Intl.DateTimeFormat("fr-FR", { weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit" });
+    function jr(x){ return new Date(x + "T12:00:00"); }
+    var auj = iso(new Date());
+    var CH = { late:["late","En retard"], todo:["todo","À faire"], done:["done","Rendu"] };
+    var h = '<div class="mp">';
+    h += '<p class="mp-meta">' + (D.du && D.au ? 'Du ' + esc(fmtM.format(jr(D.du))) + ' au ' + esc(fmtM.format(jr(D.au))) + ' · ' : '')
+       + (D.majLe ? 'mis à jour ' + esc(fmtMaj.format(new Date(D.majLe))) : '') + '</p>';
+
+    h += '<h3 class="mp-h">Ce que vous devez faire <span>' + (D.priorites || []).length + '</span></h3>';
+    if((D.priorites || []).length){
+      h += '<ol class="mp-tasks">';
+      D.priorites.forEach(function(p, i){
+        var c = CH[p.etat] || ["info", "Info"];
+        h += '<li><span class="rk">' + pad2(i + 1) + '</span><div><div class="t">' + esc(p.titre)
+          + ' <span class="mp-chip ' + c[0] + '">' + c[1] + '</span></div>'
+          + (p.detail ? '<div class="d">' + esc(p.detail) + '</div>' : '')
+          + (p.points && p.points.length ? '<ul>' + p.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : '')
+          + '</div></li>';
+      });
+      h += '</ol>';
+    } else h += '<p class="mp-vide">Rien en attente.</p>';
+
+    h += '<h3 class="mp-h">Agenda</h3><div class="mp-leg">'
+       + '<span><i class="tournage"></i>Tournage</span><span><i class="montage"></i>Montage</span>'
+       + '<span><i class="rdv"></i>Rendez-vous</span><span><i class="ksf"></i>KSF</span><span><i class="alerte"></i>À arbitrer</span></div>'
+       + '<div class="mp-days">';
+    (D.jours || []).forEach(function(j){
+      var d = jr(j.date), passe = j.date < auj;
+      h += '<div class="mp-day' + (j.date === auj ? ' auj' : '') + (passe ? ' passe' : '') + '"><div class="dt"><b>' + d.getDate() + '</b>'
+         + esc(fmtJ.format(d)) + (j.date === auj ? ' · aujourd\'hui' : '') + '</div><div class="evs">';
+      (j.evs || []).forEach(function(e){
+        h += '<div class="mp-ev ' + esc(e.type || "rdv") + (e.libre ? ' libre' : '') + '"><span class="h">' + esc(e.h || "—") + '</span>'
+           + '<span class="w">' + esc(e.titre) + (e.lieu ? '<small>' + esc(e.lieu) + '</small>' : '') + '</span></div>';
+      });
+      h += '</div></div>';
+    });
+    h += '</div>';
+
+    function liste(a, v){ return a && a.length ? '<ul>' + a.map(function(x){ return '<li>' + (typeof x === "string" ? esc(x) : '<b>' + esc(x.titre) + '</b>' + (x.detail ? ' — ' + esc(x.detail) : '')) + '</li>'; }).join("") + '</ul>' : '<p class="mp-vide">' + v + '</p>'; }
+    h += '<div class="mp-cols"><div class="mp-box"><h4>Rendu ou validé depuis lundi dernier</h4>'
+       + liste(D.rendu, "Rien encore. Les projets passés en « Publié » et les livraisons envoyées par mail apparaîtront ici.") + '</div>'
+       + '<div class="mp-box"><h4>À vérifier dans la Régie</h4>' + liste(D.aVerifier, "Tout est à jour.") + '</div></div>';
+    h += '<p class="mp-src">Sources : ' + esc(D.sources || "") + '. Mis à jour chaque lundi matin.</p></div>';
+    return h;
+  }
   function legendeOutlook(){
     if(!OL.evs.length && !OL.agendas.length) return "";
     var l = OL.agendas.length ? OL.agendas : [{ nom:"Outlook", ok:true }];
@@ -1900,6 +2016,7 @@
   var ONGLETS = [
     { id:"avenir", nom:"À venir" },
     { id:"cal",    nom:"Calendrier" },
+    { id:"planning", nom:"Mon planning" },
     { id:"suivi",  nom:"Après tournage" },
     { id:"tous",   nom:"Projets" },
     { id:"contacts", nom:"Contacts" },
@@ -1948,9 +2065,11 @@
       });
       return;
     }
-    if(["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) DERNIERE_REGIE = VUE;
+    if(["avenir","cal","planning","suivi","tous","contacts"].indexOf(VUE) >= 0) DERNIERE_REGIE = VUE;
     ONGLETS.forEach(function(o){
-      var n = o.id === "avenir" ? P.filter(function(p){ return !!prochaine(p); }).length
+      if(o.id === "planning" && !PL.data) return;   // seulement pour qui a un planning personnel
+      var n = o.id === "planning" ? (PL.data.priorites || []).filter(function(x){ return x.etat === "late"; }).length
+            : o.id === "avenir" ? P.filter(function(p){ return !!prochaine(p); }).length
             : o.id === "suivi"  ? P.filter(enCours).length
             : o.id === "tous"   ? P.length
             : o.id === "contacts" ? carnet().length : null;
@@ -1985,16 +2104,12 @@
          + (MIENS ? "Mes tournages" : "Voir mes tournages")
          + (n ? ' · ' + n : '') + '</button>';
     }
-    // Le planning personnel de Jordan (page privée sur claude.ai, mise à jour chaque lundi).
-    if(/^jordan\b/i.test(MOI)){
-      h += '<a class="bascule planning" href="' + CFG.PLANNING_JORDAN + '" target="_blank" rel="noopener">Mon planning ↗</a>';
-    }
     moiEl.innerHTML = h;
     var sel = moiEl.querySelector("#i_moi");
     if(sel) sel.addEventListener("change", function(){
       MOI = sel.value;
       if(!MOI) MIENS = false;
-      retenirMoi(); rendre();
+      retenirMoi(); plCharger(true); rendre();
     });
     var bas = moiEl.querySelector("[data-miens]");
     if(bas) bas.addEventListener("click", function(){
@@ -3077,6 +3192,7 @@
   var S_INTRO = {
     avenir:   ["01", "À venir",        "Les prochains",  "tournages.", "Tout ce qui passe devant les caméras du studio, jour par jour."],
     cal:      ["02", "Calendrier",     "Le mois",        "d'un coup d'œil.", ""],
+    planning: ["", "Mon planning",     "Mes deux",       "semaines.", "Tâches, tournages, montages et rendez-vous, refaits chaque lundi à partir d'Outlook, de vos mails, de DotsFlow et de la Régie."],
     suivi:    ["03", "Après tournage", "Du rush",        "à la livraison.", "Montage, validation, publication : ce qui reste à livrer."],
     tous:     ["04", "Projets",        "Tous les",       "projets.", ""],
     contacts: ["05", "Contacts",       "Le carnet",      "de l'équipe.", ""]
@@ -3084,7 +3200,7 @@
   function sIntro(){
     var t = S_INTRO[VUE]; if(!t) return "";
     var anim = S_INTRO_VU !== VUE; S_INTRO_VU = VUE;
-    var h = '<section class="intro' + (anim ? ' anim' : '') + '"><div class="kick">' + t[0] + ' — ' + esc(t[1]) + '</div>'
+    var h = '<section class="intro' + (anim ? ' anim' : '') + '"><div class="kick">' + (t[0] ? t[0] + ' — ' : '') + esc(t[1]) + '</div>'
       + '<h2 class="big"><span class="dim">' + esc(t[2]) + '</span> ' + esc(t[3]) + '</h2>'
       + (t[4] ? '<p class="lead">' + esc(t[4]) + '</p>' : '') + '</section>';
     if(VUE !== "avenir") return h;
@@ -3154,11 +3270,12 @@
     else if(VUE === "new" || VUE === "edit"){ h = vueForm(); }
     else if(VUE === "mat"){ h = vueMat(); }
     else if(VUE === "cal"){ h = vueCalendrier(); }
+    else if(VUE === "planning"){ h = vuePlanning(); }
     else if(VUE === "suivi"){ h = vueSuivi(); }
     else if(/^ksf/.test(VUE)){ h = vueKsf(); }
     else if(VUE === "tous"){ h = vueTous(); }
     else { h = vueAvenir(); }
-    if(PRET && ["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
+    if(PRET && ["avenir","cal","planning","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
     if(PRET && ["avenir","cal","suivi","tous","contacts","fiche","contact"].indexOf(VUE) >= 0)
       h += '<button type="button" class="fab" data-go="new" aria-label="Nouveau projet">+ Nouveau projet</button>';
 
@@ -4927,7 +5044,8 @@
     rendre();
     charger();
     olCharger(false);
-    setInterval(function(){ if(!document.hidden) olCharger(false); }, 5 * 60e3);
+    plCharger(false);
+    setInterval(function(){ if(!document.hidden){ olCharger(false); plCharger(false); } }, 5 * 60e3);
     setInterval(function(){ if(!document.hidden && VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); }, 30000);
     window.addEventListener("focus", function(){ if(VUE !== "new" && VUE !== "edit" && VUE !== "mat" && !kSaisie()) charger(true); });
   }
