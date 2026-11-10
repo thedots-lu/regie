@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Inter+Tight:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&family=Inter+Tight:wght@500;600;700&family=Unbounded:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 
 <!-- ===================================================================== -->
 <!--  CONFIGURATION — la seule partie à modifier                            -->
@@ -595,10 +595,88 @@
     .khero .lb.a, .khero .lb.b{ top:12px; } .khero .lb.c, .khero .lb.d{ bottom:12px; }
     .brand .k{ display:none; }
   }
+
+  /* La direction artistique Studio by The Dots : noir profond, lueurs spectrales, jaune signal, mires fines. */
+  body.studio{
+    --ground:#09090E; --surface:#111118; --surface-2:#16161F; --surface-3:#1E1E29;
+    --ink:#EEF1F8; --ink-2:#BBC0CE; --muted:#7F8597; --line:rgba(255,255,255,.08);
+    --navy:#121219; --lime:#E4E63B; --lime-ink:#17170A; --cyan:#A9B8FF; --g2:#FF9A5A;
+    --ok:#7BDDA2; --warn:#FFB45C; --err:#FF6B6B;
+    --shadow:none;
+    color-scheme:dark;
+    background-color:#09090E;
+    background-image:
+      radial-gradient(60% 38% at 0% 0%, rgba(255,140,40,.13), rgba(0,0,0,0) 70%),
+      radial-gradient(55% 40% at 100% 0%, rgba(120,70,255,.16), rgba(0,0,0,0) 70%),
+      radial-gradient(50% 30% at 50% 0%, rgba(230,40,110,.08), rgba(0,0,0,0) 70%);
+    background-attachment:fixed;
+  }
+  body.studio header.top{ background:rgba(9,9,14,.82); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+    border-bottom:0; box-shadow:0 1px 0 rgba(255,255,255,.06); }
+  body.studio header.top::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px; opacity:.55;
+    background:linear-gradient(90deg,#F4C21B,#F06A1F 18%,#D9284F 36%,#B0308F 54%,#6B3BD8 72%,#2F6BE0 88%,#1FB5C9); }
+  body.studio .brand .espace[data-espace="regie"] h1{ font-family:"Unbounded",sans-serif; font-weight:700; font-size:16px; letter-spacing:0; }
+  body.studio .tab{ font-size:13.5px; }
+  body.studio .tab[aria-selected="true"]{ color:var(--ink); border-bottom-color:var(--lime); }
+  body.studio :is(h3,h4){ font-family:"Inter Tight","IBM Plex Sans",sans-serif; }
+  body.studio h2.sec{ font-family:"Space Mono",monospace; font-weight:400; font-size:11px; letter-spacing:.2em;
+    color:var(--lime); display:flex; align-items:center; gap:8px; margin-top:30px; }
+  body.studio h2.sec::before{ content:""; width:5px; height:5px; background:var(--lime); flex:none; }
+  body.studio .card{ border:1px solid var(--line); border-left:2px solid var(--line); border-radius:12px;
+    background:var(--surface); padding:15px 17px; transition:border-color .15s, background .15s; }
+  body.studio .card:hover{ background:var(--surface-2); border-color:rgba(255,255,255,.16); border-left-color:var(--lime); }
+  body.studio .card.urgent{ border-left-color:var(--lime); }
+  body.studio .card h3{ font-size:16px; font-weight:600; letter-spacing:-.005em; }
+  body.studio .card .when{ color:var(--lime); }
+  body.studio .card .next{ background:transparent; border:0; border-top:1px solid var(--line); border-radius:0; padding:9px 0 0; }
+  body.studio .blk, body.studio .avant{ border-radius:12px; }
+  body.studio .avant{ border-left-width:2px; }
+  body.studio .pill{ background:transparent; letter-spacing:.12em; }
+  body.studio .pill.confirme{ background:var(--lime); color:var(--lime-ink); }
+  body.studio .btn{ border-radius:999px; font-size:14px; padding:9px 18px; background:transparent; }
+  body.studio .btn:hover{ background:var(--surface-2); }
+  body.studio .btn.lime{ background:var(--lime); color:var(--lime-ink); }
+  body.studio .btn.lime:hover{ filter:brightness(1.06); }
+  body.studio .step{ background:transparent; }
+  body.studio .fiche-head{ border:1px solid var(--line); border-radius:14px;
+    background:linear-gradient(180deg, rgba(9,9,14,.72), rgba(9,9,14,.92)), #111118 url("studio-banniere.jpg") 0% 50%/320% auto no-repeat; }
+  body.studio .fiche-head h2, body.studio .calbar .tt{ font-family:"Unbounded",sans-serif; font-weight:500; letter-spacing:-.01em; }
+  body.studio .fiche-head h2{ font-size:22px; }
+  body.studio .calbar .tt{ font-size:17px; }
+  body.studio .slot{ background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.06); }
+  body.studio .grille{ border-radius:12px; }
+  body.studio .case.auj{ box-shadow:inset 0 0 0 1px var(--lime); }
+  body.studio .case.auj .num{ color:var(--lime); }
+  body.studio .ev{ border-left-width:2px; }
+  body.studio input[type=text], body.studio input[type=date], body.studio input[type=time], body.studio input[type=tel],
+  body.studio input[type=password], body.studio select, body.studio textarea{ background:var(--surface); border-radius:10px; }
+  body.studio input:focus, body.studio select:focus, body.studio textarea:focus{ border-color:var(--lime); }
+
+  body.studio .porte h2{ font-family:"Unbounded",sans-serif; font-weight:700; font-size:24px; }
+  .pill:empty{ display:none; }
+  .shero{ position:relative; margin-top:16px; border-radius:14px; overflow:hidden; height:clamp(118px, 25vw, 200px);
+          background:#111118 url("studio-banniere.jpg") center/cover no-repeat; border:1px solid var(--line); }
+  .shero::after{ content:""; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(180deg, rgba(9,9,14,.25), rgba(9,9,14,0) 40%, rgba(9,9,14,.35)); }
+  .shero .x{ position:absolute; width:26px; height:26px; z-index:1; }
+  .shero .x::before, .shero .x::after{ content:""; position:absolute; background:var(--lime); opacity:.9; }
+  .shero .x::before{ left:0; right:0; top:50%; height:1px; }
+  .shero .x::after{ top:0; bottom:0; left:50%; width:1px; }
+  .shero .x.a{ top:14px; left:14px; } .shero .x.b{ top:14px; right:14px; }
+  .shero .x.c{ bottom:14px; left:14px; } .shero .x.d{ bottom:14px; right:14px; }
+  .shero .lb{ position:absolute; z-index:1; font-family:"Space Mono",monospace; font-size:10px; letter-spacing:.14em;
+              text-transform:uppercase; color:var(--lime); line-height:1.35; }
+  .shero .lb small{ display:block; color:rgba(238,241,248,.7); font-size:9.5px; }
+  .shero .lb.a{ top:20px; left:52px; } .shero .lb.b{ top:20px; right:52px; text-align:right; }
+  .shero .lb.c{ bottom:20px; left:52px; } .shero .lb.d{ bottom:20px; right:52px; text-align:right; }
+  @media (max-width:560px){
+    .shero .lb{ font-size:8.5px; letter-spacing:.08em; } .shero .lb small{ display:none; }
+    .shero .lb.a, .shero .lb.c{ left:44px; } .shero .lb.b, .shero .lb.d{ right:44px; }
+  }
   @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } .khero .lb.a i{ animation:none; } }
 </style>
 </head>
-<body>
+<body class="studio">
 
 <header class="top" id="top" hidden>
   <div class="top-in">
@@ -1605,6 +1683,7 @@
       + (late ? '<span class="c" title="Publications en retard">' + late + '</span>' : '') + '</button>';
     document.getElementById("sousTitre").textContent = ksf ? "Kamel Sans Filtre" : "Studio by The Dots";
     document.body.classList.toggle("ksf", ksf);
+    document.body.classList.toggle("studio", !ksf);
     document.title = ksf ? "KSF — Régie" : "Régie — Studio by The Dots";
     var hash = ksf ? "#ksf" : "";
     if((location.hash || "") !== hash){ try{ history.replaceState(null, "", location.pathname + location.search + hash); }catch(e){} }
@@ -2739,6 +2818,20 @@
     }
   }
 
+  /* Bandeau de la Régie, repris de la DA Studio by The Dots (mires et repères techniques). */
+  function sHero(){
+    var o = ONGLETS.filter(function(x){ return x.id === VUE; })[0], d = new Date();
+    function z(n){ return (n < 10 ? "0" : "") + n; }
+    var aVenir = P.filter(function(p){ return !!prochaine(p); }).length;
+    return '<div class="shero" role="img" aria-label="Studio by The Dots">'
+      + '<span class="x a"></span><span class="x b"></span><span class="x c"></span><span class="x d"></span>'
+      + '<span class="lb a">Studio by The Dots<small>Régie · ' + d.getFullYear() + '</small></span>'
+      + '<span class="lb b">' + z(d.getDate()) + '.' + z(d.getMonth() + 1) + '.' + d.getFullYear()
+      + '<small>' + z(d.getHours()) + ':' + z(d.getMinutes()) + '</small></span>'
+      + '<span class="lb c">Frame[' + esc(o ? o.nom : "Régie") + ']</span>'
+      + '<span class="lb d">' + aVenir + ' à venir<small>' + P.length + ' projets</small></span></div>';
+  }
+
   /* ---------- rendu ---------- */
   function rendre(){
     var h = "";
@@ -2755,6 +2848,7 @@
     else if(/^ksf/.test(VUE)){ h = vueKsf(); }
     else if(VUE === "tous"){ h = vueTous(); }
     else { h = vueAvenir(); }
+    if(PRET && ["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sHero() + h;
 
     if(PRET && !EN_LIGNE){
       h += '<div class="bandeau"><b>Mode démonstration.</b> Les projets saisis ici restent '
