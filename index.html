@@ -1776,9 +1776,9 @@
       method: opts.method || "GET", headers: h,
       body: opts.body ? JSON.stringify(opts.body) : undefined
     }).then(function(r){
-      if(r.status === 401){   // code changé ou session effacée : on redemande le code
+      if(r.status === 401){   // code changé ou session effacée : on repart sur l'écran du code
         try{ sessionStorage.removeItem("sbtd-regie-ok"); sessionStorage.removeItem("sbtd-regie-code"); }catch(e){}
-        porte();
+        location.reload();
         throw new Error("Code d'équipe demandé.");
       }
       if(!r.ok) return r.text().then(function(t){ throw new Error(t || ("HTTP " + r.status)); });
@@ -5493,7 +5493,15 @@
   var deja = false;
   // Le code est gardé pour la session : il ouvre aussi l'agenda Outlook.
   try{ deja = sessionStorage.getItem("sbtd-regie-ok") === "1" && !!sessionStorage.getItem("sbtd-regie-code"); }catch(e){}
-  if(EN_LIGNE && !deja) porte(); else demarrer();
+  if(!EN_LIGNE) demarrer();
+  else if(!deja) porte();
+  else verifierCode(codeEquipe()).then(function(ok){
+    // Code refusé (changé depuis la dernière visite) : on le redemande. Réseau absent : on ouvre quand même.
+    if(ok === false){
+      try{ sessionStorage.removeItem("sbtd-regie-ok"); sessionStorage.removeItem("sbtd-regie-code"); }catch(e){}
+      porte();
+    } else demarrer();
+  });
 })();
 </script>
 </body>
