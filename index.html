@@ -299,10 +299,12 @@
   .ev.montage { border-left-color:var(--cyan); }
   .ev.valid   { border-left-color:var(--warn); }
   .ev.publie  { border-left-color:var(--ok); }
-  .ev.outlook{ border-left-color:#9B7BFF; background:color-mix(in srgb, #9B7BFF 13%, var(--surface)); cursor:default; }
+  .ev.outlook{ --olc:#9B7BFF; border-left-color:var(--olc); background:color-mix(in srgb, var(--olc) 13%, var(--surface)); cursor:default; }
   .ev.outlook .q{ font-weight:500; }
   .ev.outlook.libre{ opacity:.6; border-left-style:dashed; }
-  .leg-ol{ color:#9B7BFF; }
+  .leg-ol{ display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin-left:6px; }
+  .leg-ol .pt{ width:9px; height:9px; border-radius:3px; background:var(--olc); display:inline-block; }
+  .leg-ol em{ color:var(--muted); font-style:normal; }
 
   .sem{ border:1px solid var(--line); border-radius:12px; overflow:hidden; background:var(--surface); }
   .sem .ligne{ display:flex; gap:12px; padding:9px 13px; border-bottom:1px solid var(--line); }
@@ -1759,9 +1761,12 @@
   /* ---------- agenda Outlook ----------
      Une fonction Supabase (outlook-agenda) lit l'agenda publié par Outlook et
      ne le renvoie qu'avec le code d'équipe. */
-  var OL = { evs:[], at:0, err:"", enCours:false };
+  var OL = { evs:[], agendas:[], at:0, err:"", enCours:false };
+  var OL_COULEURS = ["#9B7BFF","#FF7EB6","#3FD0C9","#FFB547","#7FB2FF","#C8E06B"];
+  function olCouleur(i){ return OL_COULEURS[(i || 0) % OL_COULEURS.length]; }
+  function olNom(i){ var a = OL.agendas[i || 0]; return a && a.nom ? a.nom : "Outlook"; }
   var OL_CLE = "sbtd-outlook";
-  (function(){ try{ var v = JSON.parse(sessionStorage.getItem(OL_CLE) || "null"); if(v && v.evs){ OL.evs = v.evs; OL.at = v.at || 0; } }catch(e){} })();
+  (function(){ try{ var v = JSON.parse(sessionStorage.getItem(OL_CLE) || "null"); if(v && v.evs){ OL.evs = v.evs; OL.agendas = v.agendas || []; OL.at = v.at || 0; } }catch(e){} })();
   function olCharger(force){
     if(!EN_LIGNE || OL.enCours) return;
     if(!force && Date.now() - OL.at < 5 * 60e3) return;
@@ -1773,18 +1778,26 @@
       .then(function(x){
         OL.enCours = false;
         if(!x.ok || !x.j || !x.j.evs){ OL.err = (x.j && x.j.error) || "outlook"; return; }
-        OL.evs = x.j.evs; OL.at = Date.now(); OL.err = "";
-        try{ sessionStorage.setItem(OL_CLE, JSON.stringify({ at:OL.at, evs:OL.evs })); }catch(e){}
+        OL.evs = x.j.evs; OL.agendas = x.j.agendas || []; OL.at = Date.now(); OL.err = "";
+        try{ sessionStorage.setItem(OL_CLE, JSON.stringify({ at:OL.at, evs:OL.evs, agendas:OL.agendas })); }catch(e){}
         if(VUE === "cal") rendre();
       }, function(){ OL.enCours = false; OL.err = "reseau"; });
   }
+  function legendeOutlook(){
+    if(!OL.evs.length && !OL.agendas.length) return "";
+    var l = OL.agendas.length ? OL.agendas : [{ nom:"Outlook", ok:true }];
+    return ' <span class="leg-ol">' + l.map(function(a, i){
+      return '<span class="pt" style="--olc:' + olCouleur(i) + '"></span>' + esc(a.nom || "Outlook")
+        + (a.ok === false ? ' <em>(indisponible)</em>' : '');
+    }).join(" · ") + '</span>';
+  }
   function evOutlook(o, avecLieu){
     var heure = o.journee ? "Journée" : o.h + (o.hFin && o.au === o.du ? "–" + o.hFin : "");
-    return '<div class="ev outlook' + (o.occupe === "FREE" ? " libre" : "") + '" title="'
-      + esc("Outlook · " + o.titre + (o.lieu ? " — " + o.lieu : "") + (o.journee ? "" : " · " + o.h + "–" + o.hFin)) + '">'
+    return '<div class="ev outlook' + (o.occupe === "FREE" ? " libre" : "") + '" style="--olc:' + olCouleur(o.cal) + '" title="'
+      + esc(olNom(o.cal) + " · " + o.titre + (o.lieu ? " — " + o.lieu : "") + (o.journee ? "" : " · " + o.h + "–" + o.hFin)) + '">'
       + '<span class="h">' + esc(heure) + '</span> '
       + '<span class="q">' + esc(o.titre) + '</span>'
-      + (avecLieu ? '<span class="l">Outlook' + (o.lieu ? " · " + esc(o.lieu) : "") + '</span>' : '')
+      + (avecLieu ? '<span class="l">' + esc(olNom(o.cal)) + (o.lieu ? " · " + esc(o.lieu) : "") + '</span>' : '')
       + '</div>';
   }
 
@@ -1840,7 +1853,7 @@
     }
     h += '</div>';
     h += '<p class="legende">Cliquez sur une journée pour ouvrir sa fiche. '
-       + 'La couleur suit le statut du projet. <span class="leg-ol">En violet : votre agenda Outlook.</span></p>';
+       + 'La couleur suit le statut du projet.' + legendeOutlook() + '</p>';
     return h;
   }
 
