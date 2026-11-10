@@ -21,6 +21,7 @@
   window.CONFIG = {
     SUPABASE_URL: "https://zqpogpipqozyzrxodszp.supabase.co",
     SUPABASE_KEY: "sb_publishable_5Cdxz7bSJD-nTjvOcoGflw_qXALBHFb",
+    PLANNING_JORDAN: "https://claude.ai/artifact/7WvvY6DYx7AAgJrV4Z56wM",
 
     // Code demandé à l'ouverture. Vide = pas de code.
     // On n'écrit pas le code lui-même mais son empreinte SHA-256
@@ -301,6 +302,7 @@
   .ev.publie  { border-left-color:var(--ok); }
   .ev.outlook{ --olc:#9B7BFF; border-left-color:var(--olc); background:color-mix(in srgb, var(--olc) 13%, var(--surface)); cursor:default; }
   .ev.outlook .q{ font-weight:500; }
+  a.bascule.planning{ text-decoration:none; display:inline-flex; align-items:center; border-color:var(--lime); color:var(--lime); }
   .case .ev.outlook .q{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; overflow-wrap:anywhere; }
   .ev.outlook.libre{ opacity:.6; border-left-style:dashed; }
   .leg-ol{ display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin-left:6px; }
@@ -1982,6 +1984,10 @@
          + ' aria-pressed="' + (MIENS ? "true" : "false") + '">'
          + (MIENS ? "Mes tournages" : "Voir mes tournages")
          + (n ? ' · ' + n : '') + '</button>';
+    }
+    // Le planning personnel de Jordan (page privée sur claude.ai, mise à jour chaque lundi).
+    if(/^jordan\b/i.test(MOI)){
+      h += '<a class="bascule planning" href="' + CFG.PLANNING_JORDAN + '" target="_blank" rel="noopener">Mon planning ↗</a>';
     }
     moiEl.innerHTML = h;
     var sel = moiEl.querySelector("#i_moi");
