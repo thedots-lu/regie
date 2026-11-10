@@ -301,6 +301,7 @@
   .ev.publie  { border-left-color:var(--ok); }
   .ev.outlook{ --olc:#9B7BFF; border-left-color:var(--olc); background:color-mix(in srgb, var(--olc) 13%, var(--surface)); cursor:default; }
   .ev.outlook .q{ font-weight:500; }
+  .case .ev.outlook .q{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; overflow-wrap:anywhere; }
   .ev.outlook.libre{ opacity:.6; border-left-style:dashed; }
   .leg-ol{ display:inline-flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin-left:6px; }
   .leg-ol .pt{ width:9px; height:9px; border-radius:3px; background:var(--olc); display:inline-block; }
@@ -1744,7 +1745,12 @@
         (m[j.date] = m[j.date] || []).push({ p:p, j:j });
       });
     });
+    // Un même rendez-vous présent dans deux agendas (même titre, même jour, mêmes heures) n'est montré qu'une fois.
+    var vus = {};
     OL.evs.forEach(function(o){
+      var cle = String(o.titre || "").trim().toLowerCase().replace(/\s+/g, " ") + "|" + o.du + "|" + o.au + "|" + o.h + "|" + o.hFin;
+      if(vus[cle]) return;
+      vus[cle] = 1;
       var d = o.du, garde = 0;
       while(d && d <= o.au && garde++ < 62){
         (m[d] = m[d] || []).push({ o:o });
