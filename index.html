@@ -654,6 +654,65 @@
 
   body.studio .porte h2{ font-family:"Unbounded",sans-serif; font-weight:700; font-size:24px; }
   .pill:empty{ display:none; }
+
+  /* ---------- mise en page épurée (références : Apple, Podspace, 45 Studio) ---------- */
+  .wrap, .top-in{ max-width:960px; }
+  .wrap{ padding-inline:20px; }
+  .top-in{ padding:12px 20px 0; }
+  .brand{ flex-wrap:wrap; row-gap:8px; }
+  .brand .k{ display:none; }
+  nav.espaces{ background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:3px; gap:2px !important; }
+  .brand .espace{ padding:5px 13px 5px 9px; }
+  .brand .espace[aria-current="page"]{ background:var(--surface-3); border-color:transparent; }
+  .brand .moi{ margin:0 0 0 auto; }
+  .brand .moi label{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  .brand .moi select{ border-radius:999px; padding:6px 30px 6px 14px; font-size:13px; width:auto; }
+  .brand .etat{ margin-left:0; }
+  .tabs{ margin-top:10px; gap:6px; }
+  .tab{ padding:9px 4px 11px; margin-right:12px; }
+  @media (max-width:560px){
+    .brand .moi{ order:4; flex-basis:100%; margin:0; }
+    .brand .moi select{ width:100%; }
+    .brand .etat{ margin-left:auto; }
+  }
+
+  /* Intro de rubrique : grand titre en deux tons, comme les pages de référence. */
+  .intro{ padding:clamp(34px, 7vw, 72px) 0 6px; }
+  .intro.anim{ animation:monte .6s cubic-bezier(.2,.7,.2,1) both; }
+  .intro .kick{ font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+                color:var(--lime); display:flex; gap:10px; align-items:center; }
+  .intro .kick::before{ content:""; width:5px; height:5px; background:var(--lime); }
+  .intro h2.big{ font-family:"Inter Tight","IBM Plex Sans",sans-serif; font-weight:600; letter-spacing:-.035em;
+                 font-size:clamp(34px, 6.4vw, 64px); line-height:1.02; margin:14px 0 0; color:var(--ink); }
+  .intro h2.big .dim{ color:var(--muted); }
+  .intro p.lead{ color:var(--ink-2); font-size:clamp(15px, 1.8vw, 18px); max-width:560px; margin:14px 0 0; }
+  @keyframes monte{ from{ opacity:0; transform:translateY(14px); } to{ opacity:1; transform:none; } }
+
+  .bento{ display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-top:28px; }
+  @media (max-width:760px){ .bento{ grid-template-columns:1fr 1fr; } }
+  .tile{ display:block; text-align:left; font:inherit; color:inherit; cursor:pointer;
+         background:var(--surface); border:1px solid var(--line); border-radius:22px; padding:18px 20px 20px; min-height:136px;
+         transition:transform .25s cubic-bezier(.2,.7,.2,1), border-color .2s, background .2s; }
+  .tile:hover{ transform:translateY(-2px); border-color:rgba(255,255,255,.16); background:var(--surface-2); }
+  .tile:focus-visible{ outline:2px solid var(--lime); outline-offset:2px; }
+  .tile .i{ font-family:"Space Mono",monospace; font-size:11px; color:var(--muted); letter-spacing:.1em; }
+  .tile .n{ font-family:"Inter Tight",sans-serif; font-weight:600; letter-spacing:-.04em; font-size:clamp(40px, 6vw, 58px);
+            line-height:1; color:var(--lime); margin-top:16px; }
+  .tile .l{ font-size:14px; color:var(--ink-2); margin-top:8px; }
+
+  body.studio .shero.grand{ height:clamp(170px, 34vw, 340px); border-radius:24px; margin-top:28px; }
+  body.studio .card{ border-radius:20px; padding:18px 22px; margin-top:12px; }
+  body.studio .card h3{ font-size:18px; margin-top:6px; }
+  body.studio .card .when{ font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; }
+  body.studio .blk, body.studio .avant{ border-radius:20px; padding:18px 20px; }
+  body.studio .fiche-head{ border-radius:24px; padding:22px 22px 20px; }
+  body.studio .fiche-head h2{ font-family:"Inter Tight",sans-serif; font-weight:600; letter-spacing:-.03em; font-size:clamp(26px, 4.4vw, 40px); line-height:1.05; }
+  body.studio .slot{ border-radius:16px; }
+  body.studio .grille{ border-radius:20px; }
+  body.studio h2.sec{ margin-top:40px; }
+  body.studio .intro + h2.sec, body.studio .bento + h2.sec{ margin-top:44px; }
+  body.ksf .card, body.ksf .blk{ border-radius:18px; }
+  @media (prefers-reduced-motion: reduce){ .intro.anim{ animation:none; } .tile{ transition:none; } }
   .shero{ position:relative; margin-top:16px; border-radius:14px; overflow:hidden; height:clamp(118px, 25vw, 200px);
           background:#111118 url("studio-banniere.jpg") center/cover no-repeat; border:1px solid var(--line); }
   .shero::after{ content:""; position:absolute; inset:0; pointer-events:none;
@@ -682,8 +741,8 @@
   <div class="top-in">
     <div class="brand"><nav class="espaces" id="espaces" aria-label="Espaces" style="display:flex;gap:6px;align-items:center"></nav>
       <span class="k" id="sousTitre">Studio by The Dots</span>
+      <div class="moi" id="moi"></div>
       <span class="etat" id="etat"></span></div>
-    <div class="moi" id="moi"></div>
     <div class="tabs" role="tablist" id="tabs"></div>
   </div>
 </header>
@@ -1677,7 +1736,7 @@
     var el = document.getElementById("espaces"); if(!el) return;
     var ksf = estKsfVue(), late = KS.filter(function(p){ return kFlags(p).late; }).length;
     el.innerHTML = '<button class="espace" data-espace="regie"' + (ksf ? '' : ' aria-current="page"') + '>'
-      + '<span class="dot"></span><h1>Régie</h1></button><span class="sep" aria-hidden="true"></span>'
+      + '<span class="dot"></span><h1>Régie</h1></button>'
       + '<button class="espace" data-espace="ksf" title="Kamel Sans Filtre"' + (ksf ? ' aria-current="page"' : '') + '>'
       + '<img src="ksf-logo.png" alt=""><span class="nm">KSF</span>'
       + (late ? '<span class="c" title="Publications en retard">' + late + '</span>' : '') + '</button>';
@@ -2832,6 +2891,35 @@
       + '<span class="lb d">' + aVenir + ' à venir<small>' + P.length + ' projets</small></span></div>';
   }
 
+  /* Intro de rubrique : grand titre en deux tons ; sur « À venir », le visuel Studio et les chiffres clés. */
+  var S_INTRO_VU = "";
+  var S_INTRO = {
+    avenir:   ["01", "À venir",        "Les prochains",  "tournages.", "Tout ce qui passe devant les caméras du studio, jour par jour."],
+    cal:      ["02", "Calendrier",     "Le mois",        "d'un coup d'œil.", ""],
+    suivi:    ["03", "Après tournage", "Du rush",        "à la livraison.", "Montage, validation, publication : ce qui reste à livrer."],
+    tous:     ["04", "Projets",        "Tous les",       "projets.", ""],
+    contacts: ["05", "Contacts",       "Le carnet",      "de l'équipe.", ""]
+  };
+  function sIntro(){
+    var t = S_INTRO[VUE]; if(!t) return "";
+    var anim = S_INTRO_VU !== VUE; S_INTRO_VU = VUE;
+    var h = '<section class="intro' + (anim ? ' anim' : '') + '"><div class="kick">' + t[0] + ' — ' + esc(t[1]) + '</div>'
+      + '<h2 class="big"><span class="dim">' + esc(t[2]) + '</span> ' + esc(t[3]) + '</h2>'
+      + (t[4] ? '<p class="lead">' + esc(t[4]) + '</p>' : '') + '</section>';
+    if(VUE !== "avenir") return h;
+    var n = [
+      ["01", P.filter(function(p){ return !!prochaine(p); }).length, "projets à venir", "avenir"],
+      ["02", P.filter(enCours).length, "en post-production", "suivi"],
+      ["03", P.length, "projets au total", "tous"],
+      ["04", carnet().length, "contacts", "contacts"]
+    ];
+    return h + sHero().replace('class="shero"', 'class="shero grand"')
+      + '<div class="bento">' + n.map(function(x){
+          return '<button class="tile" data-tile="' + x[3] + '"><div class="i">' + x[0] + '</div>'
+            + '<div class="n">' + x[1] + '</div><div class="l">' + esc(x[2]) + '</div></button>';
+        }).join("") + '</div>';
+  }
+
   /* ---------- rendu ---------- */
   function rendre(){
     var h = "";
@@ -2848,7 +2936,7 @@
     else if(/^ksf/.test(VUE)){ h = vueKsf(); }
     else if(VUE === "tous"){ h = vueTous(); }
     else { h = vueAvenir(); }
-    if(PRET && ["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sHero() + h;
+    if(PRET && ["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
 
     if(PRET && !EN_LIGNE){
       h += '<div class="bandeau"><b>Mode démonstration.</b> Les projets saisis ici restent '
@@ -2860,6 +2948,9 @@
          + 'être incomplet. Vérifiez la connexion internet, puis rechargez la page.</div>';
     }
     app.innerHTML = h;
+    app.querySelectorAll("[data-tile]").forEach(function(b){
+      b.addEventListener("click", function(){ VUE = b.dataset.tile; rendre(); window.scrollTo(0,0); });
+    });
     rendreTabs();
     rendreMoi();
     lier();
