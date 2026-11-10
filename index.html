@@ -383,6 +383,59 @@
   .kp-liv .kp-retard{ font-family:"Space Mono",monospace; font-size:12px; color:#FF8A5B; }
   @media (max-width:640px){ .tk-add{ grid-template-columns:1fr 1fr; } .tk-add #tk_t{ grid-column:1 / -1; } }
   .mp-src{ margin:0; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
+  /* Décors du studio (photos Playbook) */
+  .dc-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:6px; }
+  .dc-grille button{ position:relative; padding:0; border:2px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface-2); cursor:pointer; text-align:left; font:inherit; color:var(--ink); }
+  .dc-grille button img{ display:block; width:100%; aspect-ratio:16/10; object-fit:cover; }
+  .dc-grille button span{ display:block; padding:7px 10px 8px; font-size:13px; font-weight:600; }
+  .dc-grille button.aucun{ display:flex; align-items:center; justify-content:center; min-height:100px; color:var(--muted); font-weight:500; }
+  .dc-grille button[aria-checked="true"]{ border-color:var(--lime); box-shadow:0 0 0 2px var(--lime); }
+  .dc-grille button[aria-checked="true"]::after{ content:"✓"; position:absolute; top:8px; right:8px; width:24px; height:24px; border-radius:99px; background:var(--lime); color:var(--lime-ink); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; }
+  .dc-fiche{ display:grid; grid-template-columns:minmax(0,260px) 1fr; gap:16px; align-items:start; }
+  .dc-fiche img{ width:100%; border-radius:12px; display:block; }
+  .dc-fiche p{ margin:4px 0 8px; color:var(--ink-2); font-size:14px; }
+  .dc-fiche a, .pb a{ color:var(--cyan); font-size:13px; }
+  @media (max-width:560px){ .dc-fiche{ grid-template-columns:1fr; } }
+  .dc-mini{ display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--ink-2); }
+  .dc-mini img{ width:34px; height:22px; object-fit:cover; border-radius:5px; }
+  /* Playbook dans les fiches et les tâches */
+  .pb{ display:flex; flex-direction:column; gap:12px; }
+  .pb-d{ border-top:1px solid var(--line); padding-top:10px; display:flex; flex-direction:column; gap:6px; }
+  .pb-d:first-of-type{ border-top:0; padding-top:0; }
+  .pb-d header{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; }
+  .pb-d header b{ font-size:15px; }
+  .pb-d header span{ font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
+  .pb-d > p{ margin:0; font-size:13.5px; color:var(--ink-2); }
+  .tk-pb{ margin:2px 0 0; }
+  .tk-pb summary{ cursor:pointer; font-size:12.5px; color:var(--muted); }
+  .tk-pb .pb{ margin-top:8px; }
+  /* Vidéos KSF en stock (inventaire Playbook) */
+  .kv-chiffres{ display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; }
+  .kv-chiffres div{ background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px 16px; }
+  .kv-chiffres b{ display:block; font-size:26px; font-weight:700; letter-spacing:-.02em; }
+  .kv-chiffres span{ font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .kv-inv{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:16px 18px; display:flex; flex-direction:column; gap:10px; }
+  .kv-inv > header{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; }
+  .kv-inv > header h4{ margin:0; font-size:17px; }
+  .kv-inv > header .s{ color:var(--muted); font-size:13px; }
+  .kv-inv > header .n{ margin-left:auto; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
+  .kv-note{ margin:0; font-size:13px; color:var(--muted); }
+  .kv-l{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  .kv-l > li{ padding:8px 0; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:6px; }
+  .kv-l .r{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; }
+  .kv-l .t{ font-weight:500; flex:1 1 260px; min-width:0; }
+  .kv-tag{ font-family:"Space Mono",monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; padding:2px 8px; border-radius:99px; border:1px solid var(--line); color:var(--muted); }
+  .kv-tag.podcast{ color:var(--lime); border-color:var(--lime); }
+  .kv-tag.short{ color:#5BD8FF; border-color:#5BD8FF66; }
+  .kv-tag.habillage{ color:#FFB13B; border-color:#FFB13B66; }
+  .kv-tag.ok{ color:#5FBE93; border-color:#5FBE9366; }
+  .kv-tag.cours{ color:#FFB13B; border-color:#FFB13B66; }
+  .kv-d{ font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
+  .kv-com{ list-style:none; margin:0 0 2px; padding:8px 12px; border-left:2px solid var(--lime); background:var(--surface-2); border-radius:0 10px 10px 0; display:flex; flex-direction:column; gap:5px; font-size:13.5px; }
+  .kv-com li.fait{ color:var(--muted); text-decoration:line-through; }
+  .kv-com em{ font-style:normal; font-family:"Space Mono",monospace; font-size:11px; color:var(--muted); margin-right:6px; }
+  .kv-bruts summary{ cursor:pointer; font-size:13.5px; color:var(--muted); padding:6px 0; }
+  .kv-bruts ul{ margin:4px 0 0; padding-left:18px; columns:2 260px; font-size:13px; color:var(--ink-2); }
   @media (max-width:560px){ .mp-day{ grid-template-columns:1fr; gap:6px; } .mp-day .dt b{ display:inline; margin-right:6px; font-size:17px; } .mp-ev{ grid-template-columns:1fr; gap:2px; } }
   .case .ev.outlook .q{ display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; overflow:hidden; overflow-wrap:anywhere; }
   .ev.outlook.libre{ opacity:.6; border-left-style:dashed; }
@@ -1933,6 +1986,13 @@
     if(ouvert || st !== "terminee"){
       if(t.detail) h += '<p class="tk-d">' + esc(t.detail) + '</p>';
       if(t.points && t.points.length) h += '<ul class="tk-pts">' + t.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>';
+      var tdc = decorTache(t); if(tdc) h += '<p class="tk-d">' + miniDecor(tdc) + '</p>';
+      var tpb = pbDossiers("taches", t.id);
+      if(tpb.length){
+        var nc = 0; tpb.forEach(function(x){ (x.videos || []).forEach(function(v){ nc += v.com.length; }); });
+        h += '<details class="tk-pb"><summary>Playbook · ' + esc(tpb.map(function(x){ return x.nom; }).join(", "))
+          + (nc ? ' · ' + nc + ' retour' + (nc > 1 ? 's' : '') : '') + '</summary>' + pbBloc(tpb) + '</details>';
+      }
     }
     h += '<div class="tk-st" role="group" aria-label="Statut">' + T_STATUTS.map(function(x){
         return '<button type="button" data-tstat="' + x[0] + '" data-tid="' + esc(t.id) + '" aria-pressed="' + (st === x[0] ? "true" : "false") + '">' + x[1] + '</button>';
@@ -2096,6 +2156,157 @@
     h += '<p class="mp-src">Tournages et livraisons : projets « Kamel Sans Filtre » de la Régie, en direct. Rendez-vous : agendas Outlook, refaits chaque lundi.</p></div>';
     return h;
   }
+
+
+  /* ---------- décors du studio ----------
+     Photos des set-ups rangées dans Playbook (dossier « Photos »), copiées en petit format dans decors/. */
+  var PB_URL = "https://www.playbook.com/the-dots/";
+  var DECORS = [
+    { id:"ksf", nom:"KSF", pb:"oJRVYMBDR6CTf6iydF7xictK", d:"Deux fauteuils, écran LED en fond, rideaux bleus et néons verts : le plateau de Kamel Sans Filtre." },
+    { id:"90s-outside", nom:"90s Outside", pb:"ooSD3v5TWfC9GxQmTGG5bXK4", d:"Un tabouret, micro vintage sur perche, mur à lattes et tubes néon orange." },
+    { id:"exchange", nom:"Exchange", pb:"SFXafHF18SFkciBg16i8CALZ", d:"Deux fauteuils face à face et mur à lattes. Lumière au choix : bleu, vert, violet, rose, orange ou rouge." },
+    { id:"small-talk", nom:"Small talk", pb:"A7SE4dxWDVaNfZF2hd6ZF2iy", d:"Fauteuils gris, table basse ronde, logo The Dots et poteaux LED." },
+    { id:"insight", nom:"Insight", pb:"LM9C4zTwe4juas9x1psoZucB", d:"Canapé Chesterfield en cuir, plantes suspendues, lumière chaude et tamisée." },
+    { id:"spotlight", nom:"Spotlight", pb:"UMESQU85tNhDCPVn2aU2Haby", d:"Tabouret et micro sur pied devant le logo rétroéclairé, ambiance bleue." },
+    { id:"signature", nom:"Le signature", pb:"48nbUkgoNM8iMbt9khdEnnYT", d:"Fauteuil bleu, télévision, rideaux bleus et barres LED au sol." },
+    { id:"face-a-face", nom:"Face à face", pb:"DLyVktPjkbuEcWqhnWe1PwDv", d:"Fauteuils gris et coussins ocre, table basse noire, lampes verticales." },
+    { id:"club", nom:"Le club", pb:"mDaHReb9a5JA939CR98Tw6gn", d:"Canapé et fauteuils Chesterfield, quatre micros sur perche, lumière chaude." },
+    { id:"dualite", nom:"Dualité", pb:"pwVXyDinpgrDa2pNoDPkZWMD", d:"Mange-debout, deux micros, tabourets, étagères lumineuses et lumière violette." },
+    { id:"confident", nom:"Le confident", pb:"D74qDFeFdkFMYoyerx18LVAi", d:"Fauteuil Chesterfield en velours, micro sur perche, lampe et lumière ambrée." },
+    { id:"tribune", nom:"La tribune", pb:"r52XSFeAeMwLuas3Th6TawCK", d:"Deux tabourets autour d’une table en bois, mur à lattes et contre-jour ambré." }
+  ];
+  function decorDe(p){ var id = p && p.decor; return id ? DECORS.filter(function(x){ return x.id === id; })[0] || null : null; }
+  function choixDecor(v){
+    return '<div class="f puces"><label for="i_decor">Décor du studio<span class="hint">Le set-up à installer pour le tournage. Photos tirées de Playbook.</span></label>'
+      + '<select id="i_decor" name="decor" tabindex="-1" aria-hidden="true"><option value=""' + (v ? '' : ' selected') + '>Aucun</option>'
+      + DECORS.map(function(x){ return '<option value="' + x.id + '"' + (x.id === v ? ' selected' : '') + '>' + esc(x.nom) + '</option>'; }).join("") + '</select>'
+      + '<div class="dc-grille" role="radiogroup" aria-label="Décor du studio">'
+      + '<button type="button" class="aucun" role="radio" aria-checked="' + (!v) + '" data-puce="decor" data-v="">Pas de décor studio</button>'
+      + DECORS.map(function(x){
+          return '<button type="button" role="radio" aria-checked="' + (x.id === v) + '" data-puce="decor" data-v="' + x.id + '" title="' + esc(x.d) + '">'
+            + '<img src="decors/' + x.id + '.jpg" alt="" loading="lazy"><span>' + esc(x.nom) + '</span></button>';
+        }).join("") + '</div></div>';
+  }
+  function blocDecor(p){
+    var dc = decorDe(p); if(!dc) return "";
+    return '<div class="blk"><h3>Décor à installer</h3><div class="dc-fiche">'
+      + '<img src="decors/' + dc.id + '.jpg" alt="Décor ' + esc(dc.nom) + '" loading="lazy">'
+      + '<div><b>' + esc(dc.nom) + '</b><p>' + esc(dc.d) + '</p>'
+      + '<a href="' + PB_URL + dc.pb + '" target="_blank" rel="noopener">Voir les photos du décor dans Playbook ↗</a></div></div></div>';
+  }
+  function miniDecor(dc){ return dc ? '<span class="dc-mini"><img src="decors/' + dc.id + '.jpg" alt="">Décor ' + esc(dc.nom) + '</span>' : ''; }
+  /* Une tâche « de tournage » hérite du décor du projet dont elle porte le nom. */
+  function decorTache(t){
+    var nom = String(t.projet || "").trim().toLowerCase(); if(!nom) return null;
+    var p = P.filter(function(x){ return x.decor && (String(x.projet || "").trim().toLowerCase() === nom || String(x.client || "").trim().toLowerCase() === nom); })[0];
+    return p ? decorDe(p) : null;
+  }
+
+  /* ---------- Playbook : dossiers liés aux projets et aux tâches ----------
+     Relevé par Claude dans Playbook (ligne « playbook » des plannings, mise à jour chaque lundi). */
+  var PBK = { data:null, at:0, enCours:false };
+  function pbCharger(force){
+    if(!EN_LIGNE || PBK.enCours || (!force && Date.now() - PBK.at < 10 * 60e3)) return;
+    var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
+    PBK.enCours = true;
+    fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=playbook", { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(x){ PBK.enCours = false; PBK.at = Date.now(); PBK.data = x.ok && x.j ? x.j.planning : null;
+                         if(PBK.data && (VUE === "fiche" || VUE === "planning" || VUE === "ksf")) rendre(); },
+            function(){ PBK.enCours = false; });
+  }
+  function pbDossiers(type, id){
+    pbCharger(false);
+    var d = PBK.data; if(!d || !d[type] || !d[type][id]) return [];
+    return d[type][id].map(function(k){ return d.dossiers[k]; }).filter(Boolean);
+  }
+  function pbBloc(dos){
+    if(!dos.length) return "";
+    return '<div class="pb">' + dos.map(function(x){
+      var h = '<div class="pb-d"><header><b>' + esc(x.nom) + '</b><span>' + (x.n || 0) + ' fichier' + ((x.n || 0) > 1 ? 's' : '') + '</span></header>'
+        + (x.resume ? '<p>' + esc(x.resume) + '</p>' : '');
+      if((x.videos || []).length) h += '<ul class="kv-l">' + x.videos.map(function(v){
+        var li = '<li><div class="r"><span class="t">' + esc(v.t) + '</span>' + (v.fmt ? '<span class="kv-d">' + esc(v.fmt) + '</span>' : '')
+          + (v.date ? '<span class="kv-d">' + esc(jourCourt(v.date)) + '</span>' : '') + (v.com.length ? '<span class="kv-tag cours">' + v.com.length + ' retour' + (v.com.length > 1 ? 's' : '') + '</span>' : '') + '</div>';
+        if(v.com.length) li += '<ul class="kv-com">' + v.com.map(function(c){
+          return '<li' + (c.ok ? ' class="fait"' : '') + '><em>' + esc(c.qui) + ' · ' + esc(jourCourt(c.quand)) + '</em>' + esc(c.txt) + '</li>'; }).join("") + '</ul>';
+        return li + '</li>';
+      }).join("") + '</ul>';
+      return h + '</div>';
+    }).join("") + '</div>';
+  }
+  function blocPlaybook(p){
+    var dos = pbDossiers("projets", p.id); if(!dos.length) return "";
+    return '<div class="blk"><h3>Dans Playbook</h3>' + pbBloc(dos)
+      + '<p class="mp-src" style="margin-top:10px">Relevé dans Playbook' + (PBK.data && PBK.data.majLe ? ' le ' + esc(jourCourt(String(PBK.data.majLe).slice(0, 10))) : '') + ', mis à jour chaque lundi.</p></div>';
+  }
+  /* ---------- vidéos KSF en stock ----------
+     Inventaire du dossier Playbook « Kamel sans filtre » (podcasts, shorts, bruts, habillage) avec les
+     commentaires de relecture. Relevé par Claude dans Playbook et rangé dans la ligne « ksf-videos » des plannings. */
+  var PV = { data:null, at:0, enCours:false, err:"" };
+  function pvCharger(force){
+    if(!EN_LIGNE || PV.enCours || (!force && Date.now() - PV.at < 10 * 60e3)) return;
+    var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
+    PV.enCours = true;
+    fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=ksf-videos", { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(x){ PV.enCours = false; PV.at = Date.now(); PV.data = x.ok && x.j ? x.j.planning : null; PV.err = x.ok ? "" : "lecture";
+                         if(VUE === "ksf" && KSF.sous === "videos") rendre(); },
+            function(){ PV.enCours = false; PV.err = "reseau"; });
+  }
+  var KV_FILTRES = [["tout","Tout"],["podcast","Épisodes"],["short","Shorts finis"],["brut","Shorts bruts"],["com","Avec commentaires"]];
+  var KV_TYPES = { podcast:"Épisode", short:"Short", brut:"Brut", habillage:"Habillage" };
+  function kVueVideos(){
+    pvCharger(false);
+    var d = PV.data;
+    if(!d) return '<div class="mp" style="margin-top:18px"><p class="mp-vide">' + (PV.enCours || !PV.at ? "Chargement de l’inventaire Playbook…" : "Inventaire indisponible pour l’instant.") + '</p></div>';
+    var f = KSF.vf || "tout", tous = [];
+    (d.invites || []).forEach(function(i){ (i.videos || []).forEach(function(v){ tous.push(v); }); });
+    function compte(t){ return tous.filter(function(v){ return v.type === t; }).length; }
+    var ouverts = 0; tous.forEach(function(v){ (v.com || []).forEach(function(c){ if(!c.ok) ouverts++; }); });
+    var h = '<div class="mp" style="margin-top:18px">'
+      + '<div class="kv-chiffres">'
+      + '<div><b>' + compte("podcast") + '</b><span>Épisodes</span></div>'
+      + '<div><b>' + compte("short") + '</b><span>Shorts finis</span></div>'
+      + '<div><b>' + compte("brut") + '</b><span>Shorts bruts</span></div>'
+      + '<div><b>' + ouverts + '</b><span>Commentaires ouverts</span></div></div>'
+      + '<div class="kfil">' + KV_FILTRES.map(function(x){ return '<button class="step' + (f === x[0] ? " on" : "") + '" data-kvf="' + x[0] + '">' + x[1] + '</button>'; }).join("") + '</div>';
+    function garde(v){
+      if(f === "tout") return true;
+      if(f === "com") return (v.com || []).length > 0;
+      return v.type === f;
+    }
+    function ligne(v){
+      var st = v.statut === "Done" ? '<span class="kv-tag ok">Fait</span>' : v.statut ? '<span class="kv-tag cours">' + esc(v.statut) + '</span>' : '';
+      var h2 = '<li><div class="r"><span class="t">' + esc(v.t) + '</span>'
+        + '<span class="kv-tag ' + esc(v.type) + '">' + esc(KV_TYPES[v.type] || v.type) + '</span>'
+        + (v.fmt ? '<span class="kv-d">' + esc(v.fmt) + '</span>' : '') + st
+        + (v.date ? '<span class="kv-d">' + esc(jourCourt(v.date)) + '</span>' : '') + '</div>';
+      if((v.com || []).length) h2 += '<ul class="kv-com">' + v.com.map(function(c){
+        return '<li' + (c.ok ? ' class="fait" title="Résolu"' : '') + '><em>' + esc(c.qui) + ' · ' + esc(jourCourt(c.quand)) + '</em>' + esc(c.txt) + '</li>';
+      }).join("") + '</ul>';
+      return h2 + '</li>';
+    }
+    var vus = 0;
+    (d.invites || []).forEach(function(i){
+      var vs = (i.videos || []).filter(garde); if(!vs.length) return;
+      vus += vs.length;
+      var finies = vs.filter(function(v){ return v.type !== "brut"; }), bruts = vs.filter(function(v){ return v.type === "brut"; });
+      h += '<section class="kv-inv"><header><h4>' + esc(i.nom) + '</h4>' + (i.sous ? '<span class="s">' + esc(i.sous) + '</span>' : '')
+        + '<span class="n">' + vs.length + ' vidéo' + (vs.length > 1 ? 's' : '') + '</span></header>'
+        + (i.note && f === "tout" ? '<p class="kv-note">' + esc(i.note) + '</p>' : '');
+      if(finies.length) h += '<ul class="kv-l">' + finies.map(ligne).join("") + '</ul>';
+      if(bruts.length){
+        if(f === "brut") h += '<ul class="kv-l">' + bruts.map(ligne).join("") + '</ul>';
+        else h += '<details class="kv-bruts"><summary>' + bruts.length + ' short' + (bruts.length > 1 ? 's' : '') + ' brut' + (bruts.length > 1 ? 's' : '') + ' en réserve</summary><ul>'
+          + bruts.map(function(v){ return '<li>' + esc(v.t) + (v.statut ? ' — ' + esc(v.statut === "Done" ? "fait" : v.statut) : '') + '</li>'; }).join("") + '</ul></details>';
+      }
+      h += '</section>';
+    });
+    if(!vus) h += '<p class="mp-vide">Aucune vidéo pour ce filtre.</p>';
+    h += '<p class="mp-src">Source : ' + esc(d.source || "Playbook") + (d.majLe ? ', relevé le ' + esc(jourCourt(String(d.majLe).slice(0, 10))) : '') + '. Mis à jour chaque lundi.</p></div>';
+    return h;
+  }
   function legendeOutlook(){
     if(!OL.evs.length && !OL.agendas.length) return "";
     var l = OL.agendas.length ? OL.agendas : [{ nom:"Outlook", ok:true }];
@@ -2212,7 +2423,7 @@
     { id:"new",    nom:"+ Nouveau projet" }
   ];
   /* KSF a son propre espace : ses rubriques prennent la place des onglets de la Régie. */
-  var K_ONGLETS = [["semaine","Cette semaine"],["planning","Tournages & montages"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]];
+  var K_ONGLETS = [["semaine","Cette semaine"],["planning","Tournages & montages"],["videos","Vidéos en stock"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]];
   var DERNIERE_REGIE = "avenir";
   function estKsfVue(){ return /^ksf/.test(VUE); }
   function rendreEspaces(){
@@ -2319,7 +2530,8 @@
       + esc(jourLong(j.date)) + (j.heureEquipe ? ', arrivée ' + esc(j.heureEquipe) : '')
       + ' — ' + esc(lieu)
       + (equipeDe(j).length ? '<span class="eqline">Avec ' + esc(equipeDe(j).join(", ")) + '</span>'
-                            : '<span class="eqline vide">Personne d\'assigné</span>') + '</div>'
+                            : '<span class="eqline vide">Personne d\'assigné</span>')
+      + (decorDe(p) ? '<span class="eqline">' + miniDecor(decorDe(p)) + '</span>' : '') + '</div>'
       + '<div class="l3"><span class="pill ' + (CLASSE[p.statut] || "") + '">' + esc(libStatut(p, p.statut) || "") + '</span>'
       + '<span class="pill">' + esc(p.type || "") + '</span>'
       + (faitPhoto(p) ? '<span class="pill">' + esc(mediaDe(p)) + '</span>' : '')
@@ -2643,6 +2855,8 @@
       });
       h += '</ul></div>';
     }
+
+    h += blocDecor(p) + blocPlaybook(p);
 
     if(post){
       var ph = photoSeule(p);
@@ -3233,6 +3447,7 @@
       + (mtg ? '' : puces("Photo ou vidéo ?", "media", MEDIAS, mediaDe(b)))
       + puces("Format", "format", FORMATS, b.format)
       + (mtg ? '' : puces("Dispositif image", "dispositif", DISPOS, b.dispositif))
+      + (mtg ? '' : choixDecor(b.decor || ""))
       + '</div>';
 
     /* 02 — quand et où */
@@ -3301,7 +3516,7 @@
     var f = app.querySelector("#form");
     if(!f || !BROUILLON) return;
     var b = BROUILLON;
-    ["client","projet","type","media","format","dispositif","intervenants","questions","notes","statut","ssd","validant",
+    ["client","projet","type","media","format","dispositif","decor","intervenants","questions","notes","statut","ssd","validant",
      "livDuree","livDecoupe","livSt","livMusique","livLogo","livDate","livLien","livNotes",
      "photoNb","photoRetouche","photoForme","photoDate","photoLien","photoNotes"]
       .forEach(function(k){ var el = f.elements[k]; if(el) b[k] = el.value; });
@@ -4316,6 +4531,7 @@
     if(KSF.sous === "stats") return h + kVueStats();
     if(KSF.sous === "episodes") return h + kVueEpisodes();
     if(KSF.sous === "planning") return h + kVuePlanning();
+    if(KSF.sous === "videos") return h + kVueVideos();
     h += kRetards();
     if(KSF.sous === "cal") return h + kFiltres() + kVueCal();
     if(KSF.sous === "sujets") return h + kFiltres() + kVueSujets();
@@ -5114,6 +5330,7 @@
       rendre();
     });
     kSur("[data-kport]", "click", function(b){ KSF.portee = b.dataset.kport; rendre(); });
+    kSur("[data-kvf]", "click", function(b){ KSF.vf = b.dataset.kvf; rendre(); });
     kSur("[data-kcal]", "click", function(b){
       var n = +b.dataset.kcal, r = KSF.ref ? midi(KSF.ref) : midi(new Date());
       KSF.ref = n ? new Date(r.getFullYear(), r.getMonth() + n, 1, 12) : null; rendre();
