@@ -4752,7 +4752,13 @@
       + '<span class="kcd">' + esc(kJourC(p.date)) + '</span></button>';
   }
   function kVueSujets2(){
-    var t = kAuj(), suj = kSujets().sort(function(a, b){ var da = kSujetPosts(a)[0].date, db = kSujetPosts(b)[0].date; return da < db ? 1 : da > db ? -1 : b - a; });
+    var t = kAuj(), suj = kSujets().sort(function(a, b){
+      /* Sujets avec invité d'abord, du plus récent au plus ancien ; puis les sujets à venir sans invité, dans l'ordre des dates. */
+      var ia = !!kInvite(a), ib = !!kInvite(b), da = kSujetPosts(a)[0].date, db = kSujetPosts(b)[0].date;
+      if(ia !== ib) return ia ? -1 : 1;
+      var r = da < db ? -1 : da > db ? 1 : a - b;
+      return ia ? -r : r;
+    });
     if(!suj.length) return '<p class="kvide">Aucun sujet pour l’instant. « + Nouveau › Sujet complet » crée le podcast et ses shorts d’un coup.</p>';
     var enCours = suj.filter(function(n){ var ps = kSujetPosts(n); return ps.some(function(p){ return p.status !== "done"; }) || kAdd(ps[ps.length - 1].date, 1) >= t; });
     var finis = suj.filter(function(n){ return enCours.indexOf(n) < 0; });
