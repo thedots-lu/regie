@@ -4979,7 +4979,7 @@
     var descs = K_DESC.filter(function(d){ return d.si(p.platforms || []); });
     if(!descs.length) return '<p class="kpied" style="margin:0">Cochez au moins une plateforme.</p>';
     if(!KSF.dtab || !descs.some(function(d){ return d.k === KSF.dtab; })) KSF.dtab = descs[0].k;
-    var nom = { descLI:"LinkedIn", descIG:"Instagram · TikTok", descYT:"YouTube" }, k = KSF.dtab, v = p[k] || "", modele = kEstModele(k, v);
+    var nom = { descLI:"LinkedIn", descIG:"Instagram · Facebook · TikTok", descYT:"YouTube" }, k = KSF.dtab, v = p[k] || "", modele = kEstModele(k, v);
     return '<div class="kdtabs">' + descs.map(function(d){ return '<button data-kdtab="' + d.k + '" class="' + (d.k === k ? "on" : "") + '">' + nom[d.k] + '</button>'; }).join("")
       + '<span style="flex:1"></span><button class="btn ghost petit' + (KSF.copie === k ? " copie" : "") + '" data-kcopy="' + k + '">' + (KSF.copie === k ? "Copié ✓" : "Copier") + '</button></div>'
       + (edit ? '<textarea id="kf_' + k + '" data-kf="' + k + '" class="kdtxt">' + esc(v) + '</textarea>'
