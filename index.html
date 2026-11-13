@@ -4278,18 +4278,20 @@
   var K_TPL = {
     descLI: "\n\n📽️ Découvrez l’épisode complet sur YouTube : " + K_YT + "\n🎧 Et sur toutes les plateformes d’écoute : " + K_AUSHA + "\n\n#KamelSansFiltre",
     descIG: "\n\n🎧 Épisode complet disponible sur toutes nos plateformes (lien en bio).\n\n#KamelSansFiltre",
+    descTT: "\n\n🎧 Épisode complet disponible sur toutes nos plateformes.\n\n#KamelSansFiltre",
     descYT: "\n\n📽️ Épisode complet sur YouTube : " + K_YT + "\n🎧 Et sur toutes les plateformes d’écoute : " + K_AUSHA + "\n\n#KamelSansFiltre"
   };
   var K_DESC = [
     { k:"descLI", l:"Description LinkedIn", si:function(pl){ return pl.indexOf("li") >= 0; } },
-    { k:"descIG", l:"Description Instagram / Facebook & TikTok", si:function(pl){ return pl.indexOf("igfb") >= 0 || pl.indexOf("tt") >= 0; } },
+    { k:"descIG", l:"Description Instagram / Facebook", si:function(pl){ return pl.indexOf("igfb") >= 0; } },
+    { k:"descTT", l:"Description TikTok", si:function(pl){ return pl.indexOf("tt") >= 0; } },
     { k:"descYT", l:"Description YouTube", si:function(pl){ return pl.indexOf("yt") >= 0; } }
   ];
-  var K_CONTENU = ["title","guest","theme","descLI","descIG","descYT","link","notes","status","vK","vC","episodeId"];
-  var K_CHAMPS  = ["date","time","type","repere","sujet","theme","title","guest","platforms","status","descLI","descIG","descYT","link","notes"];
+  var K_CONTENU = ["title","guest","theme","descLI","descIG","descTT","descYT","link","notes","status","vK","vC","episodeId"];
+  var K_CHAMPS  = ["date","time","type","repere","sujet","theme","title","guest","platforms","status","descLI","descIG","descTT","descYT","link","notes"];
   var K_NOMS = { date:"date", time:"heure", type:"type", repere:"repère", sujet:"sujet", theme:"thème", title:"titre",
                  guest:"invité", platforms:"plateformes", status:"statut", descLI:"description LinkedIn",
-                 descIG:"description IG/FB & TikTok", descYT:"description YouTube", link:"lien vidéo", notes:"notes",
+                 descIG:"description Instagram / Facebook", descTT:"description TikTok", descYT:"description YouTube", link:"lien vidéo", notes:"notes",
                  vK:"validation Kamel", vC:"validation client", episodeId:"épisode" };
 
   /* Les 35 publications du planning KSF construit sur claude.ai,
@@ -4356,7 +4358,8 @@
   function kEstModele(k, v){ return !v || String(v).trim() === K_TPL[k].trim(); }
   function kModeles(pl){
     return { descLI: pl.indexOf("li") >= 0 ? K_TPL.descLI : "",
-             descIG: (pl.indexOf("igfb") >= 0 || pl.indexOf("tt") >= 0) ? K_TPL.descIG : "",
+             descIG: pl.indexOf("igfb") >= 0 ? K_TPL.descIG : "",
+             descTT: pl.indexOf("tt") >= 0 ? K_TPL.descTT : "",
              descYT: pl.indexOf("yt") >= 0 ? K_TPL.descYT : "" };
   }
   function kNeuf(o){
@@ -4542,7 +4545,7 @@
     var rg = kRangs(posts);
     return posts.some(function(p, i){
       var v = kVide(p, rg[i]);
-      return ["title","guest","theme","descLI","descIG","descYT","link","notes"].some(function(k){ return !kPareil(p[k] || "", v[k] || ""); });
+      return ["title","guest","theme","descLI","descIG","descTT","descYT","link","notes"].some(function(k){ return !kPareil(p[k] || "", v[k] || ""); });
     });
   }
   /* Un statut « Programmé » qui change de créneau doit être revalidé. */
@@ -4979,7 +4982,7 @@
     var descs = K_DESC.filter(function(d){ return d.si(p.platforms || []); });
     if(!descs.length) return '<p class="kpied" style="margin:0">Cochez au moins une plateforme.</p>';
     if(!KSF.dtab || !descs.some(function(d){ return d.k === KSF.dtab; })) KSF.dtab = descs[0].k;
-    var nom = { descLI:"LinkedIn", descIG:"Instagram · Facebook · TikTok", descYT:"YouTube" }, k = KSF.dtab, v = p[k] || "", modele = kEstModele(k, v);
+    var nom = { descLI:"LinkedIn", descIG:"Instagram · Facebook", descTT:"TikTok", descYT:"YouTube" }, k = KSF.dtab, v = p[k] || "", modele = kEstModele(k, v);
     return '<div class="kdtabs">' + descs.map(function(d){ return '<button data-kdtab="' + d.k + '" class="' + (d.k === k ? "on" : "") + '">' + nom[d.k] + '</button>'; }).join("")
       + '<span style="flex:1"></span><button class="btn ghost petit' + (KSF.copie === k ? " copie" : "") + '" data-kcopy="' + k + '">' + (KSF.copie === k ? "Copié ✓" : "Copier") + '</button></div>'
       + (edit ? '<textarea id="kf_' + k + '" data-kf="' + k + '" class="kdtxt">' + esc(v) + '</textarea>'
@@ -5066,7 +5069,7 @@
   }
   /* TikTok et LinkedIn ne sont pas dans Buffer : texte à copier, à publier à la main. */
   function kAMain(p){
-    var cle = { tt:"descIG", li:"descLI" };
+    var cle = { tt:"descTT", li:"descLI" };
     var l = (p.platforms || []).filter(function(k){ return cle[k]; });
     if(!l.length) return "";
     return l.map(function(k){ return '<div class="kconf-l"><b>' + K_PLNOM[k] + ' <span class="kpied">(pas dans Buffer : à publier à la main)</span></b>'
@@ -5295,6 +5298,7 @@
     if(/statut|etat/.test(s)) return "status";
     if(/linkedin|\bli\b/.test(s)) return "descLI";
     if(/youtube|\byt\b/.test(s)) return "descYT";
+    if(/tiktok|\btt\b/.test(s) && !/insta|facebook/.test(s)) return "descTT";
     if(/insta|\big\b|facebook|\bfb\b|tiktok/.test(s)) return "descIG";
     if(/titre|^sujet\b/.test(s)) return "title";
     if(/lien|url|video/.test(s)) return "link";
@@ -5388,11 +5392,11 @@
       var rep = String(r.repere || "");
       var type = /story/i.test(rep) ? "story" : (/podcast|episode|complet/.test(kNorm(rep)) || kJeudi(r.date)) ? "podcast" : "short";
       if(!r.title && r.linkText && !/^lien/.test(kNorm(r.linkText))) r.title = r.linkText;
-      var contenu = ["descLI","descIG","descYT","link","repere","title","theme","guest"].some(function(k){ return r[k] != null && String(r[k]).trim(); });
+      var contenu = ["descLI","descIG","descTT","descYT","link","repere","title","theme","guest"].some(function(k){ return r[k] != null && String(r[k]).trim(); });
       if(!contenu) return null;
       var out = { date:r.date, type:type };
       if(r.sujet) out.sujet = r.sujet;
-      ["repere","title","theme","guest","descLI","descIG","descYT","link"].forEach(function(k){
+      ["repere","title","theme","guest","descLI","descIG","descTT","descYT","link"].forEach(function(k){
         if(r[k] != null && String(r[k]).trim()) out[k] = String(r[k]).replace(/\r\n/g, "\n").trim();
       });
       if(r.time != null) out.time = kCellHeure(r.time);
@@ -5487,7 +5491,7 @@
          + '<div class="blk kscroll"><table class="ktable"><thead><tr><th>Date</th><th>Type</th><th>Repère</th><th>Statut</th><th>Titre</th><th>Desc.</th><th>Action</th></tr></thead><tbody>'
          + im.plan.map(function(x){ var r = x.r;
              return '<tr><td class="n">' + esc(jourCourt(r.date)) + '</td><td>' + kType(r) + '</td><td>' + esc(r.repere || "") + '</td><td>' + esc(r.status ? kSt(r.status).l : "—")
-                  + '</td><td>' + esc((r.title || "").slice(0, 60)) + '</td><td>' + ["descLI","descIG","descYT"].filter(function(k){ return r[k]; }).map(function(k){ return { descLI:"LI", descIG:"IG", descYT:"YT" }[k]; }).join(" ")
+                  + '</td><td>' + esc((r.title || "").slice(0, 60)) + '</td><td>' + ["descLI","descIG","descTT","descYT"].filter(function(k){ return r[k]; }).map(function(k){ return { descLI:"LI", descIG:"IG", descTT:"TT", descYT:"YT" }[k]; }).join(" ")
                   + '</td><td>' + (x.ex ? "mise à jour" : "création") + '</td></tr>';
            }).join("") + '</tbody></table></div>'
          + '<div class="actions"><button class="btn lime" data-kimp="1"' + (KSF.occupe ? " disabled" : "") + '>' + (KSF.occupe ? "Import en cours…" : "Importer " + im.plan.length + " publications") + '</button></div>';
@@ -5525,14 +5529,14 @@
   /* ---------- export CSV ---------- */
   function kCsv(){
     var cols = ["Date","Heure","Type","Repère","Sujet","Thème","Titre","Invité","Épisode","Plateformes","Statut","Validation Kamel","Commentaire Kamel",
-                "Validation client","Commentaire client","Lien vidéo","Description LinkedIn","Description IG/FB & TikTok","Description YouTube","Notes"];
+                "Validation client","Commentaire client","Lien vidéo","Description LinkedIn","Description Instagram / Facebook","Description TikTok","Description YouTube","Notes"];
     function q(v){ v = v == null ? "" : String(v); return /[;"\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
     var lignes = [cols.join(";")].concat(kTri(KS).map(function(p){
       var ep = p.episodeId ? kEp(p.episodeId) : null;
       return [p.date, p.time, K_TYPES[p.type], p.repere, p.sujet, p.theme, p.title, p.guest, ep ? ep.guest : "",
               (p.platforms || []).map(function(k){ return K_PCOURT[k]; }).join(" "), kSt(p.status).l,
               K_VST[kv(p, "vK")], p.vK && p.vK.c, K_VST[kv(p, "vC")], p.vC && p.vC.c, p.link,
-              kEstModele("descLI", p.descLI) ? "" : p.descLI, kEstModele("descIG", p.descIG) ? "" : p.descIG,
+              kEstModele("descLI", p.descLI) ? "" : p.descLI, kEstModele("descIG", p.descIG) ? "" : p.descIG, kEstModele("descTT", p.descTT) ? "" : p.descTT,
               kEstModele("descYT", p.descYT) ? "" : p.descYT, p.notes].map(q).join(";");
     }));
     var b = new Blob(["﻿" + lignes.join("\r\n")], { type:"text/csv;charset=utf-8" });
