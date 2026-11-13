@@ -804,6 +804,13 @@
   .kconf{ margin-top:12px; border:1px solid rgba(168,255,31,.35); border-radius:14px; padding:14px 16px; background:rgba(168,255,31,.04); }
   .kconf-l{ border-top:1px solid var(--line); padding:10px 0; }
   .kconf-l p{ white-space:pre-line; font-size:14px; margin:6px 0 8px; }
+  .kdepot{ display:flex; flex-direction:column; gap:4px; border:1.5px dashed var(--line); border-radius:12px; padding:14px 16px; margin:4px 0 12px; cursor:pointer; }
+  .kdepot:hover, .kdepot.survol{ border-color:var(--lime, #c6f432); }
+  .kdepot.ok{ flex-direction:row; align-items:center; gap:12px; border-style:solid; cursor:default; }
+  .kdepot.ok span{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .kdepot .lien{ cursor:pointer; text-decoration:underline; font-size:13px; }
+  .kdepot.en{ cursor:default; }
+  .kvidmini{ display:block; max-width:180px; max-height:320px; border-radius:10px; margin:8px 0 4px; background:#000; }
   .kplus2{ margin-top:12px; font-size:14px; }
   .kplus2 > summary{ cursor:pointer; color:var(--muted); }
   @media (max-width:640px){
@@ -4972,11 +4979,12 @@
       + (edit ? '<textarea id="kf_' + k + '" data-kf="' + k + '" class="kdtxt">' + esc(v) + '</textarea>'
               : '<p class="kdlire' + (modele ? " vide" : "") + '">' + (modele ? "Pas encore de description (seulement le modèle)." : esc(v)) + '</p>');
   }
+  function kVideoOk(p){ return !!(p.video && /^https:\/\/[\w.-]+\.supabase\.co\/storage\/v1\/object\/public\/ksf-videos\//.test(p.video)); }
   function kManques(p){
     var m = [];
     if(kv(p, "vK") !== "ok") m.push("validation de Kamel");
     if(kv(p, "vC") !== "ok") m.push("validation du client");
-    if(!(p.link && /^https?:\/\//.test(p.link))) m.push("lien de la vidéo finale");
+    if(!kVideoOk(p)) m.push("vidéo finale");
     K_DESC.forEach(function(d){ if(d.si(p.platforms || []) && kEstModele(d.k, p[d.k])) m.push(d.l.replace("Description ", "description ")); });
     return m;
   }
@@ -4996,30 +5004,117 @@
     if(absents.length) h += '<p class="kpied">' + absents.map(function(k){ return K_PLNOM[k]; }).join(" et ") + ' : pas de statistiques, non relié à Buffer.</p>';
     return h + '</div>';
   }
+  var K_BUFNOM = { instagram:"Instagram", facebook:"Facebook", youtube:"YouTube" };
+  function kDepot(p){
+    if(KSF.envoiPct != null) return '<div class="kdepot en"><b>Envoi de la vidéo… ' + KSF.envoiPct + ' %</b><div class="kbar3"><i style="width:' + KSF.envoiPct + '%"></i></div></div>';
+    if(kVideoOk(p)) return '<div class="kdepot ok"><span>🎬 ' + esc(p.videoNom || "Vidéo finale") + '</span>'
+      + '<a href="' + esc(p.video) + '" target="_blank" rel="noopener" class="kpied">voir ↗</a>'
+      + (p.buffer ? '' : '<label class="lien">Remplacer<input type="file" accept="video/mp4,video/quicktime" data-kvid hidden></label>') + '</div>';
+    return '<label class="kdepot"><input type="file" accept="video/mp4,video/quicktime" data-kvid hidden>'
+      + '<b>Déposer la vidéo finale</b><span class="kpied">MP4 ou MOV, ' + K_MAXMO + ' Mo maximum · cliquez ou glissez le fichier ici</span></label>';
+  }
   function kBlocPub(p){
     if(p.status === "done") return "";
-    if(p.status === "sched") return '<div class="kbloc"><span class="kmono vert">Programmé</span><p style="margin:6px 0 10px">' + esc(kJourC(p.date)) + (p.time ? ' à ' + esc(p.time) : '')
-      + ' sur ' + esc((p.platforms || []).map(function(k){ return K_PLNOM[k]; }).join(", ")) + '.</p><div class="actions"><button class="btn" data-kpub="1">Marquer publié</button></div></div>';
+    var bu = p.buffer || {}, res = Object.keys(bu), manquent = kBufVoulus(p).filter(function(k){ return !bu[k]; });
+    if(p.status === "sched" || res.length){
+      return '<div class="kbloc"><span class="kmono vert">Programmé' + (res.length ? " dans Buffer" : "") + '</span><p style="margin:6px 0 10px">' + esc(kJourC(p.date)) + (p.time ? ' à ' + esc(p.time) : '')
+        + ' sur ' + esc(res.length ? res.map(function(k){ return K_BUFNOM[k] || k; }).join(", ") : (p.platforms || []).map(function(k){ return K_PLNOM[k]; }).join(", ")) + '.</p>'
+        + (p.bufferDraft ? '<p class="kpied">Envoyé en brouillon : à valider dans Buffer.</p>' : '')
+        + (res.length && manquent.length ? '<p class="kpied">Pas encore programmé sur ' + esc(manquent.map(function(k){ return K_BUFNOM[k]; }).join(", ")) + '.</p>' : '')
+        + kAMain(p)
+        + '<div class="actions">' + (res.length && manquent.length ? '<button class="btn lime" data-kenvoi="1"' + (KSF.envoi ? ' disabled' : '') + '>' + (KSF.envoi ? "Envoi…" : "Réessayer " + esc(manquent.map(function(k){ return K_BUFNOM[k]; }).join(", "))) + '</button>' : '')
+        + (res.length ? '<a class="btn ghost" href="https://publish.buffer.com" target="_blank" rel="noopener">Voir dans Buffer ↗</a>' : '')
+        + '<button class="btn" data-kpub="1">Marquer publié</button></div></div>';
+    }
     var m = kManques(p), ok = !m.length;
     var h = '<div class="kbloc"><span class="kmono">Publication</span><ul class="kchk">'
-      + [["Kamel a validé", kv(p, "vK") === "ok"], ["Le client a validé", kv(p, "vC") === "ok"], ["Lien de la vidéo finale", !!(p.link && /^https?:\/\//.test(p.link))],
+      + [["Kamel a validé", kv(p, "vK") === "ok"], ["Le client a validé", kv(p, "vC") === "ok"], ["Vidéo finale déposée", kVideoOk(p)],
          ["Descriptions rédigées", !m.some(function(x){ return /description/.test(x); })]].map(function(x){
           return '<li class="' + (x[1] ? "ok" : "") + '">' + (x[1] ? "✓" : "○") + ' ' + x[0] + '</li>'; }).join("") + '</ul>'
+      + kDepot(p)
       + '<div class="actions" style="align-items:center"><button class="btn' + (ok ? " lime" : " ghost") + '" data-kprog="1">Programmer dans Buffer</button>'
       + '<span class="kpied" style="margin:0">' + (ok ? "Tout est prêt." : "Il manque : " + esc(m.join(", ")) + ".") + '</span></div>';
     if(KSF.conf && ok){
-      var txt = { igfb:p.descIG, tt:p.descIG, yt:p.descYT, li:p.descLI }, cle = { igfb:"descIG", tt:"descIG", yt:"descYT", li:"descLI" };
-      h += '<div class="kconf"><span class="kmono vert">À programmer dans Buffer</span>'
-        + '<p class="kpied">' + esc(kJourC(p.date)) + (p.time ? ' à ' + esc(p.time) : '') + ' · vidéo : <a href="' + esc(lienSur(p.link)) + '" target="_blank" rel="noopener">ouvrir le lien ↗</a></p>'
-        + (p.platforms || []).map(function(k){
-            var suivi = k === "igfb" || k === "yt";
-            return '<div class="kconf-l"><b>' + K_PLNOM[k] + (suivi ? "" : ' <span class="kpied">(pas encore dans Buffer : à publier à la main)</span>') + '</b>'
-              + '<p>' + esc(txt[k] || "") + '</p><button class="btn ghost petit" data-kcopy="' + cle[k] + '">' + (KSF.copie === cle[k] ? "Copié ✓" : "Copier le texte") + '</button></div>'; }).join("")
-        + '<div class="actions"><a class="btn" href="https://publish.buffer.com" target="_blank" rel="noopener">Ouvrir Buffer ↗</a>'
-        + '<button class="btn lime" data-ksched="1">C’est programmé</button><button class="btn ghost" data-kprog="0">Fermer</button></div>'
-        + '<p class="kpied">Collez chaque texte dans Buffer avec la vidéo, à la date prévue, puis cliquez « C’est programmé ». L’envoi direct depuis la Régie viendra ensuite.</p></div>';
+      var pl = p.platforms || [], cibles = [];
+      if(pl.indexOf("igfb") >= 0) cibles.push(["Instagram", p.descIG], ["Facebook", p.descIG]);
+      if(pl.indexOf("yt") >= 0) cibles.push(["YouTube", p.descYT]);
+      h += '<div class="kconf"><span class="kmono vert">Vérifier avant d’envoyer</span>'
+        + '<p style="margin:6px 0 4px"><b>' + esc(kJourC(p.date)) + ' à ' + esc(p.time || "12:00") + '</b>' + (p.time ? '' : ' <span class="kpied">(pas d’heure dans la fiche : midi par défaut)</span>') + '</p>'
+        + '<video class="kvidmini" src="' + esc(p.video) + '" controls preload="metadata" playsinline></video>'
+        + (cibles.length ? cibles.map(function(c){ return '<div class="kconf-l"><b>' + c[0] + '</b><p>' + esc(c[1] || "") + '</p></div>'; }).join("")
+                         : '<p class="kpied">Aucun réseau relié à Buffer n’est coché (Instagram · Facebook ou YouTube).</p>')
+        + kAMain(p)
+        + '<div class="actions">' + (cibles.length ? '<button class="btn lime" data-kenvoi="1"' + (KSF.envoi ? ' disabled' : '') + '>' + (KSF.envoi ? "Envoi…" : "Programmer sur " + cibles.length + " réseau" + (cibles.length > 1 ? "x" : "")) + '</button>' : '')
+        + '<button class="btn ghost" data-kprog="0">Annuler</button></div>'
+        + '<p class="kpied">Rien n’est publié tout de suite : Buffer publiera à la date et l’heure indiquées. Vous pourrez encore modifier ou supprimer les posts dans Buffer.</p></div>';
     }
     return h + '</div>';
+  }
+  function kBufVoulus(p){
+    var pl = p.platforms || [], v = [];
+    if(pl.indexOf("igfb") >= 0) v.push("instagram", "facebook");
+    if(pl.indexOf("yt") >= 0) v.push("youtube");
+    return v;
+  }
+  /* TikTok et LinkedIn ne sont pas dans Buffer : texte à copier, à publier à la main. */
+  function kAMain(p){
+    var cle = { tt:"descIG", li:"descLI" };
+    var l = (p.platforms || []).filter(function(k){ return cle[k]; });
+    if(!l.length) return "";
+    return l.map(function(k){ return '<div class="kconf-l"><b>' + K_PLNOM[k] + ' <span class="kpied">(pas dans Buffer : à publier à la main)</span></b>'
+      + '<button class="btn ghost petit" data-kcopy="' + cle[k] + '">' + (KSF.copie === cle[k] ? "Copié ✓" : "Copier le texte") + '</button></div>'; }).join("");
+  }
+  var K_MAXMO = 50;
+  function kFn(nom){ return CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/" + nom; }
+  function kFnPost(chemin, corps){
+    return fetch(kFn(chemin), { method:"POST", headers:{ "apikey":CFG.SUPABASE_KEY, "Content-Type":"application/json", "x-regie-code":codeEquipe() }, body:JSON.stringify(corps || {}) })
+      .then(function(r){ return r.json().catch(function(){ return { error:"http" }; }).then(function(j){ j = j || {}; j._s = r.status; return j; }); });
+  }
+  function kEnvoyerVideo(f){
+    var id = KSF.id;
+    if(!id || !EN_LIGNE){ toast("Enregistrez d’abord la fiche."); return; }
+    if(!/^video\/(mp4|quicktime)$/.test(f.type) && !/\.(mp4|mov)$/i.test(f.name)){ toast("Choisissez un fichier MP4 ou MOV."); return; }
+    if(f.size > K_MAXMO * 1048576){ toast("Vidéo trop lourde (" + Math.round(f.size / 1048576) + " Mo) : " + K_MAXMO + " Mo maximum. Exportez-la plus légère."); return; }
+    KSF.envoiPct = 0; rendre();
+    kFnPost("ksf-envoi?depot=1", { type:f.type }).then(function(j){
+      if(!j.envoi) throw new Error("Dépôt impossible pour l’instant.");
+      return new Promise(function(ok, ko){
+        var x = new XMLHttpRequest();
+        x.open("PUT", j.envoi);
+        x.setRequestHeader("Content-Type", f.type || "video/mp4");
+        x.setRequestHeader("x-upsert", "false");
+        x.upload.onprogress = function(e){ if(e.lengthComputable){ var v = Math.round(e.loaded / e.total * 100); if(v !== KSF.envoiPct){ KSF.envoiPct = v; rendre(); } } };
+        x.onload = function(){ x.status < 300 ? ok(j.public) : ko(new Error("Envoi de la vidéo refusé (" + x.status + ").")); };
+        x.onerror = function(){ ko(new Error("Envoi de la vidéo interrompu.")); };
+        x.send(f);
+      });
+    }).then(function(pub){
+      return kMaj(id, { video:pub, videoNom:f.name }, true).then(function(){
+        if(KSF.id === id){ KSF.br.video = pub; KSF.br.videoNom = f.name; if(KSF.orig){ KSF.orig.video = pub; KSF.orig.videoNom = f.name; } }
+        KSF.envoiPct = null; toast("Vidéo déposée."); rendre();
+      });
+    }).catch(function(e){ KSF.envoiPct = null; rendre(); toast(e && e.message || "Envoi impossible."); });
+  }
+  function kProgrammer(){
+    var id = KSF.id; if(!id || KSF.envoi) return;
+    KSF.envoi = true; rendre();
+    kFnPost("ksf-envoi", { id:id }).then(function(j){
+      KSF.envoi = false;
+      if(j._s === 401){ location.reload(); return; }
+      var err = { deja:"Déjà envoyée à Buffer.", video:"Déposez d’abord la vidéo finale.", passe:"La date de publication est passée : changez la date ou l’heure.",
+                  date:"Ajoutez une date à la fiche.", reseaux:"Aucun réseau relié à Buffer n’est coché.", no_token:"Le jeton Buffer manque dans Supabase.",
+                  buffer_auth:"Buffer refuse le jeton enregistré dans Supabase." }[j.error];
+      if(j.error){ toast(err || "Buffer injoignable pour l’instant."); rendre(); return; }
+      var r = j.res || {}, okL = [], koL = [];
+      Object.keys(r).forEach(function(k){ (r[k].ok ? okL : koL).push((K_BUFNOM[k] || k) + (r[k].ok ? "" : " (" + r[k].msg + ")")); });
+      KSF.conf = false;
+      toast(okL.length ? "Programmé dans Buffer : " + okL.join(", ") + (koL.length ? ". Échec : " + koL.join(", ") : ".") : "Rien n’a été programmé. " + koL.join(", "));
+      return charger(true).then(function(){
+        var x = KS.filter(function(p){ return p.id === id; })[0];
+        if(x && KSF.id === id){ KSF.br = kCopie(x); KSF.orig = kCopie(x); }
+        rendre();
+      });
+    }).catch(function(){ KSF.envoi = false; toast("Buffer injoignable pour l’instant."); rendre(); });
   }
   function kVueLecture(){
     var p = KSF.br;
@@ -5616,6 +5711,13 @@
       var m = kManques(KSF.br);
       if(m.length){ toast("Pas encore prêt : il manque " + m.join(", ") + "."); return; }
       KSF.conf = true; rendre();
+    });
+    kSur("[data-kenvoi]", "click", function(){ kProgrammer(); });
+    kSur("[data-kvid]", "change", function(i){ if(i.files && i.files[0]) kEnvoyerVideo(i.files[0]); });
+    document.querySelectorAll(".kdepot").forEach(function(z){
+      z.addEventListener("dragover", function(e){ e.preventDefault(); z.classList.add("survol"); });
+      z.addEventListener("dragleave", function(){ z.classList.remove("survol"); });
+      z.addEventListener("drop", function(e){ e.preventDefault(); z.classList.remove("survol"); var f = e.dataTransfer && e.dataTransfer.files[0]; if(f) kEnvoyerVideo(f); });
     });
     kSur("[data-ksched]", "click", function(){
       var id = KSF.id;
