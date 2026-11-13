@@ -4489,14 +4489,27 @@
                       + (KB.err ? ", dernière actualisation en échec" : "") + ". TikTok et LinkedIn ne sont pas suivis.";
     return "Statistiques Buffer : chargement…";
   }
-  /* Les publications Buffer d'une ligne du planning : même jour, plateformes cochées. */
+  /* Les publications Buffer d'une ligne du planning.
+     Fiche envoyée par la Régie : uniquement les posts Buffer dont l'identifiant est noté dans la fiche.
+     Sinon (fiche publiée à la main, sans identifiant) : même jour et plateformes cochées, et seulement
+     si la fiche est marquée Publié. Une fiche à faire ou programmée n'emprunte jamais les vues d'un
+     autre post du même jour. */
   function kStats(p){
     var jour = KB.parJour[p.date]; if(!jour) return [];
-    var pl = p.platforms || [], voulu = [], out = [];
+    var pl = p.platforms || [], voulu = [], out = [], bu = p.buffer || {};
     if(pl.indexOf("igfb") >= 0) voulu.push("instagram", "facebook");
     if(pl.indexOf("yt") >= 0) voulu.push("youtube");
     voulu.forEach(function(s){
       var l = jour[s]; if(!l || !l.length) return;
+      if(bu[s]){
+        var avecId = l.filter(function(b){ return b.id; });
+        if(avecId.length){
+          var a = avecId.filter(function(b){ return String(b.id) === String(bu[s]); })[0];
+          if(a) out.push(Object.assign({ svc:s }, a));
+          return;
+        }
+      }
+      if(p.status !== "done") return;
       var pick = l.reduce(function(a, b){
         if(s === "youtube") return p.type === "podcast" ? (b.len > a.len ? b : a) : (b.len < a.len ? b : a);
         return b.metric > a.metric ? b : a;
@@ -4739,10 +4752,10 @@
       + '<span class="kcd">' + esc(kJourC(p.date)) + '</span></button>';
   }
   function kVueSujets2(){
-    var t = kAuj(), suj = kSujets();
+    var t = kAuj(), suj = kSujets().sort(function(a, b){ var da = kSujetPosts(a)[0].date, db = kSujetPosts(b)[0].date; return da < db ? 1 : da > db ? -1 : b - a; });
     if(!suj.length) return '<p class="kvide">Aucun sujet pour l’instant. « + Nouveau › Sujet complet » crée le podcast et ses shorts d’un coup.</p>';
     var enCours = suj.filter(function(n){ var ps = kSujetPosts(n); return ps.some(function(p){ return p.status !== "done"; }) || kAdd(ps[ps.length - 1].date, 1) >= t; });
-    var finis = suj.filter(function(n){ return enCours.indexOf(n) < 0; }).reverse();
+    var finis = suj.filter(function(n){ return enCours.indexOf(n) < 0; });
     var stock = kStock(), tous = suj;
     function bloc(n, ouvert){
       var ps = kSujetPosts(n), inv = kInvite(n), nd = ps.filter(function(p){ return p.status === "done"; }).length;
@@ -5028,6 +5041,7 @@
     if(p.status === "sched" || res.length){
       return '<div class="kbloc"><span class="kmono vert">Programmé' + (res.length ? " dans Buffer" : "") + '</span><p style="margin:6px 0 10px">' + esc(kJourC(p.date)) + (p.time ? ' à ' + esc(p.time) : '')
         + ' sur ' + esc(res.length ? res.map(function(k){ return K_BUFNOM[k] || k; }).join(", ") : (p.platforms || []).map(function(k){ return K_PLNOM[k]; }).join(", ")) + '.</p>'
+        + kDepot(p)
         + (p.bufferDraft ? '<p class="kpied">Envoyé en brouillon : à valider dans Buffer.</p>' : '')
         + (res.length && manquent.length ? '<p class="kpied">Pas encore programmé sur ' + esc(manquent.map(function(k){ return K_BUFNOM[k]; }).join(", ")) + '.</p>' : '')
         + kAMain(p)
