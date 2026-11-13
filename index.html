@@ -4572,14 +4572,14 @@
     var slots = posts.map(function(p){ var c = kContenu(p); c.episodeId = ""; return kRevalider(c); });
     if(ep) t.push(function(){ return kMaj(ep.id, { slots:slots }, true); });
     else t.push(function(){ return kCreer([{ kind:"ksf-episode", guest:kInvite(n) || "Invité non précisé", shoot:"", title:"",
-                                              notes:"Remis en stock depuis le sujet " + n, slots:slots }], true); });
+                                              notes:"Remis en stock", slots:slots }], true); });
     posts.forEach(function(p, i){ t.push(function(){ return kMaj(p.id, kVide(p, rg[i]), true); }); });
     return t;
   }
   function kAffecter(epId, n){
     var posts = kSujetPosts(n), ep = kEp(epId), rg = kRangs(posts);
     if(!ep || !posts.length) return;
-    if(kBloque(posts)){ toast("Le sujet " + n + " a déjà une publication publiée : impossible de changer son invité."); return; }
+    if(kBloque(posts)){ toast("Ce sujet a déjà une publication publiée : impossible de changer son invité."); return; }
     var t = kTachesRetrait(n);
     posts.forEach(function(p, i){
       var s = ep.slots && ep.slots[i];
@@ -4590,15 +4590,15 @@
     });
     t.push(function(){ return kMaj(ep.id, { slots:null }, true); });
     KSF.occupe = true;
-    kSuite(t).then(function(){ KSF.occupe = false; toast(ep.guest + " affecté au sujet " + n + "."); }, kEchec);
+    kSuite(t).then(function(){ KSF.occupe = false; toast(ep.guest + " affecté au sujet."); }, kEchec);
   }
   function kRetirer(n){
     var posts = kSujetPosts(n);
-    if(kBloque(posts)){ toast("Le sujet " + n + " a déjà une publication publiée : impossible de le vider."); return; }
+    if(kBloque(posts)){ toast("Ce sujet a déjà une publication publiée : impossible de le vider."); return; }
     var t = kTachesRetrait(n);
-    if(!t.length){ toast("Le sujet " + n + " est déjà vide."); return; }
+    if(!t.length){ toast("Ce sujet est déjà vide."); return; }
     KSF.occupe = true;
-    kSuite(t).then(function(){ KSF.occupe = false; toast("Épisode du sujet " + n + " remis en stock."); }, kEchec);
+    kSuite(t).then(function(){ KSF.occupe = false; toast("Épisode remis en stock."); }, kEchec);
   }
   function kEchanger(a, b){
     var pa = kSujetPosts(a), pb = kSujetPosts(b);
@@ -4610,7 +4610,7 @@
       t.push(function(){ return kMaj(y.id, cx, true); });
     })(pa[i], pb[i]);
     KSF.occupe = true;
-    kSuite(t).then(function(){ KSF.occupe = false; toast("Sujets " + a + " et " + b + " échangés : les dates restent en place."); }, kEchec);
+    kSuite(t).then(function(){ KSF.occupe = false; toast("Sujets échangés : les dates restent en place."); }, kEchec);
   }
 
   /* ---------- petits morceaux d'interface ---------- */
@@ -4627,7 +4627,6 @@
     return '<button class="ev kev ' + esc(e.ev) + '" data-kp="' + esc(p.id) + '" title="' + esc(p.title || "") + '">'
       + (p.time ? '<span class="h">' + esc(p.time) + '</span> ' : '')
       + kType(p) + '<span class="q">' + esc(p.title || "Sans titre") + '</span>'
-      + (p.sujet ? '<span class="r"> · S' + esc(p.sujet) + '</span>' : '')
       + (v ? '<span class="kvu">▶ ' + kK(v) + '</span>' : '')
       + (long ? '<span class="l">' + '<span class="ket' + (e.c === "rouge" ? " rouge" : "") + '" style="margin-left:0">' + esc(e.l) + '</span>'
                + ' · ' + esc(kPl(p.platforms)) + (p.guest ? ' · ' + esc(p.guest) : '') + kValsTxt(p) + '</span>' : '')
@@ -4735,7 +4734,7 @@
       return '<button class="krow" data-kp="' + esc(p.id) + '">'
         + '<span class="kd' + (late ? " late" : "") + '">' + esc(kJourC(p.date)) + (p.time ? '<i>' + esc(p.time) + '</i>' : '') + '</span>'
         + '<span class="kt"><b>' + esc(p.title || "Sans titre") + '</b><small>' + esc(K_TYPES[p.type] || "")
-        + (p.guest ? ' · ' + esc(p.guest) : '') + (p.sujet ? ' · S' + esc(p.sujet) : '') + '</small></span>'
+        + (p.guest ? ' · ' + esc(p.guest) : '') + '</small></span>'
         + '<span class="kr">' + (v ? '<span class="kvu2">' + kK(v) + ' vues</span>' : '') + kPill(p) + '</span></button>';
     }).join("") + '</div>';
   }
@@ -4766,7 +4765,7 @@
     function bloc(n, ouvert){
       var ps = kSujetPosts(n), inv = kInvite(n), nd = ps.filter(function(p){ return p.status === "done"; }).length;
       var ns = ps.filter(function(p){ return p.status === "sched"; }).length, vu = ps.reduce(function(a, p){ return a + kVues(p); }, 0);
-      var tete = '<span class="kmono vert">Sujet ' + n + '</span><b class="kinv">' + esc(inv || "Invité à définir") + '</b>'
+      var tete = '<b class="kinv">' + esc(inv || "Invité à définir") + '</b>'
         + '<span class="kdates">' + esc(jourCourt(ps[0].date)) + ' → ' + esc(jourCourt(ps[ps.length - 1].date)) + '</span><span style="flex:1"></span>'
         + (vu ? '<span class="kvu2">' + kK(vu) + ' vues</span>' : '') + '<span class="kdates">' + (nd + ns) + ' / ' + ps.length + ' prêts</span>';
       if(!ouvert) return '<button class="ksuj-ferme" data-kouv="' + n + '">' + tete + '<span aria-hidden="true">›</span></button>';
@@ -4780,7 +4779,7 @@
           + (inv || kAContenu(ps) ? '<option value="-">Remettre l’épisode en stock</option>' : '') + '</select>'
           + '<select data-kech="' + n + '" aria-label="Échanger le sujet ' + n + '"><option value="">Échanger avec…</option>'
           + tous.filter(function(x){ return x !== n && !kBloque(kSujetPosts(x)); }).map(function(x){
-              return '<option value="' + x + '">Sujet ' + x + ' — ' + esc(kInvite(x) || "invité à définir") + '</option>'; }).join("") + '</select>'
+              return '<option value="' + x + '">' + esc(kInvite(x) || "Invité à définir") + ' — ' + esc(jourCourt(kSujetPosts(x)[0].date)) + '</option>'; }).join("") + '</select>'
           + '<button class="btn danger" data-ksupsuj="' + n + '">' + (KSF.supSujet === n ? "Confirmer : supprimer " + ps.length + " publications" : "Supprimer le sujet") + '</button></div></details>';
       }
       return h + '</section>';
@@ -4884,7 +4883,7 @@
            + '</select><select data-kech="' + n + '" aria-label="Échanger le sujet ' + n + '">'
            + '<option value="">Échanger avec…</option>'
            + tous.filter(function(x){ return x !== n && !kBloque(kSujetPosts(x)); }).map(function(x){
-               return '<option value="' + x + '">Sujet ' + x + ' — ' + esc(kInvite(x) || "invité à définir") + '</option>'; }).join("")
+               return '<option value="' + x + '">' + esc(kInvite(x) || "Invité à définir") + ' — ' + esc(jourCourt(kSujetPosts(x)[0].date)) + '</option>'; }).join("")
            + '</select><button class="btn danger" data-ksupsuj="' + n + '">'
            + (KSF.supSujet === n ? "Confirmer : supprimer " + ps.length + " publications" : "Supprimer le sujet") + '</button></div>';
       }
@@ -4911,7 +4910,7 @@
          + (e.title ? '<div style="margin-top:4px">' + esc(e.title) + '</div>' : '')
          + (e.notes ? '<p class="kpied" style="white-space:pre-line">' + esc(e.notes) + '</p>' : '')
          + '<div class="kops"><select data-kepaff="' + esc(e.id) + '"><option value="">Affecter au sujet…</option>'
-         + suj.map(function(n){ return '<option value="' + n + '">Sujet ' + n + ' — ' + esc(jourCourt(kSujetPosts(n)[0].date)) + ' (' + esc(kInvite(n) || "invité à définir") + ')</option>'; }).join("")
+         + suj.map(function(n){ return '<option value="' + n + '">' + esc(jourCourt(kSujetPosts(n)[0].date)) + ' (' + esc(kInvite(n) || "invité à définir") + ')</option>'; }).join("")
          + '</select><button class="btn danger" data-kepdel="' + esc(e.id) + '">' + (KSF.supEp === e.id ? "Confirmer la suppression" : "Supprimer") + '</button></div></div>';
     });
     h += '<div class="blk"><h3>Ajouter un épisode au stock</h3>'
@@ -4924,7 +4923,7 @@
       h += '<h2 class="sec">Affectés</h2><div class="carnet">' + aff.map(function(e){
         var p = KS.filter(function(x){ return x.episodeId === e.id; })[0];
         return '<div class="ct"><div class="ctl"><b>' + esc(e.guest) + '</b><span class="d">' + (e.shoot ? "tourné le " + esc(jourCourt(e.shoot)) : "") + '</span></div>'
-             + '<div class="ctr">' + (p ? 'Sujet ' + esc(p.sujet) + ' · ' + esc(jourCourt(kSujetPosts(p.sujet)[0] ? kSujetPosts(p.sujet)[0].date : p.date)) : '') + '</div></div>';
+             + '<div class="ctr">' + (p ? 'Sort le ' + esc(jourCourt(kSujetPosts(p.sujet)[0] ? kSujetPosts(p.sujet)[0].date : p.date)) : '') + '</div></div>';
       }).join("") + '</div>';
     }
     return h;
@@ -4954,7 +4953,7 @@
     if(KSF.id && !KSF.edit) return kVueLecture();
     var p = KSF.br, neuf = !KSF.id, e = kEtat(p);
     var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">‹ Retour</button>'
-      + '<div class="kfl">' + kType(p) + (p.sujet ? 'Sujet ' + esc(p.sujet) : '') + (p.repere ? ' · ' + esc(p.repere) : '') + '</div>'
+      + '<div class="kfl">' + kType(p) + (p.repere ? esc(p.repere) : '') + '</div>'
       + '<h2>' + esc(p.title || (neuf ? "Nouvelle publication" : "Sans titre")) + '</h2>'
       + '<div class="who">' + esc(jourLong(p.date)) + (p.time ? ' · ' + esc(p.time) : '') + ' · ' + esc(e.l) + '</div></section>';
     if(KSF.sale) h += '<div class="bandeau"><b>Modifications non enregistrées.</b> Pensez à « Enregistrer ».</div>';
@@ -5151,7 +5150,7 @@
     var p = KSF.br;
     var h = '<button class="back kback2" data-kback="1">‹ Retour</button><section class="kfiche2">'
       + '<div class="kf-t"><div style="flex:1;min-width:0"><span class="kmono">' + esc(kJourC(p.date)) + (p.time ? ' · ' + esc(p.time) : '') + ' · ' + esc(K_TYPES[p.type] || "")
-      + (p.sujet ? ' · Sujet ' + esc(p.sujet) : '') + (p.repere ? ' · ' + esc(p.repere) : '') + '</span>'
+      + (p.repere ? ' · ' + esc(p.repere) : '') + '</span>'
       + '<h2>' + esc(p.title || "Sans titre") + '</h2>' + (p.guest ? '<div class="kpied" style="margin:0">' + esc(p.guest) + (p.theme ? ' · ' + esc(p.theme) : '') + '</div>' : '') + '</div>'
       + kPill(p) + '<button class="btn" data-kedit="1">Modifier</button></div>'
       + '<div class="kplat2">' + (p.platforms || []).map(function(k){ return '<span>' + K_PLNOM[k] + '</span>'; }).join("") + '</div>';
@@ -5837,7 +5836,7 @@
       if(KSF.supSujet !== n){ KSF.supSujet = n; rendre(); return; }
       KSF.supSujet = null;
       var ids = kSujetPosts(n).map(function(p){ return p.id; });
-      kSuppr(ids).then(function(){ toast("Sujet " + n + " supprimé (" + ids.length + " publications)."); }, kEchec);
+      kSuppr(ids).then(function(){ toast("Sujet supprimé (" + ids.length + " publications)."); }, kEchec);
     });
     kSur("[data-kepadd]", "click", function(){
       var g = document.getElementById("kep_g").value.trim();
