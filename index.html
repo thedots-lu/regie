@@ -810,6 +810,10 @@
   .kdepot.ok span{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .kdepot .lien{ cursor:pointer; text-decoration:underline; font-size:13px; }
   .kdepot.en{ cursor:default; }
+  .kmedias{ display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start; }
+  .kmedias figure{ margin:0; }
+  .kmedias figcaption{ font-size:12px; color:var(--muted, #8aa); margin-top:2px; }
+  .kmedias img.kvidmini{ object-fit:cover; aspect-ratio:9/16; width:180px; }
   .kvidmini{ display:block; max-width:180px; max-height:320px; border-radius:10px; margin:8px 0 4px; background:#000; }
   .kplus2{ margin-top:12px; font-size:14px; }
   .kplus2 > summary{ cursor:pointer; color:var(--muted); }
@@ -4721,9 +4725,10 @@
   }
 
   /* ---------- nouvelle KSF : sujets en cartes ---------- */
+  function kMini(p){ return p.miniature ? (/^https?:\/\//.test(p.miniature) ? lienSur(p.miniature) : /^miniatures\/[\w.-]+\.(jpe?g|png|webp)$/.test(p.miniature) ? p.miniature : "") : ""; }
   function kCarte(p, grand){
     var e = kEtat(p), pod = p.type === "podcast";
-    var mini = p.miniature && (/^https?:\/\//.test(p.miniature) ? lienSur(p.miniature) : /^miniatures\/[\w.-]+\.(jpe?g|png|webp)$/.test(p.miniature) ? p.miniature : "");
+    var mini = kMini(p);
     var ph = mini ? '<img src="' + esc(mini) + '" alt="" loading="lazy">'
            : '<span class="kph">' + (pod ? "▶︎ Podcast" : "▶︎") + '</span><span class="kpt">' + esc(p.title || "Sans titre") + '</span>';
     return '<button class="kcarte' + (pod ? " pod" : "") + (grand ? " grand" : "") + '" data-kp="' + esc(p.id) + '" title="' + esc((p.title || "") + " — " + e.l) + '">'
@@ -5008,7 +5013,7 @@
   var K_BUFNOM = { instagram:"Instagram", facebook:"Facebook", youtube:"YouTube" };
   function kDepot(p){
     if(KSF.envoiPct != null) return '<div class="kdepot en"><b>Envoi de la vidéo… ' + KSF.envoiPct + ' %</b><div class="kbar3"><i style="width:' + KSF.envoiPct + '%"></i></div></div>';
-    if(kVideoOk(p)) return '<div class="kdepot ok"><span>🎬 ' + esc(p.videoNom || "Vidéo finale") + '</span>'
+    if(kVideoOk(p)) return '<div class="kdepot ok"><span>🎬 ' + esc(p.videoNom || "Vidéo finale") + (p.videoPlaybook ? ' <small class="kpied">· reprise de Playbook</small>' : '') + '</span>'
       + '<a href="' + esc(p.video) + '" target="_blank" rel="noopener" class="kpied">voir ↗</a>'
       + (p.buffer ? '' : '<label class="lien">Remplacer<input type="file" accept="video/mp4,video/quicktime" data-kvid hidden></label>') + '</div>';
     return '<label class="kdepot"><input type="file" accept="video/mp4,video/quicktime" data-kvid hidden>'
@@ -5041,7 +5046,9 @@
       if(pl.indexOf("yt") >= 0) cibles.push(["YouTube", p.descYT]);
       h += '<div class="kconf"><span class="kmono vert">Vérifier avant d’envoyer</span>'
         + '<p style="margin:6px 0 4px"><b>' + esc(kJourC(p.date)) + ' à ' + esc(p.time || "12:00") + '</b>' + (p.time ? '' : ' <span class="kpied">(pas d’heure dans la fiche : midi par défaut)</span>') + '</p>'
-        + '<video class="kvidmini" src="' + esc(p.video) + '" controls preload="metadata" playsinline></video>'
+        + '<div class="kmedias"><figure><video class="kvidmini" src="' + esc(p.video) + '" controls preload="metadata" playsinline></video><figcaption>Vidéo</figcaption></figure>'
+        + (kMini(p) ? '<figure><img class="kvidmini" src="' + esc(kMini(p)) + '" alt=""><figcaption>Miniature · <a href="' + esc(kMini(p)) + '" download>télécharger</a></figcaption></figure>' : '') + '</div>'
+        + (kMini(p) ? '<p class="kpied">Buffer ne reçoit pas de couverture personnalisée par la Régie (limite de son API) : pour Instagram, ajoutez la miniature comme couverture dans Buffer avant la date.</p>' : '')
         + (cibles.length ? cibles.map(function(c){ return '<div class="kconf-l"><b>' + c[0] + '</b><p>' + esc(c[1] || "") + '</p></div>'; }).join("")
                          : '<p class="kpied">Aucun réseau relié à Buffer n’est coché (Instagram · Facebook ou YouTube).</p>')
         + kAMain(p)
