@@ -4723,7 +4723,8 @@
   /* ---------- nouvelle KSF : sujets en cartes ---------- */
   function kCarte(p, grand){
     var e = kEtat(p), pod = p.type === "podcast";
-    var ph = p.miniature && /^https?:\/\//.test(p.miniature) ? '<img src="' + esc(lienSur(p.miniature)) + '" alt="" loading="lazy">'
+    var mini = p.miniature && (/^https?:\/\//.test(p.miniature) ? lienSur(p.miniature) : /^miniatures\/[\w.-]+\.(jpe?g|png|webp)$/.test(p.miniature) ? p.miniature : "");
+    var ph = mini ? '<img src="' + esc(mini) + '" alt="" loading="lazy">'
            : '<span class="kph">' + (pod ? "▶︎ Podcast" : "▶︎") + '</span><span class="kpt">' + esc(p.title || "Sans titre") + '</span>';
     return '<button class="kcarte' + (pod ? " pod" : "") + (grand ? " grand" : "") + '" data-kp="' + esc(p.id) + '" title="' + esc((p.title || "") + " — " + e.l) + '">'
       + '<span class="kvis">' + ph + '<span class="klab">' + (pod ? "Podcast" : esc(p.repere && p.repere.length <= 10 && !/[:~]/.test(p.repere) ? p.repere : "Short")) + '</span><span class="kdot ' + esc(e.c || "todo") + ' s-' + esc(p.status || "todo") + '"></span></span>'
