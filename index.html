@@ -704,6 +704,115 @@
       linear-gradient(180deg, #0B3D53 0%, #04202D 70%);
     background-attachment:fixed;
   }
+  /* ---- KSF simplifiée ---- */
+  .kbar2{ display:flex; justify-content:flex-end; gap:8px; margin:14px 0 4px; }
+  .kmenu{ position:relative; }
+  .kmenu > summary{ list-style:none; cursor:pointer; }
+  .kmenu > summary::-webkit-details-marker{ display:none; }
+  .kmenu-l{ position:absolute; right:0; top:calc(100% + 6px); z-index:30; min-width:240px; display:flex; flex-direction:column; padding:6px;
+            background:#06283A; border:1px solid var(--line); border-radius:14px; box-shadow:0 18px 40px -18px rgba(0,0,0,.9); }
+  .kmenu-l button{ text-align:left; font:inherit; font-size:14px; color:var(--ink); background:transparent; border:0; border-radius:9px; padding:9px 12px; cursor:pointer; }
+  .kmenu-l button:hover{ background:rgba(255,255,255,.06); }
+  .kseg{ display:inline-flex; gap:2px; flex-wrap:wrap; margin:10px 0; }
+  .kseg button{ font:inherit; font-size:14px; color:var(--ink-2); background:transparent; border:0; border-radius:99px; padding:7px 13px; cursor:pointer; }
+  .kseg button.on{ background:rgba(168,255,31,.13); color:var(--lime); }
+  .kseg.petit button{ font-size:13px; padding:6px 11px; }
+  .kfil2{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .kpas{ font-size:13px; color:var(--muted); display:flex; gap:6px; align-items:center; }
+  .kmono{ font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); }
+  .kmono.vert{ color:var(--lime); }
+  .kalerte{ width:100%; display:flex; gap:12px; align-items:center; text-align:left; font:inherit; font-size:14px; color:var(--ink); cursor:pointer;
+            background:rgba(255,122,92,.08); border:1px solid rgba(255,122,92,.45); border-radius:12px; padding:11px 14px; margin:10px 0 4px; }
+  .kalerte .kmono{ color:var(--err); white-space:nowrap; }
+  .kliste{ display:flex; flex-direction:column; margin-top:4px; }
+  .krow{ display:grid; grid-template-columns:96px minmax(0,1fr) auto; gap:14px; align-items:center; text-align:left; font:inherit; color:var(--ink);
+         background:transparent; border:0; border-top:1px solid var(--line); padding:13px 8px; cursor:pointer; border-radius:10px; }
+  .krow:hover{ background:rgba(255,255,255,.04); }
+  .krow .kd{ font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); display:flex; flex-direction:column; gap:2px; }
+  .krow .kd i{ font-style:normal; opacity:.75; }
+  .krow .kd.late{ color:var(--err); }
+  .krow .kt{ min-width:0; display:flex; flex-direction:column; }
+  .krow .kt b{ font-size:15px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .krow .kt small{ font-size:13px; color:var(--muted); }
+  .krow .kr{ display:flex; align-items:center; gap:10px; }
+  .kvu2{ font-size:13px; color:var(--muted); white-space:nowrap; }
+  .kpill{ font-family:"Space Mono",monospace; font-size:10.5px; letter-spacing:.06em; padding:3px 9px; border-radius:99px; border:1px solid; white-space:nowrap; }
+  .kpill.todo{ color:var(--muted); border-color:rgba(126,164,179,.45); }
+  .kpill.montage{ color:var(--cyan); border-color:rgba(127,214,255,.45); }
+  .kpill.valid{ color:var(--warn); border-color:rgba(255,194,102,.5); }
+  .kpill.sched{ color:var(--lime); border-color:rgba(168,255,31,.5); }
+  .kpill.done{ color:var(--ok); border-color:rgba(123,227,166,.45); }
+  .kpill.late{ color:var(--err); border-color:rgba(255,122,92,.55); }
+  .kvide{ color:var(--muted); font-size:14px; padding:14px 8px; }
+  .kh3{ font-size:15px; margin:26px 0 6px; color:var(--ink-2); }
+  .ksuj2{ margin-top:16px; }
+  .ksuj-t, .ksuj-ferme{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .ksuj-ferme{ width:100%; font:inherit; color:var(--ink); text-align:left; background:transparent; border:0; border-top:1px solid var(--line); padding:13px 6px; cursor:pointer; }
+  .kinv{ font-size:19px; font-weight:600; }
+  .ksuj-ferme .kinv{ font-size:15px; }
+  .kdates{ font-size:13px; color:var(--muted); }
+  .kprog2{ height:4px; border-radius:4px; background:rgba(255,255,255,.08); margin:10px 0 14px; overflow:hidden; display:flex; }
+  .kprog2 .d{ background:var(--ok); } .kprog2 .s{ background:var(--lime); }
+  .kbande{ display:grid; grid-template-columns:minmax(150px,1.8fr) repeat(auto-fill, minmax(92px,1fr)); gap:10px; align-items:end; }
+  .kcarte{ font:inherit; color:var(--ink); background:transparent; border:1px solid transparent; border-radius:14px; padding:5px; cursor:pointer; text-align:left; }
+  .kcarte:hover{ background:rgba(255,255,255,.04); }
+  .kvis{ position:relative; display:flex; flex-direction:column; justify-content:flex-end; gap:6px; aspect-ratio:9/16; border-radius:10px; overflow:hidden;
+         background:#0A3342; border:1px solid var(--line); padding:9px; }
+  .kcarte.pod .kvis{ aspect-ratio:16/9; }
+  .kvis img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .kph{ font-size:12px; color:rgba(255,255,255,.4); margin-bottom:auto; margin-top:18px; }
+  .kpt{ font-size:11.5px; line-height:1.25; font-weight:600; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+  .klab{ position:absolute; left:7px; top:7px; font-family:"Space Mono",monospace; font-size:9px; letter-spacing:.08em; text-transform:uppercase;
+         color:#fff; background:rgba(4,32,44,.75); padding:2px 6px; border-radius:6px; }
+  .kdot{ position:absolute; right:7px; top:8px; width:9px; height:9px; border-radius:99px; background:var(--muted); box-shadow:0 0 0 2px rgba(4,32,44,.85); }
+  .kdot.s-montage{ background:var(--cyan); } .kdot.s-valid{ background:var(--warn); } .kdot.s-sched{ background:var(--lime); } .kdot.s-done{ background:var(--ok); }
+  .kdot.rouge{ background:var(--err); }
+  .kcd{ display:block; margin-top:6px; font-family:"Space Mono",monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .kgerer{ margin-top:8px; font-size:13px; color:var(--muted); }
+  .kgerer summary{ cursor:pointer; }
+  .kback2{ margin:14px 0 8px; }
+  .kfiche2{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:18px 20px; }
+  .kf-t{ display:flex; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+  .kf-t h2{ font-size:22px; margin:5px 0 2px; line-height:1.25; }
+  .kplat2{ display:flex; gap:6px; flex-wrap:wrap; margin:12px 0; }
+  .kplat2 span{ font-size:12px; color:var(--ink-2); border:1px solid var(--line); border-radius:99px; padding:3px 10px; }
+  .kvals2{ display:flex; gap:10px 22px; flex-wrap:wrap; align-items:center; padding:12px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .kv2{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; font-size:14px; color:var(--muted); }
+  .kv2.ok{ color:var(--lime); } .kv2.no{ color:var(--err); }
+  .kv2 .kvc{ width:100%; margin:0; font-size:13px; color:var(--ink-2); }
+  .lien{ font:inherit; font-size:12.5px; color:var(--muted); background:none; border:0; text-decoration:underline; cursor:pointer; padding:0; }
+  .btn.petit{ font-size:13px; padding:5px 11px; }
+  .kbloc{ margin-top:14px; padding-top:12px; border-top:1px solid var(--line); }
+  .kvals2 + .kbloc{ border-top:0; padding-top:0; }
+  .kdtabs{ display:flex; align-items:center; gap:2px; border-bottom:1px solid var(--line); margin-bottom:10px; flex-wrap:wrap; }
+  .kdtabs > button:not(.btn){ font:inherit; font-size:13px; color:var(--muted); background:none; border:0; border-bottom:2px solid transparent; padding:7px 10px; cursor:pointer; }
+  .kdtabs > button.on{ color:var(--lime); border-bottom-color:var(--lime); }
+  .kdlire{ white-space:pre-line; font-size:14.5px; line-height:1.6; margin:0; }
+  .kdlire.vide{ color:var(--muted); }
+  .kdtxt{ min-height:180px; }
+  .kres-t{ display:flex; align-items:baseline; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+  .kres-t b{ font-size:24px; color:var(--lime); }
+  .kres-l{ display:grid; grid-template-columns:90px minmax(0,1fr) 92px; gap:12px; align-items:center; padding:6px 0; }
+  .kres-n{ font-size:14px; }
+  .kres-l small{ font-size:12px; color:var(--muted); }
+  .kres-v{ text-align:right; font-weight:600; font-size:15px; display:flex; flex-direction:column; }
+  .kres-v small{ font-weight:400; }
+  .kbar3{ height:6px; border-radius:6px; background:rgba(255,255,255,.08); overflow:hidden; margin-bottom:4px; }
+  .kbar3 i{ display:block; height:100%; background:var(--lime); }
+  .kchk{ list-style:none; padding:0; margin:8px 0 10px; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:4px 16px; font-size:14px; color:var(--muted); }
+  .kchk li.ok{ color:var(--ink); }
+  .kconf{ margin-top:12px; border:1px solid rgba(168,255,31,.35); border-radius:14px; padding:14px 16px; background:rgba(168,255,31,.04); }
+  .kconf-l{ border-top:1px solid var(--line); padding:10px 0; }
+  .kconf-l p{ white-space:pre-line; font-size:14px; margin:6px 0 8px; }
+  .kplus2{ margin-top:12px; font-size:14px; }
+  .kplus2 > summary{ cursor:pointer; color:var(--muted); }
+  @media (max-width:640px){
+    .krow{ grid-template-columns:70px minmax(0,1fr); }
+    .krow .kr{ grid-column:2; }
+    .kbande{ grid-template-columns:200px repeat(auto-fill, 100px); grid-auto-flow:column; grid-auto-columns:100px; overflow-x:auto; padding-bottom:6px; }
+    .kres-l{ grid-template-columns:72px minmax(0,1fr) 70px; }
+    .kfiche2{ padding:14px; }
+  }
   body.ksf header.top{ background:rgba(3,26,37,.88); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); }
   body.ksf :is(h1,h2,h3,h4){ font-family:"Inter Tight","IBM Plex Sans",sans-serif; }
   body.ksf h2.sec{ font-family:"Space Mono",monospace; font-weight:700; letter-spacing:.14em; color:var(--lime); }
@@ -2120,7 +2229,7 @@
     PK.enCours = true;
     fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=ksf", { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
       .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
-      .then(function(x){ PK.enCours = false; PK.at = Date.now(); PK.data = x.ok && x.j ? x.j.planning : null; if(VUE === "ksf" && KSF.sous === "planning") rendre(); },
+      .then(function(x){ PK.enCours = false; PK.at = Date.now(); PK.data = x.ok && x.j ? x.j.planning : null; if(VUE === "ksf" && KSF.sous === "production") rendre(); },
             function(){ PK.enCours = false; });
   }
   function estKsfProjet(p){ return /kamel\s*sans\s*filtre|\bksf\b/i.test((p.client || "") + " " + (p.projet || "")); }
@@ -2257,7 +2366,7 @@
     fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=ksf-videos", { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
       .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
       .then(function(x){ PV.enCours = false; PV.at = Date.now(); PV.data = x.ok && x.j ? x.j.planning : null; PV.err = x.ok ? "" : "lecture";
-                         if(VUE === "ksf" && KSF.sous === "videos") rendre(); },
+                         if(VUE === "ksf" && KSF.sous === "production") rendre(); },
             function(){ PV.enCours = false; PV.err = "reseau"; });
   }
   var KV_FILTRES = [["tout","Tout"],["podcast","Épisodes"],["short","Shorts finis"],["brut","Shorts bruts"],["com","Avec commentaires"]];
@@ -2429,7 +2538,7 @@
     { id:"new",    nom:"+ Nouveau projet" }
   ];
   /* KSF a son propre espace : ses rubriques prennent la place des onglets de la Régie. */
-  var K_ONGLETS = [["semaine","Cette semaine"],["planning","Tournages & montages"],["videos","Vidéos en stock"],["cal","Calendrier"],["sujets","Par sujet"],["episodes","Épisodes"],["stats","Stats"]];
+  var K_ONGLETS = [["semaine","Cette semaine"],["sujets","Sujets"],["production","Production"],["stats","Stats"]];
   var DERNIERE_REGIE = "avenir";
   function estKsfVue(){ return /^ksf/.test(VUE); }
   function rendreEspaces(){
@@ -4179,7 +4288,8 @@
   var KS = [], KE = [];
   var KSF = { sous:"semaine", ref:null, filtres:{}, portee:"avenir", id:null, br:null, orig:null, sale:false,
               quitter:false, refus:null, sup:false, retour:"ksf", gen:null, imp:null, statMois:null,
-              supSujet:null, occupe:false, copie:null };
+              supSujet:null, occupe:false, copie:null,
+              groupe:"faire", passes:false, vueSem:"liste", prod:"planning", sujVue:"sujets", edit:false, dtab:null, conf:false, ouvSuj:{} };
 
   /* ---------- dates, heure de Luxembourg ---------- */
   var K_LUX = new Intl.DateTimeFormat("sv-SE", { timeZone:"Europe/Luxembourg", year:"numeric", month:"2-digit",
@@ -4523,25 +4633,129 @@
     if(VUE === "ksf-fiche") return kVueFiche();
     if(VUE === "ksf-gen") return kVueGen();
     if(VUE === "ksf-import") return kVueImport();
-    var h = kHero()
-      + '<div class="kbar"><button class="btn lime" data-knew="">+ Publication</button>'
-      + '<button class="btn" data-kgo="ksf-gen">Générer un sujet</button>'
-      + '<button class="btn" data-kgo="ksf-import">Importer l’Excel</button>'
-      + '<button class="btn ghost" data-kcsv="1">Exporter (CSV)</button></div>';
+    // Anciennes rubriques (lien ou mémoire du navigateur) rangées dans les 4 nouvelles.
+    if(KSF.sous === "cal"){ KSF.sous = "semaine"; KSF.vueSem = "cal"; }
+    if(KSF.sous === "planning" || KSF.sous === "videos"){ KSF.prod = KSF.sous; KSF.sous = "production"; }
+    if(KSF.sous === "episodes"){ KSF.sous = "sujets"; KSF.sujVue = "episodes"; }
+    var h = '<div class="kbar2">'
+      + '<details class="kmenu"><summary class="btn lime">+ Nouveau</summary><div class="kmenu-l">'
+      + '<button data-knew="">Publication</button>'
+      + '<button data-kgo="ksf-gen">Sujet complet (podcast + shorts)</button>'
+      + '<button data-kgo="ksf-import">Importer l’Excel</button></div></details>'
+      + '<details class="kmenu"><summary class="btn ghost" aria-label="Plus d’actions">•••</summary><div class="kmenu-l droite">'
+      + '<button data-kcsv="1">Exporter (CSV)</button><button data-kbuf="1">Actualiser les stats Buffer</button></div></details></div>';
     if(PRET && !KS.length && KSF_REPRISE.length){
       h += '<div class="repri" style="margin-top:14px"><span>Le planning KSF est encore vide ici. Reprenez les '
          + KSF_REPRISE.length + ' publications déjà préparées (sujets 1 à 5) pour démarrer.</span>'
          + '<button class="btn lime" data-kreprise="1"' + (KSF.occupe ? " disabled" : "") + '>'
          + (KSF.occupe ? "Reprise en cours…" : "Reprendre les " + KSF_REPRISE.length + " publications") + '</button></div>';
     }
-    if(KSF.sous === "stats") return h + kVueStats();
-    if(KSF.sous === "episodes") return h + kVueEpisodes();
-    if(KSF.sous === "planning") return h + kVuePlanning();
-    if(KSF.sous === "videos") return h + kVueVideos();
-    h += kRetards();
-    if(KSF.sous === "cal") return h + kFiltres() + kVueCal();
-    if(KSF.sous === "sujets") return h + kFiltres() + kVueSujets();
-    return h + kVueSemaine();
+    if(KSF.sous === "stats") return kHero() + h + kVueStats();
+    if(KSF.sous === "production"){
+      return h + '<div class="kseg" role="group" aria-label="Production">'
+        + [["planning","Tournages et montages"],["videos","Vidéos en stock"]].map(function(x){
+            return '<button data-kprod="' + x[0] + '" class="' + (KSF.prod === x[0] ? "on" : "") + '">' + x[1] + '</button>'; }).join("")
+        + '</div>' + (KSF.prod === "videos" ? kVueVideos() : kVuePlanning());
+    }
+    if(KSF.sous === "sujets"){
+      return h + '<div class="kseg" role="group" aria-label="Sujets">'
+        + [["sujets","Sujets"],["episodes","Épisodes en stock"]].map(function(x){
+            return '<button data-ksujv="' + x[0] + '" class="' + (KSF.sujVue === x[0] ? "on" : "") + '">' + x[1] + '</button>'; }).join("")
+        + '</div>' + (KSF.sujVue === "episodes" ? kVueEpisodes() : kVueSujets2());
+    }
+    return h + kRetard1() + kVueListe();
+  }
+
+  /* ---------- nouvelle KSF : liste « Cette semaine » ---------- */
+  function kGrp(p){ return p.status === "done" ? "pub" : p.status === "sched" ? "prog" : "faire"; }
+  function kPill(p){
+    var e = kEtat(p), c = e.c === "rouge" ? "late" : ({ todo:"todo", montage:"montage", valid:"valid", sched:"sched", done:"done" })[p.status || "todo"] || "todo";
+    if(e.c === "publie") c = "done";
+    return '<span class="kpill ' + c + '">' + esc(e.l) + '</span>';
+  }
+  function kJourC(d){ var o = dateObj(d); return o ? o.toLocaleDateString("fr-FR", { weekday:"short", day:"numeric", month:"short" }) : ""; }
+  function kRetard1(){
+    var l = kTri(KS.filter(function(p){ return kFlags(p).late; }));
+    if(!l.length) return "";
+    var p = l[0];
+    return '<button class="kalerte" data-kp="' + esc(p.id) + '"><span class="kmono">' + (l.length > 1 ? l.length + " en retard" : "En retard") + '</span>'
+      + '<span>' + esc(K_TYPES[p.type] || "") + ' « ' + esc(p.title || "Sans titre") + ' » · ' + esc(kJourC(p.date)) + ' · ' + esc(kSt(p.status).l)
+      + (l.length > 1 ? ' — et ' + (l.length - 1) + ' autre' + (l.length > 2 ? 's' : '') : '') + '</span></button>';
+  }
+  function kVueListe(){
+    var t = kAuj(), g = KSF.groupe || "faire", pas = !!KSF.passes;
+    var vis = KS.filter(function(p){
+      var x = kGrp(p);
+      if(x === "faire") return pas || kFlags(p).late || p.date >= t;
+      if(x === "prog") return pas || p.date >= kAdd(t, -1);
+      return pas || p.date >= kAdd(t, -14);
+    });
+    var n = { faire:0, prog:0, pub:0 }; vis.forEach(function(p){ n[kGrp(p)]++; });
+    var h = '<div class="kfil2"><div class="kseg" role="group" aria-label="Filtrer">'
+      + [["faire","À faire"],["prog","Programmé"],["pub","Publié"]].map(function(x){
+          return '<button data-kgrp="' + x[0] + '" class="' + (g === x[0] ? "on" : "") + '">' + x[1] + ' · ' + n[x[0]] + '</button>'; }).join("")
+      + '</div><div style="flex:1"></div>'
+      + '<label class="kpas"><input type="checkbox" data-kpas="1"' + (pas ? " checked" : "") + '> Voir les passés</label>'
+      + '<div class="kseg petit" role="group" aria-label="Affichage">'
+      + '<button data-ksem="liste" class="' + (KSF.vueSem !== "cal" ? "on" : "") + '">Liste</button>'
+      + '<button data-ksem="cal" class="' + (KSF.vueSem === "cal" ? "on" : "") + '">Calendrier</button></div></div>';
+    if(KSF.vueSem === "cal"){ KSF.filtres = {}; return h + kVueCal(); }
+    var l = kTri(vis.filter(function(p){ return kGrp(p) === g; }));
+    if(g === "pub") l.reverse();
+    if(!l.length) return h + '<p class="kvide">' + (g === "faire" ? "Rien à faire pour l’instant." : g === "prog" ? "Rien de programmé." : "Rien de publié ces deux dernières semaines.") + '</p>';
+    return h + '<div class="kliste">' + l.map(function(p){
+      var v = kVues(p), late = kFlags(p).late;
+      return '<button class="krow" data-kp="' + esc(p.id) + '">'
+        + '<span class="kd' + (late ? " late" : "") + '">' + esc(kJourC(p.date)) + (p.time ? '<i>' + esc(p.time) + '</i>' : '') + '</span>'
+        + '<span class="kt"><b>' + esc(p.title || "Sans titre") + '</b><small>' + esc(K_TYPES[p.type] || "")
+        + (p.guest ? ' · ' + esc(p.guest) : '') + (p.sujet ? ' · S' + esc(p.sujet) : '') + '</small></span>'
+        + '<span class="kr">' + (v ? '<span class="kvu2">' + kK(v) + ' vues</span>' : '') + kPill(p) + '</span></button>';
+    }).join("") + '</div>';
+  }
+
+  /* ---------- nouvelle KSF : sujets en cartes ---------- */
+  function kCarte(p, grand){
+    var e = kEtat(p), pod = p.type === "podcast";
+    var ph = p.miniature && /^https?:\/\//.test(p.miniature) ? '<img src="' + esc(lienSur(p.miniature)) + '" alt="" loading="lazy">'
+           : '<span class="kph">' + (pod ? "▶︎ Podcast" : "▶︎") + '</span><span class="kpt">' + esc(p.title || "Sans titre") + '</span>';
+    return '<button class="kcarte' + (pod ? " pod" : "") + (grand ? " grand" : "") + '" data-kp="' + esc(p.id) + '" title="' + esc((p.title || "") + " — " + e.l) + '">'
+      + '<span class="kvis">' + ph + '<span class="klab">' + (pod ? "Podcast" : esc(p.repere && p.repere.length <= 10 && !/[:~]/.test(p.repere) ? p.repere : "Short")) + '</span><span class="kdot ' + esc(e.c || "todo") + ' s-' + esc(p.status || "todo") + '"></span></span>'
+      + '<span class="kcd">' + esc(kJourC(p.date)) + '</span></button>';
+  }
+  function kVueSujets2(){
+    var t = kAuj(), suj = kSujets();
+    if(!suj.length) return '<p class="kvide">Aucun sujet pour l’instant. « + Nouveau › Sujet complet » crée le podcast et ses shorts d’un coup.</p>';
+    var enCours = suj.filter(function(n){ var ps = kSujetPosts(n); return ps.some(function(p){ return p.status !== "done"; }) || kAdd(ps[ps.length - 1].date, 1) >= t; });
+    var finis = suj.filter(function(n){ return enCours.indexOf(n) < 0; }).reverse();
+    var stock = kStock(), tous = suj;
+    function bloc(n, ouvert){
+      var ps = kSujetPosts(n), inv = kInvite(n), nd = ps.filter(function(p){ return p.status === "done"; }).length;
+      var ns = ps.filter(function(p){ return p.status === "sched"; }).length, vu = ps.reduce(function(a, p){ return a + kVues(p); }, 0);
+      var tete = '<span class="kmono vert">Sujet ' + n + '</span><b class="kinv">' + esc(inv || "Invité à définir") + '</b>'
+        + '<span class="kdates">' + esc(jourCourt(ps[0].date)) + ' → ' + esc(jourCourt(ps[ps.length - 1].date)) + '</span><span style="flex:1"></span>'
+        + (vu ? '<span class="kvu2">' + kK(vu) + ' vues</span>' : '') + '<span class="kdates">' + (nd + ns) + ' / ' + ps.length + ' prêts</span>';
+      if(!ouvert) return '<button class="ksuj-ferme" data-kouv="' + n + '">' + tete + '<span aria-hidden="true">›</span></button>';
+      var h = '<section class="ksuj2"><div class="ksuj-t">' + tete + (KSF.ouvSuj[n] ? '<button class="btn ghost petit" data-kouv="' + n + '">Replier</button>' : '') + '</div>'
+        + '<div class="kprog2"><i class="d" style="width:' + (nd / ps.length * 100) + '%"></i><i class="s" style="width:' + (ns / ps.length * 100) + '%"></i></div>'
+        + '<div class="kbande">' + ps.map(function(p){ return kCarte(p); }).join("") + '</div>';
+      if(!kBloque(ps)){
+        h += '<details class="kgerer"><summary>Gérer le sujet</summary><div class="kops">'
+          + '<select data-kepsel="' + n + '" aria-label="Changer l’invité du sujet ' + n + '"><option value="">Changer l’invité…</option>'
+          + stock.map(function(e){ return '<option value="' + esc(e.id) + '">' + esc(e.guest) + (e.shoot ? " (tourné le " + esc(jourCourt(e.shoot)) + ")" : "") + '</option>'; }).join("")
+          + (inv || kAContenu(ps) ? '<option value="-">Remettre l’épisode en stock</option>' : '') + '</select>'
+          + '<select data-kech="' + n + '" aria-label="Échanger le sujet ' + n + '"><option value="">Échanger avec…</option>'
+          + tous.filter(function(x){ return x !== n && !kBloque(kSujetPosts(x)); }).map(function(x){
+              return '<option value="' + x + '">Sujet ' + x + ' — ' + esc(kInvite(x) || "invité à définir") + '</option>'; }).join("") + '</select>'
+          + '<button class="btn danger" data-ksupsuj="' + n + '">' + (KSF.supSujet === n ? "Confirmer : supprimer " + ps.length + " publications" : "Supprimer le sujet") + '</button></div></details>';
+      }
+      return h + '</section>';
+    }
+    var h = enCours.map(function(n){ return bloc(n, true); }).join("");
+    if(finis.length) h += '<h3 class="kh3">Sujets terminés</h3>' + finis.map(function(n){ return bloc(n, !!KSF.ouvSuj[n]); }).join("");
+    var hors = kTri(KS.filter(function(p){ return (p.type === "story" || p.sujet === "" || p.sujet == null) && p.date >= kAdd(t, -1); }));
+    if(hors.length) h += '<h3 class="kh3">Hors sujet</h3><div class="kliste">' + hors.map(function(p){
+      return '<button class="krow" data-kp="' + esc(p.id) + '"><span class="kd">' + esc(kJourC(p.date)) + '</span><span class="kt"><b>' + esc(p.title || "Sans titre") + '</b><small>' + esc(K_TYPES[p.type] || "") + '</small></span><span class="kr">' + kPill(p) + '</span></button>'; }).join("") + '</div>';
+    return h + (KSF.occupe ? '<div class="bandeau">Mise à jour des sujets en cours…</div>' : '');
   }
 
   /* Bandeau façon viseur de caméra, repris de la DA de l'émission. */
@@ -4693,6 +4907,7 @@
     if(!KSF.br.vK) KSF.br.vK = kBlanc();
     if(!KSF.br.vC) KSF.br.vC = kBlanc();
     KSF.sale = false; KSF.quitter = false; KSF.refus = null; KSF.sup = false;
+    KSF.edit = !id; KSF.dtab = null; KSF.conf = false;
     VUE = "ksf-fiche"; rendre(); window.scrollTo(0, 0);
   }
   function kSujetDe(date){
@@ -4701,6 +4916,7 @@
     return "";
   }
   function kVueFiche(){
+    if(KSF.id && !KSF.edit) return kVueLecture();
     var p = KSF.br, neuf = !KSF.id, e = kEtat(p);
     var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">‹ Retour</button>'
       + '<div class="kfl">' + kType(p) + (p.sujet ? 'Sujet ' + esc(p.sujet) : '') + (p.repere ? ' · ' + esc(p.repere) : '') + '</div>'
@@ -4720,6 +4936,7 @@
        + '<div class="f"><label for="kf_rep">Repère</label><input type="text" id="kf_rep" data-kf="repere" value="' + esc(p.repere || "") + '" placeholder="Teaser 2"></div>'
        + '<div class="f"><label for="kf_suj">Sujet n°</label><input type="text" inputmode="numeric" id="kf_suj" data-kf="sujet" value="' + esc(p.sujet == null ? "" : p.sujet) + '"></div></div>'
        + '<div class="f"><label for="kf_title">Titre</label><input type="text" id="kf_title" data-kf="title" value="' + esc(p.title || "") + '"></div>'
+       + '<details class="kplus2"' + (neuf ? " open" : "") + '><summary>Plus de détails : invité, thème, plateformes, lien, notes</summary>'
        + '<div class="row2"><div class="f"><label for="kf_guest">Invité</label><input type="text" id="kf_guest" data-kf="guest" value="' + esc(p.guest || "") + '"></div>'
        + '<div class="f"><label for="kf_theme">Thème</label><input type="text" id="kf_theme" data-kf="theme" value="' + esc(p.theme || "") + '"></div></div>'
        + '<div class="f"><label>Plateformes</label><div class="checks kplats">'
@@ -4729,68 +4946,108 @@
          }).join("") + '</div></div>'
        + '<div class="f"><label for="kf_link">Lien de la vidéo</label><input type="text" id="kf_link" data-kf="link" value="' + esc(p.link || "") + '" placeholder="https://…">'
        + (p.link && /^https?:\/\//.test(p.link) ? '<a class="maps" href="' + esc(lienSur(p.link)) + '" target="_blank" rel="noopener">Ouvrir la vidéo ↗</a>' : '') + '</div>'
-       + '<div class="f"><label for="kf_notes">Notes</label><textarea id="kf_notes" data-kf="notes">' + esc(p.notes || "") + '</textarea></div></div>';
+       + '<div class="f"><label for="kf_notes">Notes</label><textarea id="kf_notes" data-kf="notes">' + esc(p.notes || "") + '</textarea></div></details></div>';
 
-    h += '<div class="blk"><h3>Validations</h3>';
-    if(neuf) h += '<p class="kpied" style="margin:0">Les validations s’ouvrent une fois la publication créée.</p>';
-    else K_VAL.forEach(function(v){
-      var x = p[v.k] || kBlanc(), s = x.s || "wait";
-      h += '<div class="kval"><div class="kvh"><b>' + v.l + '</b><span class="kvs ' + s + '">' + K_VST[s] + '</span>'
-         + (s !== "wait" && x.at ? '<span class="kvq">' + (x.by ? "cochée par " + esc(x.by) + ", " : "") + esc(kIlya(x.at)) + '</span>' : '') + '</div>'
-         + (x.c ? '<p class="kvc">« ' + esc(x.c) + ' »</p>' : '');
-      if(KSF.refus === v.k){
-        h += '<div class="f"><label for="kf_refus">Pourquoi ' + (v.k === "vK" ? "Kamel" : "le client") + ' refuse-t-il ? *</label><textarea id="kf_refus"></textarea></div>'
-           + '<div class="actions"><button class="btn danger" data-krefus="' + v.k + '">Enregistrer le refus</button><button class="btn ghost" data-kval="' + v.k + ':annuler">Annuler</button></div>';
-      } else {
-        h += '<div class="actions">'
-           + (s !== "ok" ? '<button class="btn" data-kval="' + v.k + ':ok">✓ Acceptée</button>' : '')
-           + (s !== "no" ? '<button class="btn" data-kval="' + v.k + ':no">✗ Refusée…</button>' : '')
-           + (s !== "wait" ? '<button class="btn ghost" data-kval="' + v.k + ':wait">Remettre en attente</button>' : '')
-           + '</div>';
-      }
-      h += '</div>';
-    });
-    if(!neuf) h += '<p class="kpied">Kamel et le client valident par message ; l’équipe coche ici pour eux. '
-                 + '« Programmé » n’est possible qu’avec les deux validations.' + (MOI ? '' : ' Choisissez votre nom dans « Vous êtes » pour signer vos coches.') + '</p>';
-    h += '</div>';
-
-    var descs = K_DESC.filter(function(d){ return d.si(p.platforms || []); });
-    h += '<div class="blk"><h3>Descriptions</h3>';
-    if(!descs.length) h += '<p class="kpied" style="margin:0">Cochez au moins une plateforme.</p>';
-    descs.forEach(function(d){
-      h += '<div class="kdesc"><div class="kdh"><label for="kf_' + d.k + '">' + d.l + (kEstModele(d.k, p[d.k]) ? ' <span class="conf">(modèle seul, à compléter)</span>' : '') + '</label>'
-         + '<button type="button" class="btn' + (KSF.copie === d.k ? " copie" : "") + '" data-kcopy="' + d.k + '">' + (KSF.copie === d.k ? "Copié ✓" : "Copier") + '</button></div>'
-         + '<textarea id="kf_' + d.k + '" data-kf="' + d.k + '">' + esc(p[d.k] || "") + '</textarea></div>';
-    });
-    h += '</div>';
-
-    if(!neuf){
-      var st = kStats(p);
-      h += '<div class="blk"><h3>Résultats (Buffer)</h3>';
-      if(st.length){
-        h += '<div class="kres">' + st.map(function(x){
-          var fb = x.svc === "facebook";
-          return '<div><div class="k">' + KB_NOM[x.svc] + '</div><div class="v">' + kNf(fb ? x.impressions : x.views) + '</div>'
-               + '<div class="d">' + (fb ? "affichages" : "vues") + ' · publié à ' + esc(x.time) + '</div>'
-               + '<div class="d">' + [x.reactions != null ? kNf(x.reactions) + " réactions" : "", x.comments != null ? kNf(x.comments) + " comm." : "",
-                                      x.shares != null ? kNf(x.shares) + " partages" : "", x.saves != null ? kNf(x.saves) + " enreg." : "",
-                                      x.er ? String(Math.round(x.er * 10) / 10).replace(".", ",") + " % engagement" : ""].filter(Boolean).join(" · ") + '</div></div>';
-        }).join("") + '</div>';
-        if(p.status !== "done") h += '<div class="actions"><button class="btn lime" data-kpub="1">Marquer Publié</button></div>';
-      } else {
-        h += '<p class="kpied" style="margin:0">' + (p.date > kAuj() ? "Pas encore publiée." : "Aucune publication trouvée sur Buffer ce jour-là (Instagram, Facebook, YouTube).") + '</p>';
-      }
-      h += '<p class="kpied">' + esc(kbEtat()) + '</p></div>';
-    }
+    h += '<div class="blk"><h3>Descriptions</h3>' + kDescOnglets(p, true) + '</div>';
 
     h += '<div class="actions"><button class="btn lime" data-ksave="1">' + (neuf ? "Créer la publication" : "Enregistrer") + '</button>'
-       + (neuf ? '' : '<button class="btn" data-kdup="1">Dupliquer</button><button class="btn danger" data-ksup="1">' + (KSF.sup ? "Confirmer la suppression" : "Supprimer") + '</button>')
+       + (neuf ? '' : '<button class="btn ghost" data-kedit="0">Annuler</button>')
        + '</div>';
     if(!neuf && KSF.orig && KSF.orig.updatedAt){
       h += '<p class="kpied">Enregistré · modifié ' + (KSF.orig.editedBy ? "par " + esc(KSF.orig.editedBy) + " " : "") + esc(kIlya(KSF.orig.updatedAt))
          + (KSF.orig.editedFields && KSF.orig.editedFields.length ? " (" + esc(KSF.orig.editedFields.map(function(f){ return K_NOMS[f] || f; }).join(", ")) + ")" : "") + '</p>';
     }
     return h;
+  }
+
+  /* ---------- nouvelle KSF : fiche en lecture ---------- */
+  var K_PLNOM = { li:"LinkedIn", igfb:"Instagram · Facebook", tt:"TikTok", yt:"YouTube" };
+  function kDescOnglets(p, edit){
+    var descs = K_DESC.filter(function(d){ return d.si(p.platforms || []); });
+    if(!descs.length) return '<p class="kpied" style="margin:0">Cochez au moins une plateforme.</p>';
+    if(!KSF.dtab || !descs.some(function(d){ return d.k === KSF.dtab; })) KSF.dtab = descs[0].k;
+    var nom = { descLI:"LinkedIn", descIG:"Instagram · TikTok", descYT:"YouTube" }, k = KSF.dtab, v = p[k] || "", modele = kEstModele(k, v);
+    return '<div class="kdtabs">' + descs.map(function(d){ return '<button data-kdtab="' + d.k + '" class="' + (d.k === k ? "on" : "") + '">' + nom[d.k] + '</button>'; }).join("")
+      + '<span style="flex:1"></span><button class="btn ghost petit' + (KSF.copie === k ? " copie" : "") + '" data-kcopy="' + k + '">' + (KSF.copie === k ? "Copié ✓" : "Copier") + '</button></div>'
+      + (edit ? '<textarea id="kf_' + k + '" data-kf="' + k + '" class="kdtxt">' + esc(v) + '</textarea>'
+              : '<p class="kdlire' + (modele ? " vide" : "") + '">' + (modele ? "Pas encore de description (seulement le modèle)." : esc(v)) + '</p>');
+  }
+  function kManques(p){
+    var m = [];
+    if(kv(p, "vK") !== "ok") m.push("validation de Kamel");
+    if(kv(p, "vC") !== "ok") m.push("validation du client");
+    if(!(p.link && /^https?:\/\//.test(p.link))) m.push("lien de la vidéo finale");
+    K_DESC.forEach(function(d){ if(d.si(p.platforms || []) && kEstModele(d.k, p[d.k])) m.push(d.l.replace("Description ", "description ")); });
+    return m;
+  }
+  function kResultats(p){
+    var st = kStats(p);
+    if(!st.length) return p.date <= kAuj() && p.status === "done" ? '<div class="kbloc"><span class="kmono">Résultats</span><p class="kpied">Pas encore de statistiques Buffer pour cette publication.</p></div>' : "";
+    var val = function(x){ return x.svc === "facebook" ? (x.impressions || 0) : (x.views || 0); };
+    var tot = st.reduce(function(a, x){ return a + val(x); }, 0), max = Math.max.apply(null, st.map(val).concat([1]));
+    var h = '<div class="kbloc"><div class="kres-t"><span class="kmono">Résultats</span><b>' + kNf(tot) + '</b><span class="kpied">vues et affichages au total</span></div>';
+    st.forEach(function(x){
+      var v = val(x), er = x.er ? String(Math.round(x.er * 10) / 10).replace(".", ",") + " % d’engagement" : "";
+      h += '<div class="kres-l"><span class="kres-n">' + KB_NOM[x.svc] + '</span><div><div class="kbar3"><i style="width:' + Math.round(v / max * 100) + '%"></i></div>'
+        + '<small>' + [x.reactions != null ? kNf(x.reactions) + " réactions" : "", x.comments != null ? kNf(x.comments) + " commentaires" : "", er].filter(Boolean).join(" · ") + '</small></div>'
+        + '<span class="kres-v">' + kNf(v) + '<small>' + (x.svc === "facebook" ? "affichages" : "vues") + '</small></span></div>';
+    });
+    var absents = (p.platforms || []).filter(function(k){ return k === "tt" || k === "li"; });
+    if(absents.length) h += '<p class="kpied">' + absents.map(function(k){ return K_PLNOM[k]; }).join(" et ") + ' : pas de statistiques, non relié à Buffer.</p>';
+    return h + '</div>';
+  }
+  function kBlocPub(p){
+    if(p.status === "done") return "";
+    if(p.status === "sched") return '<div class="kbloc"><span class="kmono vert">Programmé</span><p style="margin:6px 0 10px">' + esc(kJourC(p.date)) + (p.time ? ' à ' + esc(p.time) : '')
+      + ' sur ' + esc((p.platforms || []).map(function(k){ return K_PLNOM[k]; }).join(", ")) + '.</p><div class="actions"><button class="btn" data-kpub="1">Marquer publié</button></div></div>';
+    var m = kManques(p), ok = !m.length;
+    var h = '<div class="kbloc"><span class="kmono">Publication</span><ul class="kchk">'
+      + [["Kamel a validé", kv(p, "vK") === "ok"], ["Le client a validé", kv(p, "vC") === "ok"], ["Lien de la vidéo finale", !!(p.link && /^https?:\/\//.test(p.link))],
+         ["Descriptions rédigées", !m.some(function(x){ return /description/.test(x); })]].map(function(x){
+          return '<li class="' + (x[1] ? "ok" : "") + '">' + (x[1] ? "✓" : "○") + ' ' + x[0] + '</li>'; }).join("") + '</ul>'
+      + '<div class="actions" style="align-items:center"><button class="btn' + (ok ? " lime" : " ghost") + '" data-kprog="1">Programmer dans Buffer</button>'
+      + '<span class="kpied" style="margin:0">' + (ok ? "Tout est prêt." : "Il manque : " + esc(m.join(", ")) + ".") + '</span></div>';
+    if(KSF.conf && ok){
+      var txt = { igfb:p.descIG, tt:p.descIG, yt:p.descYT, li:p.descLI }, cle = { igfb:"descIG", tt:"descIG", yt:"descYT", li:"descLI" };
+      h += '<div class="kconf"><span class="kmono vert">À programmer dans Buffer</span>'
+        + '<p class="kpied">' + esc(kJourC(p.date)) + (p.time ? ' à ' + esc(p.time) : '') + ' · vidéo : <a href="' + esc(lienSur(p.link)) + '" target="_blank" rel="noopener">ouvrir le lien ↗</a></p>'
+        + (p.platforms || []).map(function(k){
+            var suivi = k === "igfb" || k === "yt";
+            return '<div class="kconf-l"><b>' + K_PLNOM[k] + (suivi ? "" : ' <span class="kpied">(pas encore dans Buffer : à publier à la main)</span>') + '</b>'
+              + '<p>' + esc(txt[k] || "") + '</p><button class="btn ghost petit" data-kcopy="' + cle[k] + '">' + (KSF.copie === cle[k] ? "Copié ✓" : "Copier le texte") + '</button></div>'; }).join("")
+        + '<div class="actions"><a class="btn" href="https://publish.buffer.com" target="_blank" rel="noopener">Ouvrir Buffer ↗</a>'
+        + '<button class="btn lime" data-ksched="1">C’est programmé</button><button class="btn ghost" data-kprog="0">Fermer</button></div>'
+        + '<p class="kpied">Collez chaque texte dans Buffer avec la vidéo, à la date prévue, puis cliquez « C’est programmé ». L’envoi direct depuis la Régie viendra ensuite.</p></div>';
+    }
+    return h + '</div>';
+  }
+  function kVueLecture(){
+    var p = KSF.br;
+    var h = '<button class="back kback2" data-kback="1">‹ Retour</button><section class="kfiche2">'
+      + '<div class="kf-t"><div style="flex:1;min-width:0"><span class="kmono">' + esc(kJourC(p.date)) + (p.time ? ' · ' + esc(p.time) : '') + ' · ' + esc(K_TYPES[p.type] || "")
+      + (p.sujet ? ' · Sujet ' + esc(p.sujet) : '') + (p.repere ? ' · ' + esc(p.repere) : '') + '</span>'
+      + '<h2>' + esc(p.title || "Sans titre") + '</h2>' + (p.guest ? '<div class="kpied" style="margin:0">' + esc(p.guest) + (p.theme ? ' · ' + esc(p.theme) : '') + '</div>' : '') + '</div>'
+      + kPill(p) + '<button class="btn" data-kedit="1">Modifier</button></div>'
+      + '<div class="kplat2">' + (p.platforms || []).map(function(k){ return '<span>' + K_PLNOM[k] + '</span>'; }).join("") + '</div>';
+    h += '<div class="kvals2">';
+    K_VAL.forEach(function(v){
+      var x = p[v.k] || kBlanc(), st = x.s || "wait";
+      h += '<div class="kv2 ' + st + '"><span>' + (st === "ok" ? "✓" : st === "no" ? "✗" : "○") + ' ' + v.l + ' ' + (st === "ok" ? "a validé" : st === "no" ? "a refusé" : "en attente") + '</span>'
+        + (st !== "ok" ? '<button class="btn ghost petit" data-kval="' + v.k + ':ok">Marquer validé</button>' : '')
+        + (st === "wait" ? '<button class="lien" data-kval="' + v.k + ':no">refusé…</button>' : '')
+        + (st !== "wait" ? '<button class="lien" data-kval="' + v.k + ':wait">remettre en attente</button>' : '')
+        + (x.c ? '<p class="kvc">« ' + esc(x.c) + ' »</p>' : '') + '</div>';
+      if(KSF.refus === v.k) h += '<div class="f" style="width:100%"><label for="kf_refus">Pourquoi ' + (v.k === "vK" ? "Kamel" : "le client") + ' refuse-t-il ? *</label><textarea id="kf_refus"></textarea>'
+        + '<div class="actions"><button class="btn danger" data-krefus="' + v.k + '">Enregistrer le refus</button><button class="btn ghost" data-kval="' + v.k + ':annuler">Annuler</button></div></div>';
+    });
+    h += '</div>';
+    h += '<div class="kbloc">' + kDescOnglets(p, false) + '</div>';
+    h += kResultats(p) + kBlocPub(p);
+    if(p.notes) h += '<details class="kplus2"><summary>Notes</summary><p class="kdlire">' + esc(p.notes) + '</p></details>';
+    h += '<details class="kplus2"><summary>Autres actions</summary><div class="actions"><button class="btn" data-kdup="1">Dupliquer</button>'
+      + '<button class="btn danger" data-ksup="1">' + (KSF.sup ? "Confirmer la suppression" : "Supprimer") + '</button></div></details>';
+    if(KSF.orig && KSF.orig.updatedAt) h += '<p class="kpied">Modifié ' + (KSF.orig.editedBy ? "par " + esc(KSF.orig.editedBy) + " " : "") + esc(kIlya(KSF.orig.updatedAt)) + '. ' + esc(kbEtat()) + '</p>';
+    return h + '</section>';
   }
   function kEnregistrer(){
     var p = KSF.br;
@@ -4812,7 +5069,7 @@
     kMaj(id, patch).then(function(){
       var x = KS.filter(function(q){ return q.id === id; })[0];
       if(x){ KSF.orig = kCopie(x); KSF.br = kCopie(x); }
-      KSF.sale = false; toast("Enregistré."); rendre();
+      KSF.sale = false; KSF.edit = false; toast("Enregistré."); rendre();
     }, kEchec);
   }
   function kValider(k, s, com){
@@ -5342,6 +5599,28 @@
       KSF.ref = n ? new Date(r.getFullYear(), r.getMonth() + n, 1, 12) : null; rendre();
     });
     kSur("[data-kp]", "click", function(b){ kOuvrir(b.dataset.kp); });
+    kSur("[data-kgrp]", "click", function(b){ KSF.groupe = b.dataset.kgrp; rendre(); });
+    kSur("[data-kpas]", "change", function(b){ KSF.passes = b.checked; rendre(); });
+    kSur("[data-ksem]", "click", function(b){ KSF.vueSem = b.dataset.ksem; rendre(); });
+    kSur("[data-kprod]", "click", function(b){ KSF.prod = b.dataset.kprod; rendre(); });
+    kSur("[data-ksujv]", "click", function(b){ KSF.sujVue = b.dataset.ksujv; rendre(); });
+    kSur("[data-kouv]", "click", function(b){ var n = b.dataset.kouv; KSF.ouvSuj[n] = !KSF.ouvSuj[n]; rendre(); });
+    kSur("[data-kdtab]", "click", function(b){ KSF.dtab = b.dataset.kdtab; rendre(); });
+    kSur("[data-kedit]", "click", function(b){
+      if(b.dataset.kedit === "0"){ if(KSF.orig) KSF.br = kCopie(KSF.orig); KSF.sale = false; KSF.edit = false; }
+      else KSF.edit = true;
+      rendre(); window.scrollTo(0, 0);
+    });
+    kSur("[data-kprog]", "click", function(b){
+      if(b.dataset.kprog === "0"){ KSF.conf = false; rendre(); return; }
+      var m = kManques(KSF.br);
+      if(m.length){ toast("Pas encore prêt : il manque " + m.join(", ") + "."); return; }
+      KSF.conf = true; rendre();
+    });
+    kSur("[data-ksched]", "click", function(){
+      var id = KSF.id;
+      kMaj(id, { status:"sched" }).then(function(){ KSF.br.status = "sched"; if(KSF.orig) KSF.orig.status = "sched"; KSF.conf = false; toast("Marquée Programmé."); rendre(); }, kEchec);
+    });
     kSur("[data-knew]", "click", function(b){ kOuvrir(null, b.dataset.knew || kAuj()); });
     kSur("[data-kgo]", "click", function(b){
       KSF.retour = "ksf"; VUE = b.dataset.kgo;
@@ -5350,6 +5629,7 @@
       rendre(); window.scrollTo(0, 0);
     });
     kSur("[data-kcsv]", "click", kCsv);
+    kSur(".kmenu-l button", "click", function(b){ var d = b.closest("details"); if(d) d.open = false; });
     kSur("[data-kreprise]", "click", function(b){
       if(KS.length || KSF.occupe) return;
       KSF.occupe = true; rendre();
