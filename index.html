@@ -116,9 +116,11 @@
   .pill.publie  { border-color:var(--ok); color:var(--ok); }
 
   .fiche-head{ background:var(--navy); color:#fff; border-radius:15px; padding:18px 18px 16px; margin-top:18px; }
-  .fiche-head .back{ border:0; background:rgba(255,255,255,.12); color:#fff; font:inherit; font-size:13px;
-                     padding:5px 12px; border-radius:20px; cursor:pointer; }
-  .fiche-head .back:hover{ background:rgba(255,255,255,.2); }
+  /* Bouton « Retour » : bien visible partout (pastille citron) */
+  .back{ display:inline-flex; align-items:center; gap:6px; border:0; background:var(--lime); color:var(--lime-ink); font:inherit; font-size:14.5px; font-weight:700;
+         padding:9px 18px; border-radius:99px; cursor:pointer; box-shadow:0 2px 10px rgba(0,0,0,.25); }
+  .back:hover{ filter:brightness(1.07); }
+  .back:focus-visible{ outline:3px solid var(--cyan); outline-offset:2px; }
   .fiche-head h2{ font-family:"Poppins",sans-serif; font-size:23px; margin:13px 0 0; letter-spacing:-.02em; }
   .fiche-head .who{ opacity:.85; font-size:14px; margin-top:3px; }
   .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-top:15px; }
@@ -788,6 +790,12 @@
   .kdtabs > button:not(.btn){ font:inherit; font-size:13px; color:var(--muted); background:none; border:0; border-bottom:2px solid transparent; padding:7px 10px; cursor:pointer; }
   .kdtabs > button.on{ color:var(--lime); border-bottom-color:var(--lime); }
   .kdlire{ white-space:pre-line; font-size:14.5px; line-height:1.6; margin:0; }
+  .kyt3{ display:grid; grid-template-columns:auto 1fr auto auto; gap:8px 10px; align-items:center; margin-top:8px; }
+  .kyt3 .l{ font-weight:700; color:var(--muted); }
+  .kyt3 .t{ font-size:15px; line-height:1.4; overflow-wrap:anywhere; }
+  .kyt3 .t.kytvide{ color:var(--muted); font-style:italic; }
+  .kyt3 .n{ font-size:12px; color:var(--muted); white-space:nowrap; }
+  .kyt3 .n.trop{ color:#e5484d; font-weight:700; }
   .kdlire.vide{ color:var(--muted); }
   .kdtxt{ min-height:180px; }
   .kres-t{ display:flex; align-items:baseline; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
@@ -4279,19 +4287,21 @@
     descLI: "\n\n📽️ Découvrez l’épisode complet sur YouTube : " + K_YT + "\n🎧 Et sur toutes les plateformes d’écoute : " + K_AUSHA + "\n\n#KamelSansFiltre",
     descIG: "\n\n🎧 Épisode complet disponible sur toutes nos plateformes (lien en bio).\n\n#KamelSansFiltre",
     descTT: "\n\n🎧 Épisode complet disponible sur toutes nos plateformes.\n\n#KamelSansFiltre",
-    descYT: "\n\n📽️ Épisode complet sur YouTube : " + K_YT + "\n🎧 Et sur toutes les plateformes d’écoute : " + K_AUSHA + "\n\n#KamelSansFiltre"
+    descYT: "\n\n📽️ Épisode complet sur YouTube : " + K_YT + "\n🎧 Et sur toutes les plateformes d’écoute : " + K_AUSHA + "\n\n#KamelSansFiltre",
+    descAU: ""   // Ausha (diffusé sur Spotify, Apple Podcasts…) : pas de modèle
   };
   var K_DESC = [
     { k:"descLI", l:"Description LinkedIn", si:function(pl){ return pl.indexOf("li") >= 0; } },
     { k:"descIG", l:"Description Instagram / Facebook", si:function(pl){ return pl.indexOf("igfb") >= 0; } },
     { k:"descTT", l:"Description TikTok", si:function(pl){ return pl.indexOf("tt") >= 0; } },
-    { k:"descYT", l:"Description YouTube", si:function(pl){ return pl.indexOf("yt") >= 0; } }
+    { k:"descYT", l:"Description YouTube", si:function(pl){ return pl.indexOf("yt") >= 0; } },
+    { k:"descAU", l:"Description Ausha", si:function(pl, p){ return !!p && p.type === "podcast"; } }   // épisodes complets seulement
   ];
-  var K_CONTENU = ["title","guest","theme","descLI","descIG","descTT","descYT","link","notes","status","vK","vC","episodeId"];
-  var K_CHAMPS  = ["date","time","type","repere","sujet","theme","title","guest","platforms","status","descLI","descIG","descTT","descYT","link","notes"];
-  var K_NOMS = { date:"date", time:"heure", type:"type", repere:"repère", sujet:"sujet", theme:"thème", title:"titre",
+  var K_CONTENU = ["title","titleA","titleB","titleC","guest","theme","descLI","descIG","descTT","descYT","descAU","link","notes","status","vK","vC","episodeId"];
+  var K_CHAMPS  = ["date","time","type","repere","sujet","theme","title","titleA","titleB","titleC","guest","platforms","status","descLI","descIG","descTT","descYT","descAU","link","notes"];
+  var K_NOMS = { date:"date", time:"heure", type:"type", repere:"repère", sujet:"sujet", theme:"thème", title:"titre", titleA:"titre YouTube A", titleB:"titre YouTube B", titleC:"titre YouTube C",
                  guest:"invité", platforms:"plateformes", status:"statut", descLI:"description LinkedIn",
-                 descIG:"description Instagram / Facebook", descTT:"description TikTok", descYT:"description YouTube", link:"lien vidéo", notes:"notes",
+                 descIG:"description Instagram / Facebook", descTT:"description TikTok", descYT:"description YouTube", descAU:"description Ausha (Spotify, Apple…)", link:"lien vidéo", notes:"notes",
                  vK:"validation Kamel", vC:"validation client", episodeId:"épisode" };
 
   /* Les 35 publications du planning KSF construit sur claude.ai,
@@ -4952,7 +4962,7 @@
   function kVueFiche(){
     if(KSF.id && !KSF.edit) return kVueLecture();
     var p = KSF.br, neuf = !KSF.id, e = kEtat(p);
-    var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">‹ Retour</button>'
+    var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">← Retour</button>'
       + '<div class="kfl">' + kType(p) + (p.repere ? esc(p.repere) : '') + '</div>'
       + '<h2>' + esc(p.title || (neuf ? "Nouvelle publication" : "Sans titre")) + '</h2>'
       + '<div class="who">' + esc(jourLong(p.date)) + (p.time ? ' · ' + esc(p.time) : '') + ' · ' + esc(e.l) + '</div></section>';
@@ -4970,6 +4980,8 @@
        + '<div class="f"><label for="kf_rep">Repère</label><input type="text" id="kf_rep" data-kf="repere" value="' + esc(p.repere || "") + '" placeholder="Teaser 2"></div>'
        + '<div class="f"><label for="kf_suj">Sujet n°</label><input type="text" inputmode="numeric" id="kf_suj" data-kf="sujet" value="' + esc(p.sujet == null ? "" : p.sujet) + '"></div></div>'
        + '<div class="f"><label for="kf_title">Titre</label><input type="text" id="kf_title" data-kf="title" value="' + esc(p.title || "") + '"></div>'
+       + (kYt3Voulu(p) ? '<div class="f"><label>Titres YouTube · test de 3 titres (100 caractères max, comptés comme YouTube)</label>'
+         + K_YT3.map(function(k){ return '<div class="row-yt3" style="display:flex;gap:8px;align-items:center;margin-top:6px"><b style="width:18px">' + k.slice(-1) + '</b><input type="text" id="kf_' + k + '" data-kf="' + k + '" value="' + esc(p[k] || "") + '" style="flex:1"></div>'; }).join("") + '</div>' : '')
        + '<details class="kplus2"' + (neuf ? " open" : "") + '><summary>Plus de détails : invité, thème, plateformes, lien, notes</summary>'
        + '<div class="row2"><div class="f"><label for="kf_guest">Invité</label><input type="text" id="kf_guest" data-kf="guest" value="' + esc(p.guest || "") + '"></div>'
        + '<div class="f"><label for="kf_theme">Thème</label><input type="text" id="kf_theme" data-kf="theme" value="' + esc(p.theme || "") + '"></div></div>'
@@ -4997,14 +5009,29 @@
   /* ---------- nouvelle KSF : fiche en lecture ---------- */
   var K_PLNOM = { li:"LinkedIn", igfb:"Instagram · Facebook", tt:"TikTok", yt:"YouTube" };
   function kDescOnglets(p, edit){
-    var descs = K_DESC.filter(function(d){ return d.si(p.platforms || []); });
+    var descs = K_DESC.filter(function(d){ return d.si(p.platforms || [], p); });
     if(!descs.length) return '<p class="kpied" style="margin:0">Cochez au moins une plateforme.</p>';
     if(!KSF.dtab || !descs.some(function(d){ return d.k === KSF.dtab; })) KSF.dtab = descs[0].k;
-    var nom = { descLI:"LinkedIn", descIG:"Instagram · Facebook", descTT:"TikTok", descYT:"YouTube" }, k = KSF.dtab, v = p[k] || "", modele = kEstModele(k, v);
+    var nom = { descLI:"LinkedIn", descIG:"Instagram · Facebook", descTT:"TikTok", descYT:"YouTube", descAU:"Ausha · Spotify" }, k = KSF.dtab, v = p[k] || "", modele = kEstModele(k, v);
     return '<div class="kdtabs">' + descs.map(function(d){ return '<button data-kdtab="' + d.k + '" class="' + (d.k === k ? "on" : "") + '">' + nom[d.k] + '</button>'; }).join("")
       + '<span style="flex:1"></span><button class="btn ghost petit' + (KSF.copie === k ? " copie" : "") + '" data-kcopy="' + k + '">' + (KSF.copie === k ? "Copié ✓" : "Copier") + '</button></div>'
       + (edit ? '<textarea id="kf_' + k + '" data-kf="' + k + '" class="kdtxt">' + esc(v) + '</textarea>'
-              : '<p class="kdlire' + (modele ? " vide" : "") + '">' + (modele ? "Pas encore de description (seulement le modèle)." : esc(v)) + '</p>');
+              : '<p class="kdlire' + (modele ? " vide" : "") + '">' + (modele ? (k === "descAU" ? "Pas encore de description Ausha (Spotify, Apple Podcasts…)." : "Pas encore de description (seulement le modèle).") : esc(v)) + '</p>');
+  }
+  /* Test de 3 titres YouTube (épisodes complets) : titleA, titleB, titleC */
+  var K_YT3 = ["titleA","titleB","titleC"];
+  function kYt3Voulu(p){ return p.type === "podcast" && (p.platforms || []).indexOf("yt") >= 0; }
+  function kYtLong(t){ return (t || "").length; }   // unités UTF-16 : une lettre en gras Unicode compte double, comme sur YouTube
+  function kYt3Lecture(p){
+    if(!kYt3Voulu(p)) return "";
+    var h = '<div class="kbloc"><span class="kmono">Titres YouTube · test de 3 titres</span><div class="kyt3">';
+    K_YT3.forEach(function(k){
+      var t = p[k] || "", n = kYtLong(t);
+      h += '<span class="l">' + k.slice(-1) + '</span><span class="t' + (t ? "" : " kytvide") + '">' + (t ? esc(t) : "Pas encore de titre") + '</span>'
+        + '<span class="n' + (n > 100 ? " trop" : "") + '">' + (t ? n + " / 100" : "") + '</span>'
+        + (t ? '<button class="btn ghost petit' + (KSF.copie === k ? " copie" : "") + '" data-kcopy="' + k + '">' + (KSF.copie === k ? "Copié ✓" : "Copier") + '</button>' : '<span></span>');
+    });
+    return h + '</div></div>';
   }
   function kVideoOk(p){ return !!(p.video && /^https:\/\/[\w.-]+\.supabase\.co\/storage\/v1\/object\/public\/ksf-videos\//.test(p.video)); }
   function kManques(p){
@@ -5148,7 +5175,7 @@
   }
   function kVueLecture(){
     var p = KSF.br;
-    var h = '<button class="back kback2" data-kback="1">‹ Retour</button><section class="kfiche2">'
+    var h = '<button class="back kback2" data-kback="1">← Retour</button><section class="kfiche2">'
       + '<div class="kf-t"><div style="flex:1;min-width:0"><span class="kmono">' + esc(kJourC(p.date)) + (p.time ? ' · ' + esc(p.time) : '') + ' · ' + esc(K_TYPES[p.type] || "")
       + (p.repere ? ' · ' + esc(p.repere) : '') + '</span>'
       + '<h2>' + esc(p.title || "Sans titre") + '</h2>' + (p.guest ? '<div class="kpied" style="margin:0">' + esc(p.guest) + (p.theme ? ' · ' + esc(p.theme) : '') + '</div>' : '') + '</div>'
@@ -5166,6 +5193,7 @@
         + '<div class="actions"><button class="btn danger" data-krefus="' + v.k + '">Enregistrer le refus</button><button class="btn ghost" data-kval="' + v.k + ':annuler">Annuler</button></div></div>';
     });
     h += '</div>';
+    h += kYt3Lecture(p);
     h += '<div class="kbloc">' + kDescOnglets(p, false) + '</div>';
     h += kResultats(p) + kBlocPub(p);
     if(p.notes) h += '<details class="kplus2"><summary>Notes</summary><p class="kdlire">' + esc(p.notes) + '</p></details>';
@@ -5240,7 +5268,7 @@
   function kVueGen(){
     if(!KSF.gen) KSF.gen = kGenDefaut();
     var g = KSF.gen, plan = kGenPlan(), neufs = plan.filter(function(p){ return !p.doublon; }), stock = kStock();
-    var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">‹ Retour</button>'
+    var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">← Retour</button>'
       + '<h2>Générer un sujet</h2><div class="who">Podcast le jeudi, puis un short tous les deux jours : jeu · sam · lun · mer · ven · dim · mar</div></section>'
       + '<div class="blk"><div class="row2"><div class="f"><label for="kg_start">Date du premier podcast (un jeudi)</label>'
       + '<input type="date" id="kg_start" data-kg="start" value="' + esc(g.start) + '">'
@@ -5500,7 +5528,7 @@
   }
   function kVueImport(){
     var im = KSF.imp || (KSF.imp = { etat:"", plan:null, nom:"" });
-    var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">‹ Retour</button>'
+    var h = '<section class="fiche-head kfh"><button class="back" data-kback="1">← Retour</button>'
       + '<h2>Importer le planning Excel</h2><div class="who">Grille « Planning Podcast KSF » (.xlsx). Une case vide dans l’Excel n’efface jamais ce qui est dans la Régie.</div></section>'
       + '<div class="blk"><div class="f" style="margin-top:0"><label for="kfile">Fichier Excel</label><input type="file" id="kfile" accept=".xlsx,.xlsm" data-kfile="1"></div>'
       + (im.etat ? '<p class="kpied">' + esc(im.etat) + '</p>' : '') + '</div>';
