@@ -345,7 +345,19 @@
   .mp-seg{ display:inline-flex; border:1px solid var(--line); border-radius:999px; padding:2px; }
   .mp-seg button{ font:inherit; font-size:12.5px; background:none; border:0; color:var(--muted); padding:4px 12px; border-radius:999px; cursor:pointer; }
   .mp-seg button[aria-pressed="true"]{ background:var(--lime); color:var(--lime-ink); font-weight:600; }
-  .tk-add{ display:grid; grid-template-columns:2fr 1fr 1fr auto auto; gap:8px; }
+  .tk-add{ display:grid; grid-template-columns:auto 2fr 1fr 1fr auto auto; gap:8px; }
+  .tg-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+  .tg{ width:100%; font:inherit; text-align:left; color:var(--ink); cursor:pointer; display:grid; grid-template-columns:92px 1fr auto; gap:4px 14px; align-items:baseline; border:1px solid var(--line); border-left:3px solid var(--lime); border-radius:12px; background:var(--surface); padding:10px 13px; }
+  .tg:hover{ border-color:color-mix(in srgb, var(--lime) 55%, var(--line)); border-left-color:var(--lime); }
+  .tg:focus-visible{ outline:2px solid var(--lime); outline-offset:2px; }
+  .tg .d{ font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); }
+  .tg .d b{ display:block; color:var(--ink); font-family:"Inter Tight",sans-serif; font-size:14px; }
+  .tg .w{ min-width:0; } .tg .w b{ font-weight:600; } .tg .w small{ display:block; color:var(--muted); font-size:13px; }
+  .tg .c{ font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); white-space:nowrap; }
+  .mp-cat{ margin:18px 0 8px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-family:"Space Mono",monospace; color:var(--lime); font-weight:400; }
+  .tk-cat{ font:inherit; font-family:"Space Mono",monospace; font-size:11px; color:var(--muted); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
+  .tk-cat:hover{ color:var(--ink); }
+  .mp-cat span{ color:var(--ink); margin-left:4px; }
   .tk-add input, .tk-add select{ font:inherit; font-size:14px; min-width:0; padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--ink); }
   .tk-cols{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:14px; align-items:start; }
   .tk-col h4, .tk-fini summary{ margin:0 0 8px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-family:"Space Mono",monospace; color:var(--muted); font-weight:400; }
@@ -379,7 +391,7 @@
   .kp-liv button{ width:100%; font:inherit; color:var(--ink); text-align:left; display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; padding:11px 14px; border-radius:12px; border:1px solid var(--line); background:var(--surface); cursor:pointer; }
   .kp-liv .kp-d{ font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); }
   .kp-liv .kp-retard{ font-family:"Space Mono",monospace; font-size:12px; color:#FF8A5B; }
-  @media (max-width:640px){ .tk-add{ grid-template-columns:1fr 1fr; } .tk-add #tk_t{ grid-column:1 / -1; } }
+  @media (max-width:640px){ .tk-add{ grid-template-columns:1fr 1fr; } .tk-add #tk_t{ grid-column:1 / -1; } .tg{ grid-template-columns:1fr; } }
   .mp-src{ margin:0; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
   /* Décors du studio (photos Playbook) */
   .dc-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:6px; }
@@ -2095,6 +2107,35 @@
     var q = tQui(MOI);
     return TA.filter(function(t){ return !q || TV.tous || tQui(t.assigne) === q; });
   }
+  /* Deux catégories dans « Mon planning » : les tournages (journées des projets de la Régie,
+     plus les tâches marquées categorie:"tournage") et les autres tâches (montage, envoi, call…).
+     Une tâche sans catégorie est classée en tournage si son titre parle de tournage ou de shooting. */
+  var RE_TOURNAGE = /tournage|shooting|captation|filmer\b/i;
+  function tEstTournage(t){ return t.categorie ? t.categorie === "tournage" : RE_TOURNAGE.test(t.titre || ""); }
+  function mesTournages(){
+    var auj = iso(new Date()), out = [];
+    P.forEach(function(p){
+      if(estMontage(p) || p.statut === "Publié") return;
+      var js = p.jours || [], tot = js.length;
+      js.forEach(function(j, i){
+        if(!j.date || j.date < auj) return;
+        if(MOI && !TV.tous && !surLeJour(j)) return;
+        out.push({ p:p, j:j, rang:i + 1, tot:tot });
+      });
+    });
+    return out.sort(function(a, b){ return (a.j.date + (a.j.heureEquipe || "")).localeCompare(b.j.date + (b.j.heureEquipe || "")); });
+  }
+  function tgLigne(x){
+    var p = x.p, j = x.j, n = joursAvant(j.date);
+    var lieu = j.lieu === "Notre studio" ? "Notre studio" : (j.adresse || j.lieu || "Lieu à préciser");
+    var heures = j.heureEquipe ? j.heureEquipe + (j.heureFin ? "–" + j.heureFin : "") : "Horaire à préciser";
+    return '<li><button type="button" class="tg" data-id="' + esc(p.id) + '" data-jour="' + esc(j.id) + '">'
+      + '<span class="d"><b>' + esc(jourCourt(j.date)) + '</b>' + esc(heures) + '</span>'
+      + '<span class="w"><b>' + esc(p.client || "Client à préciser") + (p.projet ? ' — ' + esc(p.projet) : '') + '</b>'
+      + '<small>' + esc(lieu) + (x.tot > 1 ? ' · jour ' + x.rang + ' sur ' + x.tot : '')
+      + (equipeDe(j).length ? ' · avec ' + esc(equipeDe(j).join(", ")) : ' · personne d\'assigné') + '</small></span>'
+      + '<span class="c">' + esc(compte(n)) + '</span></button></li>';
+  }
   function tEnRetard(t){ return !!t.echeance && t.echeance < iso(new Date()) && t.statut !== "terminee"; }
   function tSaisie(){ var a = document.activeElement; return !!(a && a.closest && a.closest(".tk-add")); }
   function tTri(a, b){
@@ -2116,7 +2157,8 @@
       + '<label class="tk-qui"><span class="sr">Attribuée à</span><select data-tassigne="' + esc(t.id) + '">'
       + '<option value="">Personne</option>'
       + equipe.map(function(n){ return '<option' + (n === t.assigne ? " selected" : "") + '>' + esc(n) + '</option>'; }).join("")
-      + '</select></label></div>';
+      + '</select></label>'
+      + '<button type="button" class="tk-cat" data-tcat="' + esc(t.id) + '">' + (tEstTournage(t) ? 'Passer en tâche' : 'Passer en tournage') + '</button></div>';
     if(ouvert || st !== "terminee"){
       if(t.detail) h += '<p class="tk-d">' + esc(t.detail) + '</p>';
       if(t.points && t.points.length) h += '<ul class="tk-pts">' + t.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>';
@@ -2154,6 +2196,7 @@
   function tFormAjout(){
     var equipe = equipeConnue();
     return '<form class="tk-add" id="tkAdd">'
+      + '<select id="tk_c" aria-label="Catégorie"><option value="tache">Tâche</option><option value="tournage">Tournage</option></select>'
       + '<input type="text" id="tk_t" placeholder="Nouvelle tâche…" aria-label="Nouvelle tâche" required>'
       + '<input type="text" id="tk_p" placeholder="Projet" aria-label="Projet">'
       + '<select id="tk_a" aria-label="Attribuer à"><option value="">Personne</option>'
@@ -2179,6 +2222,13 @@
         toast(sel.value ? "Attribuée à " + sel.value + "." : "Tâche sans attribution."); rendre();
       });
     });
+    app.querySelectorAll("[data-tcat]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var t = TA.filter(function(x){ return x.id === b.dataset.tcat; })[0]; if(!t) return;
+        t.categorie = tEstTournage(t) ? "tache" : "tournage"; enregistrer(t, true);
+        toast(t.categorie === "tournage" ? "Rangée dans les tournages." : "Rangée dans les tâches."); rendre();
+      });
+    });
     app.querySelectorAll("[data-touvre]").forEach(function(b){
       b.addEventListener("click", function(){ TV.ouvert = TV.ouvert === b.dataset.touvre ? "" : b.dataset.touvre; rendre(); });
     });
@@ -2189,7 +2239,7 @@
     if(f) f.addEventListener("submit", function(e){
       e.preventDefault();
       var titre = f.querySelector("#tk_t").value.trim(); if(!titre) return;
-      creer({ kind:"tache", titre:titre, projet:f.querySelector("#tk_p").value.trim(), detail:"", points:[],
+      creer({ kind:"tache", categorie:f.querySelector("#tk_c").value, titre:titre, projet:f.querySelector("#tk_p").value.trim(), detail:"", points:[],
               assigne:f.querySelector("#tk_a").value, statut:"avenir", echeance:f.querySelector("#tk_e").value,
               source:"Régie", cle:"", cree:new Date().toISOString(), termineLe:"" });
     });
@@ -2207,7 +2257,13 @@
     h += '<div class="mp-hbar"><h3 class="mp-h">' + (MOI && !TV.tous ? 'Mes tâches' : 'Tâches de l’équipe') + '</h3>'
        + (MOI ? '<div class="mp-seg"><button type="button" data-ttous="0" aria-pressed="' + (!TV.tous) + '">Les miennes</button>'
               + '<button type="button" data-ttous="1" aria-pressed="' + TV.tous + '">Toute l’équipe</button></div>' : '')
-       + '</div>' + tFormAjout() + tGroupes(liste);
+       + '</div>' + tFormAjout();
+    var tg = mesTournages(), tgT = liste.filter(tEstTournage), tch = liste.filter(function(t){ return !tEstTournage(t); });
+    h += '<h4 class="mp-cat">Tournages <span>' + (tg.length + tgT.filter(function(t){ return t.statut !== "terminee"; }).length) + '</span></h4>'
+       + (tg.length ? '<ul class="tg-list">' + tg.map(tgLigne).join("") + '</ul>'
+                    : '<p class="mp-vide">' + (MOI && !TV.tous ? 'Aucun tournage à venir où tu es dans l’équipe.' : 'Aucun tournage à venir.') + '</p>');
+    if(tgT.length) h += '<div style="margin-top:10px">' + tGroupes(tgT) + '</div>';
+    h += '<h4 class="mp-cat">Tâches <span>' + tch.filter(function(t){ return t.statut !== "terminee"; }).length + '</span></h4>' + tGroupes(tch);
 
     if(D){
       h += '<h3 class="mp-h">Agenda</h3><p class="mp-meta">' + (D.du && D.au ? 'Du ' + esc(fmtM.format(jr(D.du))) + ' au ' + esc(fmtM.format(jr(D.au))) + ' · ' : '')
@@ -5061,6 +5117,8 @@
   var K_BUFNOM = { instagram:"Instagram", facebook:"Facebook", youtube:"YouTube" };
   function kDepot(p){
     if(KSF.envoiPct != null) return '<div class="kdepot en"><b>Envoi de la vidéo… ' + KSF.envoiPct + ' %</b><div class="kbar3"><i style="width:' + KSF.envoiPct + '%"></i></div></div>';
+    if(!kVideoOk(p) && p.videoSupprimee) return '<div class="kdepot ok"><span>🎬 ' + esc(p.videoNom || "Vidéo finale") + ' <small class="kpied">· retirée du stockage le ' + esc(jourLong(String(p.videoSupprimee).slice(0, 10))) + ', après publication</small></span>'
+      + (p.buffer ? '' : '<label class="lien">Déposer à nouveau<input type="file" accept="video/mp4,video/quicktime" data-kvid hidden></label>') + '</div>';
     if(kVideoOk(p)) return '<div class="kdepot ok"><span>🎬 ' + esc(p.videoNom || "Vidéo finale") + (p.videoPlaybook ? ' <small class="kpied">· reprise de Playbook</small>' : '') + '</span>'
       + '<a href="' + esc(p.video) + '" target="_blank" rel="noopener" class="kpied">voir ↗</a>'
       + (p.buffer ? '' : '<label class="lien">Remplacer<input type="file" accept="video/mp4,video/quicktime" data-kvid hidden></label>') + '</div>';
