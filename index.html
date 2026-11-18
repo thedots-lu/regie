@@ -354,6 +354,11 @@
   .tg .d b{ display:block; color:var(--ink); font-family:"Inter Tight",sans-serif; font-size:14px; }
   .tg .w{ min-width:0; } .tg .w b{ font-weight:600; } .tg .w small{ display:block; color:var(--muted); font-size:13px; }
   .tg .c{ font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); white-space:nowrap; }
+  .tg-li{ display:flex; gap:8px; align-items:stretch; } .tg-li .tg{ flex:1; min-width:0; }
+  .tg-sup{ font:inherit; font-family:"Space Mono",monospace; font-size:11px; color:var(--muted); background:none; border:1px solid var(--line); border-radius:12px; padding:0 12px; cursor:pointer; }
+  .tg-sup:hover, .tk-cat.sup:hover{ color:#FF8A5B; border-color:#FF8A5B; }
+  .tg-sup.sur, .tk-cat.sup.sur{ color:#fff; background:#d9534f; border-color:#d9534f; text-decoration:none; padding:2px 8px; border-radius:999px; }
+  @media (max-width:640px){ .tg-li{ flex-direction:column; } .tg-sup{ padding:6px 12px; } }
   .mp-cat{ margin:18px 0 8px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; font-family:"Space Mono",monospace; color:var(--lime); font-weight:400; }
   .tk-cat{ font:inherit; font-family:"Space Mono",monospace; font-size:11px; color:var(--muted); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:2px; }
   .tk-cat:hover{ color:var(--ink); }
@@ -1164,6 +1169,13 @@
              ["Fond et décor studio",1],["Cartes SD et batteries de rechange",1],
              ["Les neuf questions imprimées",1]]
     },
+    "KSF": {
+      duree:"2 h à 3 h",
+      items:[["Caméras + trépieds — cadrage horizontal",3],["Câbles HDMI",3],["ATEM Blackmagic + SSD d'enregistrement",1],
+             ["Table de mixage",1],["Micros sur pieds (table)",2],["Bonnettes noires",2],["Câbles XLR",2],
+             ["Casques retour son",2],["Écran 27\" retour régie",1],["Spots + softbox sur trépieds",2],
+             ["Rallonges et multiprises",1],["Décor KSF : fauteuils, écran LED, rideaux bleus, néons verts",1]]
+    },
     "Expert insights": {
       duree:"2 h",
       items:[["Caméras + trépieds — cadrage horizontal",2],["ATEM Mini Pro ISO + SSD",1],
@@ -1178,13 +1190,10 @@
              ["Zoom 8",1],["Câbles XLR",4],["Câbles d'alimentation",3],["Éclairage + softbox",2],
              ["Écran retour",1],["Rallonges et multiprises",1]]
     },
+    /* Tournage vidéo : le kit dépend du dispositif (voir KIT_VIDEO). */
     "Tournage vidéo": {
       duree:"demi-journée ou journée",
-      items:[["Sony A7 IV",1],["Objectifs 24-70 et 70-200",2],["Trépieds",2],
-             ["ATEM Mini Pro ISO + SSD",1],["Zoom 8 + câbles XLR",1],["Micros sur pieds",2],
-             ["Micros-cravate",2],["Casques retour son",2],["Spots + softbox",2],
-             ["Rallonges, multiprises, passe-câbles caoutchouc",1],["Cartes SD de secours",2],
-             ["Chargeurs et batteries de rechange",1]]
+      items:[["Cartes SD de secours",2],["Chargeurs et batteries de rechange",1]]
     },
     "Captation événement": {
       duree:"journée",
@@ -1197,10 +1206,7 @@
     },
     "Shooting photo": {
       duree:"1 h à la journée",
-      items:[["Boîtier Sony A7 IV",2],["Objectifs 24-70 et 70-200",2],
-             ["Flash cobra ou éclairage studio",2],["Softbox et réflecteur",2],
-             ["Fonds (blanc, noir)",2],["Trépied",1],["Cartes SD et batteries de rechange",1],
-             ["Disque de sauvegarde pour la copie du soir",1]]
+      items:[["Appareil photo Sony A7 IV + objectif",1],["Cartes SD et batteries de rechange",1]]
     },
     "Montage": { duree:"", items:[] }
   };
@@ -1216,6 +1222,33 @@
                                  ["Contrepoids et clés d'équilibrage",1]]
   };
 
+  /* Tournage vidéo : caméra + trépied en fixe, caméra + DJI Ronin sur stabilisateur. */
+  var RONIN = [["DJI Ronin 4 Pro",1],["Batteries Ronin chargées",3],["Contrepoids et clés d'équilibrage",1]];
+  var KIT_VIDEO = {
+    "Caméras fixes":            [["Sony A7 IV",1],["Trépied",1]],
+    "Caméra sur stabilisateur": [["Sony A7 IV",1]].concat(RONIN),
+    "Fixes + stabilisateur":    [["Sony A7 IV",1],["Trépied",1]].concat(RONIN)
+  };
+  /* Prestations : un projet peut en cumuler plusieurs (p.types) ; p.type garde la première,
+     pour tout ce qui lisait déjà ce champ. */
+  var LIB_TYPE = { "90 secondes OUTSIDE":"90s Outside" };
+  function typesDe(p){
+    if(!p) return [];
+    if(Array.isArray(p.types) && p.types.length) return p.types;
+    return p.type ? [p.type] : [];
+  }
+  function aType(p, t){ return typesDe(p).indexOf(t) >= 0; }
+  function libType(p){ return typesDe(p).map(function(t){ return LIB_TYPE[t] || t; }).join(" + "); }
+  /* Réglages imposés ou proposés quand on choisit une prestation. */
+  var STUDIO_ADR = CFG.STUDIO || "281 route d'Arlon, L-8011 Strassen";
+  var PRESETS = {
+    "90 secondes OUTSIDE": { media:"Vidéo", format:"Vertical", dispositif:"Caméras fixes", decor:"90s-outside", studio:true },
+    "KSF":                 { media:"Vidéo", format:"Horizontal 16/9", dispositif:"Caméras fixes", decor:"ksf" },
+    "Shooting photo":      { media:"Photo", dispositif:"Sans objet" }
+  };
+  /* 90s Outside seul : forcément dans notre studio. */
+  function studioImpose(p){ var t = typesDe(p); return t.length > 0 && t.every(function(x){ return PRESETS[x] && PRESETS[x].studio; }); }
+
   /* Un poste de matériel s'écrit ["Câbles XLR", 4], {lib, qte} ou,
      pour les projets d'avant les quantités, "Câbles XLR". */
   function poste(x){
@@ -1228,13 +1261,24 @@
     return (q.qte > 1 ? q.qte + " × " : "") + q.lib;
   }
   function kitDe(p){
-    var k = KITS[p.type];
-    var items = k ? k.items.slice() : [];
+    var ts = typesDe(p), items = [], duree = "", connu = false;
+    ts.forEach(function(t){
+      var k = KITS[t]; if(!k) return;
+      connu = true; if(!duree) duree = k.duree;
+      if(t === "Tournage vidéo") items = items.concat(KIT_VIDEO[p.dispositif] || KIT_VIDEO["Caméras fixes"]);
+      items = items.concat(k.items);
+    });
     var e = EXTRA[p.dispositif];
-    if(e) items = items.concat(e);
-    if(faitPhoto(p) && p.type !== "Shooting photo" && p.type !== "Montage")
+    if(e && !aType(p, "Shooting photo")) items = items.concat(e);
+    if(faitPhoto(p) && !aType(p, "Shooting photo") && !aType(p, "Montage"))
       items = items.concat(EXTRA_PHOTO);
-    return { items: items.map(poste), duree: k ? k.duree : "", connu: !!k };
+    // plusieurs prestations : un poste n'apparaît qu'une fois, avec la plus grande quantité
+    var vu = {}, out = [];
+    items.map(poste).forEach(function(q){
+      if(vu.hasOwnProperty(q.lib)){ out[vu[q.lib]].qte = Math.max(out[vu[q.lib]].qte, q.qte); return; }
+      vu[q.lib] = out.length; out.push(q);
+    });
+    return { items: out, duree: duree, connu: connu };
   }
 
   /* Le matériel retenu pour ce projet : la sélection faite à la
@@ -1367,7 +1411,7 @@
   function photoSeule(p){ return mediaDe(p) === "Photo" && !estMontage(p); }
   /* Le shooting est la seule prestation vendue avec un nombre de photos :
      ailleurs, on livre tout ce qui est bon. */
-  function estShooting(p){ return p.type === "Shooting photo"; }
+  function estShooting(p){ return aType(p, "Shooting photo"); }
   /* La prochaine échéance de livraison : celle du film, celle de
      l'album, ou la plus proche des deux quand le projet a les deux. */
   function dateLivr(p){
@@ -1384,7 +1428,8 @@
   function aInterview(p){
     if(p.intervenants || p.questions) return true;       // déjà renseigné
     if(photoSeule(p)) return false;
-    return SANS_ITW.indexOf(p.type) < 0;
+    var ts = typesDe(p);
+    return !ts.length || ts.some(function(t){ return SANS_ITW.indexOf(t) < 0; });
   }
   /* Le statut « Montage » se lit « Retouche » sur un projet photo. */
   function libStatut(p, s){ return (photoSeule(p) && s === "Montage") ? "Retouche" : s; }
@@ -1715,9 +1760,9 @@
         var deb = icsHeure(j.heureEquipe), fin = icsHeure(j.heureFin);
         var titre = (p.client || "Tournage") + (p.projet ? " — " + p.projet : "")
                   + (tot > 1 ? " (jour " + (i + 1) + "/" + tot + ")" : "");
-        var lieu = j.lieu === "Notre studio" ? (j.adresse || CFG.STUDIO || "Notre studio") : (j.adresse || "");
+        var lieu = j.lieu === "Notre studio" ? STUDIO_ADR : (j.adresse || "");
         var desc = [];
-        if(p.type) desc.push("Prestation : " + p.type);
+        if(typesDe(p).length) desc.push("Prestation : " + libType(p));
         if(p.format) desc.push("Format : " + p.format);
         if(p.dispositif && p.dispositif !== "Sans objet") desc.push("Dispositif : " + p.dispositif);
         if(j.heurePat) desc.push("PAT : " + j.heurePat);
@@ -2129,12 +2174,13 @@
     var p = x.p, j = x.j, n = joursAvant(j.date);
     var lieu = j.lieu === "Notre studio" ? "Notre studio" : (j.adresse || j.lieu || "Lieu à préciser");
     var heures = j.heureEquipe ? j.heureEquipe + (j.heureFin ? "–" + j.heureFin : "") : "Horaire à préciser";
-    return '<li><button type="button" class="tg" data-id="' + esc(p.id) + '" data-jour="' + esc(j.id) + '">'
+    return '<li class="tg-li"><button type="button" class="tg" data-id="' + esc(p.id) + '" data-jour="' + esc(j.id) + '">'
       + '<span class="d"><b>' + esc(jourCourt(j.date)) + '</b>' + esc(heures) + '</span>'
       + '<span class="w"><b>' + esc(p.client || "Client à préciser") + (p.projet ? ' — ' + esc(p.projet) : '') + '</b>'
       + '<small>' + esc(lieu) + (x.tot > 1 ? ' · jour ' + x.rang + ' sur ' + x.tot : '')
       + (equipeDe(j).length ? ' · avec ' + esc(equipeDe(j).join(", ")) : ' · personne d\'assigné') + '</small></span>'
-      + '<span class="c">' + esc(compte(n)) + '</span></button></li>';
+      + '<span class="c">' + esc(compte(n)) + '</span></button>'
+      + '<button type="button" class="tg-sup" data-tgsup="' + esc(p.id) + '|' + esc(j.id) + '" title="' + (x.tot > 1 ? 'Retirer cette journée du projet' : 'Supprimer ce tournage') + '">Supprimer</button></li>';
   }
   function tEnRetard(t){ return !!t.echeance && t.echeance < iso(new Date()) && t.statut !== "terminee"; }
   function tSaisie(){ var a = document.activeElement; return !!(a && a.closest && a.closest(".tk-add")); }
@@ -2158,7 +2204,8 @@
       + '<option value="">Personne</option>'
       + equipe.map(function(n){ return '<option' + (n === t.assigne ? " selected" : "") + '>' + esc(n) + '</option>'; }).join("")
       + '</select></label>'
-      + '<button type="button" class="tk-cat" data-tcat="' + esc(t.id) + '">' + (tEstTournage(t) ? 'Passer en tâche' : 'Passer en tournage') + '</button></div>';
+      + '<button type="button" class="tk-cat" data-tcat="' + esc(t.id) + '">' + (tEstTournage(t) ? 'Passer en tâche' : 'Passer en tournage') + '</button>'
+      + '<button type="button" class="tk-cat sup" data-tsup="' + esc(t.id) + '">Supprimer</button></div>';
     if(ouvert || st !== "terminee"){
       if(t.detail) h += '<p class="tk-d">' + esc(t.detail) + '</p>';
       if(t.points && t.points.length) h += '<ul class="tk-pts">' + t.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>';
@@ -2220,6 +2267,27 @@
         var t = TA.filter(function(x){ return x.id === sel.dataset.tassigne; })[0]; if(!t) return;
         t.assigne = sel.value; enregistrer(t, true);
         toast(sel.value ? "Attribuée à " + sel.value + "." : "Tâche sans attribution."); rendre();
+      });
+    });
+    /* Suppression en deux temps : le premier clic demande confirmation. */
+    function deuxTemps(b, faire){
+      b.addEventListener("click", function(){
+        if(b.dataset.sur !== "1"){ b.dataset.sur = "1"; b.classList.add("sur"); b.textContent = "Confirmer ?";
+          setTimeout(function(){ if(b.isConnected && b.dataset.sur === "1"){ b.dataset.sur = ""; b.classList.remove("sur"); b.textContent = "Supprimer"; } }, 4000);
+          return; }
+        faire();
+      });
+    }
+    app.querySelectorAll("[data-tsup]").forEach(function(b){
+      deuxTemps(b, function(){ TA = TA.filter(function(x){ return x.id !== b.dataset.tsup; }); supprimer(b.dataset.tsup, "Tâche supprimée."); rendre(); });
+    });
+    app.querySelectorAll("[data-tgsup]").forEach(function(b){
+      deuxTemps(b, function(){
+        var k = b.dataset.tgsup.split("|"), p = P.filter(function(x){ return x.id === k[0]; })[0]; if(!p) return;
+        if((p.jours || []).length <= 1){ P = P.filter(function(x){ return x !== p; }); supprimer(p.id, "Tournage supprimé."); rendre(); return; }
+        var c = JSON.parse(JSON.stringify(p));
+        c.jours = c.jours.filter(function(j){ return j.id !== k[1]; });
+        enregistrer(c, true); toast("Journée retirée du projet.");
       });
     });
     app.querySelectorAll("[data-tcat]").forEach(function(b){
@@ -2307,7 +2375,7 @@
       .then(function(x){ PK.enCours = false; PK.at = Date.now(); PK.data = x.ok && x.j ? x.j.planning : null; if(VUE === "ksf" && KSF.sous === "production") rendre(); },
             function(){ PK.enCours = false; });
   }
-  function estKsfProjet(p){ return /kamel\s*sans\s*filtre|\bksf\b/i.test((p.client || "") + " " + (p.projet || "")); }
+  function estKsfProjet(p){ return aType(p, "KSF") || /kamel\s*sans\s*filtre|\bksf\b/i.test((p.client || "") + " " + (p.projet || "")); }
   function kVuePlanning(){
     pkCharger(false);
     var auj = iso(new Date()), fmtJ = new Intl.DateTimeFormat("fr-FR", { weekday:"short" });
@@ -2525,7 +2593,7 @@
       + (j.heureEquipe ? '<span class="h">' + esc(j.heureEquipe) + '</span> ' : '')
       + '<span class="q">' + esc(p.client || "Projet") + '</span>'
       + (tot > 1 ? '<span class="r"> · J' + rang + '</span>' : '')
-      + (avecLieu ? '<span class="l">' + esc(p.type || "") + (lieu ? " · " + esc(lieu) : "")
+      + (avecLieu ? '<span class="l">' + esc(libType(p)) + (lieu ? " · " + esc(lieu) : "")
                     + (equipeDe(j).length ? " · " + esc(equipeDe(j).join(", ")) : "") + '</span>' : '')
       + (!avecLieu && equipeDe(j).length
           ? '<span class="ini">' + esc(equipeDe(j).map(initiales).join(" ")) + '</span>' : '')
@@ -2715,7 +2783,7 @@
       + '<div class="l1"><span class="when">' + esc(plage(p)) + '</span>'
       + '<span class="cd">' + esc(compte(n)) + '</span></div>'
       + '<h3>' + esc(p.client || "Client à préciser") + '</h3>'
-      + '<div class="sub">' + esc(p.projet || p.type || "") + '</div>'
+      + '<div class="sub">' + esc(p.projet || libType(p)) + '</div>'
       + '<div class="next"><b>' + (tot > 1 ? 'Prochaine journée · jour ' + rang + ' sur ' + tot : 'Journée de tournage') + '</b>'
       + esc(jourLong(j.date)) + (j.heureEquipe ? ', arrivée ' + esc(j.heureEquipe) : '')
       + ' — ' + esc(lieu)
@@ -2723,7 +2791,7 @@
                             : '<span class="eqline vide">Personne d\'assigné</span>')
       + (decorDe(p) ? '<span class="eqline">' + miniDecor(decorDe(p)) + '</span>' : '') + '</div>'
       + '<div class="l3"><span class="pill ' + (CLASSE[p.statut] || "") + '">' + esc(libStatut(p, p.statut) || "") + '</span>'
-      + '<span class="pill">' + esc(p.type || "") + '</span>'
+      + '<span class="pill">' + esc(libType(p)) + '</span>'
       + (faitPhoto(p) ? '<span class="pill">' + esc(mediaDe(p)) + '</span>' : '')
       + alerte(p)
       + '</div></button>';
@@ -2755,7 +2823,7 @@
         + esc(p.livDuree ? "Durée visée " + p.livDuree + " · " : "") + esc(p.format || "")
         + (p.ssd ? ' — rushes : ' + esc(p.ssd) : '') + '</div>'
         + '<div class="l3"><span class="pill ' + (CLASSE[p.statut] || "") + '">' + esc(libStatut(p, p.statut) || "") + '</span>'
-        + '<span class="pill">' + esc(p.type || "") + '</span>'
+        + '<span class="pill">' + esc(libType(p)) + '</span>'
         + alerte(p)
         + '</div></button>';
     }
@@ -2765,7 +2833,7 @@
       + '<h3>' + esc(p.client || "Client à préciser") + '</h3>'
       + '<div class="sub">' + esc(p.projet || "") + '</div>'
       + '<div class="l3"><span class="pill ' + (CLASSE[p.statut] || "") + '">' + esc(libStatut(p, p.statut) || "") + '</span>'
-      + '<span class="pill">' + esc(p.type || "") + '</span>'
+      + '<span class="pill">' + esc(libType(p)) + '</span>'
       + alerte(p)
       + '</div></button>';
   }
@@ -2994,13 +3062,13 @@
     var kit = kitDe(p);
     var coches = j.coches || {};
     var n = joursAvant(j.date);
-    var adresse = j.lieu === "Notre studio" ? (j.adresse || CFG.STUDIO || "Notre studio")
+    var adresse = j.lieu === "Notre studio" ? STUDIO_ADR
                                             : (j.adresse || "Adresse à préciser");
 
     var h = '<section class="fiche-head">'
       + '<button class="back" data-go="' + (RETOUR || "avenir") + '">← Retour</button>'
       + '<h2>' + esc(p.client || "Client à préciser") + '</h2>'
-      + '<div class="who">' + esc(p.projet || "") + (p.projet && p.type ? " · " : "") + esc(p.type || "") + '</div>';
+      + '<div class="who">' + esc(p.projet || "") + (p.projet && p.type ? " · " : "") + esc(libType(p)) + '</div>';
 
     h += '<div class="jcount">' + esc(plage(p))
        + (js.length > 1 ? ' · ' + js.length + ' journées' : '') + '</div>';
@@ -3108,7 +3176,7 @@
         + (js.length > 1 ? ' — ' + js.length + ' journées' : '') + '</span></div>'
         + (js[0] ? '<div class="kv"><span class="k">Lieu</span><span class="v">'
             + esc(js[0].lieu === "Notre studio" ? (CFG.STUDIO || "Notre studio") : (js[0].adresse || "—")) + '</span></div>' : '')
-        + '<div class="kv"><span class="k">Prestation</span><span class="v">' + esc(p.type || "—")
+        + '<div class="kv"><span class="k">Prestation</span><span class="v">' + esc(libType(p) || "—")
         + (p.dispositif && p.dispositif !== "Sans objet" ? ' · ' + esc(p.dispositif) : '') + '</span></div>'
         + '</div>';
 
@@ -3148,7 +3216,7 @@
     if(items.length)
     h += '<div class="blk"><h3>Matériel — ' + faits + ' / ' + items.length + '</h3>'
       + '<p class="kitmeta">' + (surMesure ? 'Liste établie pour ce projet'
-          : (kit.connu ? 'Kit « ' + esc(p.type || "") + ' »'
+          : (kit.connu ? 'Kit « ' + esc(libType(p)) + ' »'
               + (EXTRA[p.dispositif] ? ', stabilisateur compris' : '')
             : 'Aucun kit associé à ce type de prestation'))
         + '. Coché pour la journée du ' + esc(jourCourt(j.date)) + ', visible par toute l\'équipe.</p>'
@@ -3293,7 +3361,7 @@
     if(!JOUR && j.id) JOUR = j.id;        // pour que les coches sachent où écrire
     var mtg = estMontage(p);
     var studio = j.lieu === "Notre studio";
-    var adresse = studio ? (j.adresse || CFG.STUDIO || "Notre studio") : (j.adresse || "");
+    var adresse = studio ? STUDIO_ADR : (j.adresse || "");
     var items = mtg ? [] : materielDe(p);
     var coches = j.coches || {};
     var faits = items.filter(function(i){ return coches[i.lib]; }).length;
@@ -3303,7 +3371,7 @@
       + '<div class="tbar no-print"><button class="back" data-go="fiche">← Fiche complète</button>'
       + '<button class="btn" data-print="1">Imprimer</button></div>'
       + '<h2>' + esc(p.client || "Client à préciser") + '</h2>'
-      + '<p class="tsub">' + esc(p.projet || p.type || "") + ' · ' + esc(jourLong(j.date)) + '</p>';
+      + '<p class="tsub">' + esc(p.projet || libType(p)) + ' · ' + esc(jourLong(j.date)) + '</p>';
 
     h += '<div class="thoraires">'
       + '<div><span class="k">' + (mtg ? "Début" : "Arrivée") + '</span><b>' + esc(j.heureEquipe || "—") + '</b></div>'
@@ -3610,6 +3678,21 @@
           return '<button type="button" role="radio" aria-checked="' + (o === v) + '" data-puce="' + n + '" data-v="' + esc(o) + '">' + esc(o) + '</button>'; }).join("")
       + '</div></div>';
   }
+  /* Prestations : plusieurs choix possibles. Montage reste seul (pas de tournage). */
+  function pucesTypes(b){
+    var ts = typesDe(b);
+    return '<div class="f puces"><label>Type de prestation<span class="hint">Plusieurs choix possibles.</span></label>'
+      + '<input type="hidden" id="i_types" name="types" value="' + esc(ts.join("|")) + '">'
+      + '<div class="pc" role="group" aria-label="Type de prestation">' + TYPES.map(function(o){
+          return '<button type="button" role="checkbox" aria-checked="' + (ts.indexOf(o) >= 0) + '" data-ptype="' + esc(o) + '">' + esc(LIB_TYPE[o] || o) + '</button>'; }).join("")
+      + '</div></div>';
+  }
+  function appliquerPreset(b, t){
+    var r = PRESETS[t]; if(!r) return;
+    ["media","format","dispositif","decor"].forEach(function(k){ if(r[k]) b[k] = r[k]; });
+    if(r.studio) (b.jours || []).forEach(function(j){ j.lieu = "Notre studio"; j.adresse = STUDIO_ADR; });
+  }
+
   /* Bloc repliable, qui se souvient d'être ouvert d'un redessin à l'autre. */
   var PLIES = {};
   function plie(id, titre, sous, contenu){
@@ -3633,7 +3716,7 @@
     /* 01 — l'essentiel */
     h += '<div class="blk">' + etape("01", "L’essentiel", "Pour qui, et quoi.")
       + '<div class="row2">' + champ("Client", "client", b.client) + champ("Nom du projet", "projet", b.projet) + '</div>'
-      + puces("Type de prestation", "type", TYPES, b.type)
+      + pucesTypes(b)
       + (mtg ? '' : puces("Photo ou vidéo ?", "media", MEDIAS, mediaDe(b)))
       + puces("Format", "format", FORMATS, b.format)
       + (mtg ? '' : puces("Dispositif image", "dispositif", DISPOS, b.dispositif))
@@ -3646,7 +3729,7 @@
       var plus = (mtg ? '' : champ("PAT — prêt à tourner", "j" + i + "_heurePat", j.heurePat, "time"))
         + champ(mtg ? "Durée" : "Durée sur place", "j" + i + "_duree", j.duree, "text", "Par exemple : 2 h, ou la journée.")
         + (mtg ? '' :
-            champ("Adresse complète", "j" + i + "_adresse", j.adresse)
+            (j.lieu === "Notre studio" || studioImpose(b) ? '' : champ("Adresse complète", "j" + i + "_adresse", j.adresse))
           + champ("Accès", "j" + i + "_acces", j.acces, "text", "Étage, code, interphone, parking.")
           + '<div class="row2">' + champ("Contact sur place", "j" + i + "_contactNom", j.contactNom)
           + champ("Son téléphone", "j" + i + "_contactTel", j.contactTel, "tel") + '</div>')
@@ -3657,14 +3740,18 @@
          + '<div class="row3">' + champ("Date", "j" + i + "_date", j.date, "date")
          + champ("Arrivée équipe", "j" + i + "_heureEquipe", j.heureEquipe, "time")
          + champ("Fin prévue", "j" + i + "_heureFin", j.heureFin, "time") + '</div>'
-         + (mtg ? '' : puces("Lieu", "j" + i + "_lieu", LIEUX, j.lieu))
+         + (mtg ? '' : studioImpose(b)
+              ? '<div class="f"><label>Lieu</label><p class="kitmeta" style="margin:0">Notre studio — ' + esc(STUDIO_ADR) + '. Le 90s Outside se tourne toujours au studio.</p>'
+                + '<input type="hidden" name="j' + i + '_lieu" value="Notre studio"></div>'
+              : puces("Lieu", "j" + i + "_lieu", LIEUX, j.lieu)
+                + (j.lieu === "Notre studio" ? '<p class="kitmeta" style="margin:-4px 0 0">' + esc(STUDIO_ADR) + '</p>' : ''))
          + plie("j" + i, mtg ? "Durée, équipe, note" : "Adresse, contact, équipe, note", "facultatif", plus)
          + '</div>';
     });
     h += '<button type="button" class="ajout" data-addj="1">+ Ajouter une journée</button></div>';
 
     /* 03 — le reste, replié */
-    var mat = '<p class="kitmeta">Le kit « ' + esc(b.type || "") + ' » s’applique par défaut ; il reste modifiable depuis la fiche.</p>'
+    var mat = '<p class="kitmeta">Le kit « ' + esc(libType(b)) + ' » s’applique par défaut ; il reste modifiable depuis la fiche.</p>'
       + '<div class="bascules"><button type="button" class="btn' + (MAT_FORM ? '' : ' lime') + '" data-matform="0">La prod s’en charge</button>'
       + '<button type="button" class="btn' + (MAT_FORM ? ' lime' : '') + '" data-matform="1">Je le règle maintenant</button></div>'
       + (MAT_FORM ? blocMateriel(b) : '');
@@ -3693,7 +3780,7 @@
     if(!b){ VUE = "fiche"; return vueFiche(); }
     return '<h2 class="sec">Matériel du projet</h2>'
       + '<div class="blk"><h3>' + esc(b.client || "Projet") + '</h3>'
-      + '<p class="kitmeta">' + esc(b.projet || "") + (b.projet ? ' · ' : '') + esc(b.type || "")
+      + '<p class="kitmeta">' + esc(b.projet || "") + (b.projet ? ' · ' : '') + esc(libType(b))
       + (b.dispositif && b.dispositif !== "Sans objet" ? ' · ' + esc(b.dispositif) : '') + '</p></div>'
       + '<form id="form">'
       + blocMateriel(b)
@@ -3710,6 +3797,7 @@
      "livDuree","livDecoupe","livSt","livMusique","livLogo","livDate","livLien","livNotes",
      "photoNb","photoRetouche","photoForme","photoDate","photoLien","photoNotes"]
       .forEach(function(k){ var el = f.elements[k]; if(el) b[k] = el.value; });
+    if(f.elements.types){ b.types = f.elements.types.value.split("|").filter(Boolean); b.type = b.types[0] || ""; }
     b.jours.forEach(function(j, i){
       ["date","heureEquipe","heurePat","heureFin","duree","lieu","adresse","acces","contactNom","contactTel","note"]
         .forEach(function(k){ var el = f.elements["j" + i + "_" + k]; if(el) j[k] = el.value; });
@@ -4154,6 +4242,40 @@
         sel.dispatchEvent(new Event("change"));
       });
     });
+    app.querySelectorAll("[data-ptype]").forEach(function(bt){
+      bt.addEventListener("click", function(){
+        if(!BROUILLON) return;
+        lireForm();
+        var t = bt.dataset.ptype, ts = typesDe(BROUILLON).slice(), i = ts.indexOf(t);
+        if(i >= 0){
+          if(ts.length === 1) return;                                       // toujours au moins une prestation
+          ts.splice(i, 1);
+          if(PRESETS[t] && PRESETS[t].decor && BROUILLON.decor === PRESETS[t].decor) BROUILLON.decor = "";
+        }
+        else if(t === "Montage") ts = ["Montage"];
+        else { ts = ts.filter(function(x){ return x !== "Montage"; }).concat([t]); appliquerPreset(BROUILLON, t); }
+        BROUILLON.types = ts; BROUILLON.type = ts[0];
+        BROUILLON.materiel = null; SUP = null;                              // le kit suit les prestations
+        rendre();
+        var el = app.querySelector('[data-ptype="' + t + '"]'); if(el) el.focus();
+      });
+    });
+    app.querySelectorAll('select[id^="i_j"][id$="_lieu"]').forEach(function(sel){
+      if(VUE !== "new" && VUE !== "edit") return;
+      sel.addEventListener("change", function(){
+        lireForm();
+        var i = +sel.id.replace(/^i_j(\d+)_lieu$/, "$1"), j = BROUILLON && BROUILLON.jours[i];
+        if(j && sel.value === "Notre studio") j.adresse = STUDIO_ADR;
+        else if(j && j.adresse === STUDIO_ADR) j.adresse = "";
+        rendre();
+      });
+    });
+    var selDispo = app.querySelector("#i_dispositif");
+    if(selDispo && (VUE === "new" || VUE === "edit")) selDispo.addEventListener("change", function(){
+      lireForm();
+      if(BROUILLON){ BROUILLON.materiel = null; SUP = null; }               // fixe / stabilisateur change le kit
+      if(MAT_FORM) rendre();
+    });
     app.querySelectorAll("details[data-plie]").forEach(function(d){
       d.addEventListener("toggle", function(){ PLIES[d.dataset.plie] = d.open; });
     });
@@ -4305,7 +4427,11 @@
       lireForm();
       var b = BROUILLON;
       if(!b.client && !b.projet){ toast("Indiquez au moins le client ou le projet."); return; }
-      b.jours.forEach(function(j, i){ if(!j.id) j.id = "j" + (i+1); });
+      b.jours.forEach(function(j, i){
+        if(!j.id) j.id = "j" + (i+1);
+        if(studioImpose(b)) j.lieu = "Notre studio";
+        if(j.lieu === "Notre studio") j.adresse = STUDIO_ADR;
+      });
       if(ID){ b.id = ID; enregistrer(b); VUE = "fiche"; }
       else   { b.cree = new Date().toISOString(); creer(b); VUE = "avenir"; }
       BROUILLON = null;
