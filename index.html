@@ -413,6 +413,8 @@
   .tnav.autres{ border-top:1px solid var(--line); padding-top:10px; }
   .tnav.autres button{ font-size:13.5px; color:var(--muted); }
   .tnew{ width:100%; justify-content:center; }
+  .tbar.large{ width:100%; height:8px; }
+  .tmotif{ font-family:"Inter Tight",sans-serif; font-size:12.5px; color:var(--ink); opacity:.8; }
   .tmain{ min-width:0; display:flex; flex-direction:column; gap:14px; }
   .tmain .tk-add{ grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); } .tmain .tk-add #tk_t{ grid-column:span 2; }
   .thead{ display:flex; align-items:baseline; gap:14px; }
@@ -490,7 +492,16 @@
   .tmail{ display:inline-flex; gap:6px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:3px 10px; font-size:12.5px; color:var(--ink); }
   .tmail button{ font:inherit; font-size:11px; background:none; border:0; color:var(--muted); cursor:pointer; padding:0; }
   .tmail.sugg{ border-style:dashed; color:var(--muted); cursor:pointer; font:inherit; font-size:12.5px; }
-  .tmailf input{ font:inherit; font-size:12.5px; color:var(--ink); background:none; border:0; border-bottom:1px dashed var(--line); padding:3px 2px; width:170px; }
+  .pbedit{ margin-top:10px; font-size:13px; padding:6px 14px; }
+  .pbed{ margin-top:10px; border:1px dashed var(--line); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:10px; }
+  .pbed-l{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .pbed-l li{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:13.5px; }
+  .pbed-a{ display:flex; flex-wrap:wrap; gap:8px; }
+  .pbed-a select, .pbed-a input{ flex:1 1 180px; min-width:0; font:inherit; font-size:13px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:7px 9px; }
+  .tlivseg{ align-self:flex-start; }
+  .tkv2{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .tkv2 select{ font:inherit; font-size:13.5px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:8px 10px; }
+  .tmailf input{ font:inherit; font-size:12.5px; color:var(--ink); background:none; border:0; border-bottom:1px dashed var(--line); padding:3px 2px; width:230px; }
   @media (max-width:1280px){ .tlay{ grid-template-columns:200px minmax(0,1fr) 360px; gap:16px; } }
   @media (max-width:1099px){
     .tlay{ grid-template-columns:1fr; }
@@ -524,6 +535,14 @@
   .dc-voir figcaption a{ color:var(--lime); font-size:13px; }
   .dc-voir .x{ position:absolute; top:18px; right:22px; font:inherit; font-size:14px; color:#fff; background:rgba(255,255,255,.12); border:0; border-radius:999px; padding:8px 14px; cursor:pointer; }
   .dc-fiche img{ cursor:zoom-in; }
+  .dc-grille.choisi button[aria-checked="false"]{ filter:grayscale(1); opacity:.38; }
+  .dc-grille.choisi button[aria-checked="false"]:hover{ opacity:.7; }
+  .dc-grille.choisi button[aria-checked="true"]{ border-color:var(--lime); }
+  .dc-grand{ margin:12px 0 0; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--surface-2); }
+  .dc-grand img{ display:block; width:100%; max-height:460px; object-fit:cover; }
+  .dc-grand figcaption{ display:flex; flex-wrap:wrap; gap:6px 16px; align-items:baseline; padding:12px 16px; }
+  .dc-grand figcaption b{ font-size:17px; } .dc-grand figcaption p{ margin:0; color:var(--muted); flex:1 1 300px; }
+  .dc-grand figcaption a{ color:var(--lime); font-size:13px; }
   .dc-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:6px; }
   .dc-grille button{ position:relative; padding:0; border:2px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface-2); cursor:pointer; text-align:left; font:inherit; color:var(--ink); }
   .dc-grille button img{ display:block; width:100%; aspect-ratio:16/10; object-fit:cover; }
@@ -1334,7 +1353,8 @@
       duree:"1 h à la journée",
       items:[["Appareil photo Sony A7 IV + objectif",1],["Cartes SD et batteries de rechange",1]]
     },
-    "Montage": { duree:"", items:[] }
+    "Montage": { duree:"", items:[] },
+    "Création (design, motion)": { duree:"", items:[] }
   };
 
   /* Dispositif image : ce qu'il ajoute au kit, sans dupliquer les listes. */
@@ -1411,7 +1431,9 @@
      création, ou le kit complet si rien n'a été touché. */
   /* Un projet de montage : pas de tournage, donc pas de lieu,
      pas de matériel, pas d'intervenants à l'écran. */
-  function estMontage(p){ return p.type === "Montage"; }
+  /* Montage ou création (design, motion, intro/outro, slides…) : pas de tournage, donc pas de lieu ni de matériel. */
+  function estMontage(p){ return p.type === "Montage" || p.type === "Création (design, motion)"; }
+  function estCreation(p){ return p.type === "Création (design, motion)"; }
   /* Dès que le tournage est passé, la fiche parle montage. */
   function apresTournage(p){ return p.statut && p.statut !== "Confirmé"; }
 
@@ -1550,7 +1572,7 @@
   /* Prestations sans personne au micro : rien à demander sur les
      intervenants ni sur qui pose les questions. Un projet qui en porte
      déjà garde ses champs — on ne cache jamais une info saisie. */
-  var SANS_ITW = ["Captation événement", "Shooting photo", "Montage"];
+  var SANS_ITW = ["Captation événement", "Shooting photo", "Montage", "Création (design, motion)"];
   function aInterview(p){
     if(p.intervenants || p.questions) return true;       // déjà renseigné
     if(photoSeule(p)) return false;
@@ -2282,7 +2304,14 @@
      plus les tâches marquées categorie:"tournage") et les autres tâches (montage, envoi, call…).
      Une tâche sans catégorie est classée en tournage si son titre parle de tournage ou de shooting. */
   var RE_TOURNAGE = /tournage|shooting|captation|filmer\b/i;
-  function tEstTournage(t){ return t.categorie ? t.categorie === "tournage" : RE_TOURNAGE.test(t.titre || ""); }
+  /* Créations sans tournage : design, motion design, intro/outro, slides speaker, graphisme, animation, visuels… */
+  var RE_CREATION = /design|motion|teaser|\bintro\b|outro|slide|graphi|animation|visuel|miniature|habillage|\blogo|save the date|affiche|carrousel|cr[ée]ation|jingle|g[ée]n[ée]rique/i;
+  function tCat(t){
+    if(t.categorie === "tournage" || t.categorie === "creation") return t.categorie;
+    if(t.categorie === "tache") return "tache";
+    return RE_TOURNAGE.test(t.titre || "") ? "tournage" : RE_CREATION.test((t.titre || "") + " " + (t.detail || "")) ? "creation" : "tache";
+  }
+  function tEstTournage(t){ return tCat(t) === "tournage"; }
   function mesTournages(){
     var auj = iso(new Date()), out = [];
     P.forEach(function(p){
@@ -2327,7 +2356,7 @@
   var T_AV = [[0,"Brief"],[25,"Dérush"],[50,"Montage"],[75,"Retours"],[100,"Livré"]];
   var T_ESP = [
     { k:"tournages", l:"Tournages",  c:"var(--lime)" },
-    { k:"avenir",    l:"À venir",    c:"#8b8b9b" },
+    { k:"creation",  l:"Création",   c:"#f08a4b" },
     { k:"encours",   l:"En cours",   c:"#e9e43a" },
     { k:"attente",   l:"En attente", c:"#9d8cff" },
     { k:"terminee",  l:"Terminées",  c:"#5fbf86" },
@@ -2342,8 +2371,12 @@
   function tProjet(t){
     if(t.projetId){ var p0 = P.filter(function(x){ return x.id === t.projetId; })[0]; if(p0) return p0; }
     var n = tNorm(t.projet); if(!n) return null;
-    var c = P.filter(function(x){ return tNorm(x.projet) === n || tNorm(x.client) === n; });
-    if(!c.length) c = P.filter(function(x){ var a = tNorm(x.client), b = tNorm(x.projet); return (a && (a.indexOf(n) >= 0 || n.indexOf(a) >= 0)) || (b && b.indexOf(n) >= 0); });
+    var c = P.filter(function(x){ var a = tNorm(x.client), b = tNorm(x.projet);
+      return a === n || b === n || (a && (a.indexOf(n) >= 0 || n.indexOf(a) >= 0)) || (b && b.indexOf(n) >= 0); });
+    // plusieurs projets du même nom (ex. « 90s Outside ») : on garde celui dont le client apparaît dans le titre de la tâche
+    var titre = " " + tNorm(t.titre) + " ";
+    function score(x){ return (tNorm(x.client) + " " + tNorm(x.projet)).split(" ").filter(function(w){ return w.length > 2 && titre.indexOf(" " + w + " ") >= 0; }).length; }
+    if(c.length > 1){ var best = Math.max.apply(null, c.map(score)); if(best > 0) c = c.filter(function(x){ return score(x) === best; }); else return null; }
     return c.sort(function(a, b){ return String(b.cree || "").localeCompare(String(a.cree || "")); })[0] || null;
   }
   function tAvatar(n){
@@ -2360,14 +2393,24 @@
     return esc(txt).replace(/(https?:\/\/[^\s<]+)/g, function(u){ return '<a href="' + u + '" target="_blank" rel="noopener">' + u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 48) + (u.length > 60 ? "…" : "") + '</a>'; });
   }
   function tEspace(t){ return t.statut || "avenir"; }
+  /* Projets « Création » de la Régie pas encore publiés (affichés dans l'espace Création). */
+  function mesCreations(){ return P.filter(function(p){ return estCreation(p) && p.statut !== "Publié"; }).sort(parDebut); }
   function tListe(k){
-    var l = mesTaches().filter(function(t){ return !tEstTournage(t) && tEspace(t) === k; });
+    // Création : toutes les créations pas encore terminées ; En cours : les autres tâches commencées ou pas encore commencées ;
+    // En attente et Terminées : toutes les tâches, quelle que soit leur catégorie.
+    var l = mesTaches().filter(function(t){
+      var st = tEspace(t), c = tCat(t);
+      if(k === "creation") return c === "creation" && st !== "terminee";
+      if(k === "encours") return c === "tache" && (st === "encours" || st === "avenir");
+      return st === k;
+    });
     if(k === "terminee") return l.sort(function(a, b){ return String(b.termineLe || "").localeCompare(String(a.termineLe || "")); });
     if(k === "attente") return l.sort(function(a, b){ return String((a.attente || {}).depuis || "9").localeCompare(String((b.attente || {}).depuis || "9")) || tTri(a, b); });
     return l.sort(tTri);
   }
   function tCompte(k){
     if(k === "tournages") return mesTournages().length + mesTaches().filter(function(t){ return tEstTournage(t) && t.statut !== "terminee"; }).length;
+    if(k === "creation") return tListe(k).length + mesCreations().length;
     if(k === "agenda") return "";
     return tListe(k).length;
   }
@@ -2383,7 +2426,8 @@
     return '<button type="button" class="tk2' + (TV.sel === t.id ? ' sel' : '') + '" data-tsel="' + esc(t.id) + '">'
       + '<span class="tl"><span class="tt">' + esc(t.titre || "Tâche") + '</span>'
       + (t.projet ? '<span class="ttag">' + esc(t.projet) + '</span>' : '')
-      + (retard ? '<span class="tbadge late">En retard</span>' : '') + '</span>'
+      + (retard ? '<span class="tbadge late">En retard</span>' : '')
+      + ((TV.espace === "creation" || TV.espace === "tournages") ? '<span class="tbadge">' + esc((T_STATUTS.filter(function(x){ return x[0] === st; })[0] || [0, ""])[1]) + '</span>' : '') + '</span>'
       + '<span class="tm">' + (st === "terminee" && t.termineLe ? '<span>Terminée ' + esc(jourCourt(String(t.termineLe).slice(0, 10))) + '</span>'
                               : '<span>' + (t.echeance ? 'Échéance ' + esc(jourCourt(t.echeance)) : 'Sans échéance') + '</span>')
       + '<span class="twho">' + tAvatar(t.assigne || "?") + esc(t.assigne || "Personne") + '</span>'
@@ -2440,7 +2484,8 @@
     var coms = tComs(t), liens = [];
     coms.forEach(function(c){ (String(c.txt).match(/https?:\/\/[^\s]+/g) || []).forEach(function(u){ liens.push(u); }); });
     var pb = pbDossiers("taches", t.id);
-    if(p) pbDossiers("projets", p.id).forEach(function(x){ if(pb.indexOf(x) < 0) pb.push(x); });   // dossiers du projet lié aussi
+    var tret = pbCorr(t).retires;   // un dossier retiré depuis la tâche ne revient pas par le projet lié
+    if(p) pbDossiers("projets", p.id).forEach(function(x){ if(pb.indexOf(x) < 0 && tret.indexOf(x._cle) < 0) pb.push(x); });   // dossiers du projet lié aussi
     var onglet = TV.ptab || "com";
     h += '<section class="tbox"><div class="ttabs" role="tablist">'
       + '<button type="button" data-tptab="com" aria-selected="' + (onglet === "com") + '">Commentaires<em>' + coms.length + '</em></button>'
@@ -2455,7 +2500,7 @@
     } else if(onglet === "liens"){
       h += (liens.length || pb.length ? '' : '<p class="tsm">Aucun lien pour l’instant : collez-en un dans un commentaire.</p>')
         + liens.map(function(u){ return '<a class="tlk" href="' + esc(u) + '" target="_blank" rel="noopener"><span class="ico">' + (/playbook/.test(u) ? 'P' : /wetransfer/.test(u) ? 'W' : '↗') + '</span>' + esc(u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 60)) + '</a>'; }).join("")
-        + (pb.length ? pbBloc(pb) : '');
+        + (pb.length ? pbBloc(pb) : '') + pbEditeur("taches", t.id);
     } else {
       var hi = (Array.isArray(t.hist) ? t.hist : []).slice().reverse();
       h += hi.length ? '<ul class="thist">' + hi.map(function(x){ return '<li><time>' + esc(quandCourt(x.le)) + '</time> ' + esc(x.qui ? x.qui + ' — ' : '') + esc(x.txt) + '</li>'; }).join("") + '</ul>'
@@ -2463,23 +2508,76 @@
     }
     h += '</section>';
 
-    // livraison
+    // livraison : pour une tâche terminée, deux choix — noter un envoi déjà fait, ou envoyer maintenant par Outlook
     var cand = tContactsProjet(p).filter(function(m){ return lv.to.indexOf(m) < 0; });
-    h += '<section class="tbox liv' + (st === "terminee" ? ' fin' : '') + '"><div class="tbt">Livraison · trace d’envoi ' + (lv.le ? '<b class="ok">✓ envoyée le ' + esc(quandCourt(lv.le)) + '</b>' : '') + '</div>'
-      + '<div class="tf"><span>Envoyée à</span><div class="tmails">' + lv.to.map(function(m){ return '<span class="tmail">✉ ' + esc(m) + ' <button type="button" data-tmailsup="' + esc(m) + '" data-tid="' + esc(t.id) + '" aria-label="Retirer">✕</button></span>'; }).join("")
-      + cand.map(function(m){ return '<button type="button" class="tmail sugg" data-tmailadd="' + esc(m) + '" data-tid="' + esc(t.id) + '">+ ' + esc(m) + '</button>'; }).join("")
-      + '<form class="tmailf" data-tmailform="' + esc(t.id) + '"><input type="email" name="m" placeholder="+ ajouter un mail" aria-label="Ajouter un destinataire"></form></div></div>'
-      + '<label class="tf"><span>Lien envoyé</span><input type="url" data-tlien="' + esc(t.id) + '" value="' + esc(lv.liens[0] || (p && (p.livLien || p.photoLien)) || "") + '" placeholder="Lien Playbook ou WeTransfer"></label>'
-      + '<div class="tchips">'
-      + (lv.to.length ? '<a class="btn lime" target="_blank" rel="noopener" href="' + esc(tMailto(t, p)) + '" data-tmailgo="' + esc(t.id) + '">Préparer le mail dans Outlook ↗</a>' : '<span class="tsm warn">Ajoutez un destinataire pour préparer le mail.</span>')
-      + (lv.to.length && !lv.le ? '<button type="button" class="btn" data-tenvoye="' + esc(t.id) + '">Marquer comme envoyé</button>' : '')
-      + '</div></section>';
+    var mode = st === "terminee" ? (TV.livMode || (lv.le ? "deja" : "envoyer")) : "envoyer";
+    h += '<section class="tbox liv' + (st === "terminee" ? ' fin' : '') + '"><div class="tbt">Livraison ' + (lv.le ? '<b class="ok">✓ envoyée le ' + esc(quandCourt(lv.le)) + (lv.canal ? ' · ' + esc(lv.canal) : '') + '</b>' : '') + '</div>'
+      + (st === "terminee" ? '<div class="mp-seg tlivseg"><button type="button" data-tlivmode="deja" aria-pressed="' + (mode === "deja") + '">Déjà envoyé</button>'
+          + '<button type="button" data-tlivmode="envoyer" aria-pressed="' + (mode === "envoyer") + '">Envoyer par mail</button></div>' : '')
+      + '<div class="tf"><span>' + (mode === "deja" ? 'Envoyé à' : 'À envoyer à') + '</span><div class="tmails">' + lv.to.map(function(m){ return '<span class="tmail">✉ ' + esc(nomMail(m)) + ' <button type="button" data-tmailsup="' + esc(m) + '" data-tid="' + esc(t.id) + '" aria-label="Retirer">✕</button></span>'; }).join("")
+      + cand.map(function(m){ return '<button type="button" class="tmail sugg" data-tmailadd="' + esc(m) + '" data-tid="' + esc(t.id) + '">+ ' + esc(nomMail(m)) + '</button>'; }).join("")
+      + '<form class="tmailf" data-tmailform="' + esc(t.id) + '"><input type="text" name="m" list="mailsConnus" autocomplete="off" placeholder="+ nom ou mail…" aria-label="Ajouter un destinataire"></form></div></div>'
+      + '<label class="tf"><span>Lien ' + (mode === "deja" ? 'envoyé' : 'à envoyer') + '</span><input type="url" data-tlien="' + esc(t.id) + '" value="' + esc(lv.liens[0] || (p && (p.livLien || p.photoLien)) || "") + '" placeholder="Lien Playbook ou WeTransfer"></label>';
+    if(mode === "deja"){
+      h += '<div class="tkv2"><label class="tf"><span>Envoyé le</span><input type="date" data-tlivle="' + esc(t.id) + '" value="' + esc(String(lv.le || "").slice(0, 10) || iso(new Date())) + '"></label>'
+        + '<label class="tf"><span>Par</span><select data-tlivcanal="' + esc(t.id) + '">' + ["Mail Outlook","Playbook","WeTransfer","SwissTransfer","Autre"].map(function(c){ return '<option' + (c === (lv.canal || "Mail Outlook") ? ' selected' : '') + '>' + c + '</option>'; }).join("") + '</select></label></div>'
+        + '<div class="tchips">' + (lv.to.length ? '<button type="button" class="btn lime" data-tlivok="' + esc(t.id) + '">' + (lv.le ? 'Mettre à jour l’envoi' : 'Enregistrer l’envoi') + '</button>' : '<span class="tsm warn">Indiquez à qui la livraison a été envoyée.</span>') + '</div>';
+    } else {
+      h += '<div class="tchips">'
+        + (lv.to.length ? '<a class="btn lime" target="_blank" rel="noopener" href="' + esc(tMailto(t, p)) + '" data-tmailgo="' + esc(t.id) + '">Préparer le mail dans Outlook ↗</a>' : '<span class="tsm warn">Ajoutez un destinataire pour préparer le mail.</span>')
+        + (lv.to.length && !lv.le ? '<button type="button" class="btn" data-tenvoye="' + esc(t.id) + '">Marquer comme envoyé</button>' : '')
+        + '</div>';
+    }
+    h += '</section>' + datalistMails();
 
-    h += '<div class="tchips bas"><button type="button" class="tk-cat" data-tcat="' + esc(t.id) + '">' + (tEstTournage(t) ? 'Passer en tâche' : 'Passer en tournage') + '</button>'
+    h += '<div class="tchips bas"><label class="tsm">Catégorie <select data-tcatsel="' + esc(t.id) + '">'
+      + [["tache","Tâche"],["tournage","Tournage"],["creation","Création"]].map(function(x){ return '<option value="' + x[0] + '"' + (tCat(t) === x[0] ? ' selected' : '') + '>' + x[1] + '</option>'; }).join("") + '</select></label>'
       + '<button type="button" class="tk-cat sup" data-tsup="' + esc(t.id) + '">Supprimer</button></div>';
     return h + '</aside>';
   }
 
+  /* Carnet d'adresses pour les propositions : contacts relevés dans les mails (ligne « contacts-mail »,
+     mise à jour chaque lundi), carnet de la Régie, contacts client des projets. */
+  var CM = { data:null, at:0, enCours:false };
+  function cmCharger(){
+    if(!EN_LIGNE || CM.enCours || Date.now() - CM.at < 30 * 60e3) return;
+    var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
+    CM.enCours = true;
+    fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=contacts-mail", { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
+      .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(x){ CM.enCours = false; CM.at = Date.now(); CM.data = x.ok && x.j && x.j.planning ? (x.j.planning.contacts || []) : [];
+                         if(VUE === "planning" || VUE === "fiche"){ var d = document.getElementById("mailsConnus"); if(d) d.outerHTML = datalistMails(); } },
+            function(){ CM.enCours = false; CM.at = Date.now(); });
+  }
+  function mailsConnus(){
+    cmCharger();
+    var vu = {}, out = [];
+    function ajoute(email, nom, soc){
+      email = String(email || "").trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || vu[email]) return;
+      vu[email] = 1; out.push({ email:email, nom:nom || "", soc:soc || "" });
+    }
+    (CM.data || []).forEach(function(c){ ajoute(c.email, c.nom, c.societe); });
+    (CT || []).forEach(function(c){ ajoute(c.mail, ((c.prenom || "") + " " + (c.nom || "")).trim(), c.societe); });
+    P.forEach(function(p){
+      (Array.isArray(p.mailsClient) ? p.mailsClient : []).forEach(function(m){ ajoute(m, "", p.client); });
+      (p.jours || []).forEach(function(j){ ajoute(j.contactMail, j.contactNom, p.client); });
+    });
+    return out;
+  }
+  function nomMail(m){ var c = mailsConnus().filter(function(x){ return x.email === m; })[0]; return c && c.nom ? c.nom + " · " + m : m; }
+  function datalistMails(){
+    return '<datalist id="mailsConnus">' + mailsConnus().map(function(c){
+      return '<option value="' + esc(c.email) + '" label="' + esc((c.nom || c.email) + (c.soc ? " — " + c.soc : "")) + '">' + esc(c.nom || "") + '</option>'; }).join("") + '</datalist>';
+  }
+  /* Une saisie « Prénom Nom <adresse> » ou un nom connu → l'adresse. */
+  function mailDe(v){
+    v = String(v || "").trim();
+    var m = v.match(/<([^>]+)>/); if(m) v = m[1];
+    if(/@/.test(v)) return v.toLowerCase();
+    var n = tNorm(v); if(!n) return "";
+    var c = mailsConnus().filter(function(x){ return tNorm(x.nom) === n; });
+    return c.length === 1 ? c[0].email : "";
+  }
   /* Contacts client connus pour un projet (relevés dans les mails, rangés dans la fiche projet). */
   function tContactsProjet(p){
     if(!p) return [];
@@ -2494,7 +2592,7 @@
       + '<div class="tbt">Livraison au client ' + (env && env.le ? '<b class="ok">✓ envoyée le ' + esc(quandCourt(env.le)) + '</b>' : '') + '</div>'
       + '<div class="tf"><span>Contacts client</span><div class="tmails">'
       + (Array.isArray(p.mailsClient) ? p.mailsClient : []).map(function(m){ return '<span class="tmail">✉ ' + esc(m) + ' <button type="button" data-pmailsup="' + esc(m) + '" aria-label="Retirer">✕</button></span>'; }).join("")
-      + '<form class="tmailf" data-pmailform="1"><input type="email" name="m" placeholder="+ ajouter un mail" aria-label="Ajouter un contact client"></form></div></div>'
+      + '<form class="tmailf" data-pmailform="1"><input type="text" name="m" list="mailsConnus" autocomplete="off" placeholder="+ nom ou mail…" aria-label="Ajouter un contact client"></form></div></div>' + datalistMails()
       + '<div class="tchips">' + (ms.length
           ? '<a class="btn" target="_blank" rel="noopener" href="' + esc(mailLivraison(ms, p, false)) + '">Mail : version à valider ↗</a>'
             + '<a class="btn lime" target="_blank" rel="noopener" href="' + esc(mailLivraison(ms, p, true)) + '">Mail : version finale ↗</a>'
@@ -2581,7 +2679,7 @@
     var equipe = equipeConnue();
     var noms = {}; P.forEach(function(p){ if(p.client) noms[p.client] = 1; if(p.projet) noms[p.projet] = 1; });
     return '<form class="tk-add" id="tkAdd">'
-      + '<select id="tk_c" aria-label="Catégorie"><option value="tache">Tâche</option><option value="tournage">Tournage</option></select>'
+      + '<select id="tk_c" aria-label="Catégorie"><option value="tache">Tâche</option><option value="tournage">Tournage</option><option value="creation"' + (TV.espace === "creation" ? ' selected' : '') + '>Création</option></select>'
       + '<input type="text" id="tk_t" placeholder="Nouvelle tâche…" aria-label="Nouvelle tâche" required>'
       + '<input type="text" id="tk_p" placeholder="Projet" aria-label="Projet" list="tk_pl"><datalist id="tk_pl">'
       + Object.keys(noms).sort().map(function(n){ return '<option value="' + esc(n) + '">'; }).join("") + '</datalist>'
@@ -2650,12 +2748,21 @@
     function livMaj(t, f){ var l = tLiv(t); f(l); t.livraison = l; tMaj(t); rendre(); }
     sur("form[data-tmailform]", "submit", function(f, e){
       e.preventDefault();
-      var t = tTrouve(f.dataset.tmailform), m = f.elements.m.value.trim().toLowerCase(); if(!t || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) { toast("Adresse mail incomplète."); return; }
+      var t = tTrouve(f.dataset.tmailform), m = mailDe(f.elements.m.value); if(!t || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) { toast("Adresse mail incomplète."); return; }
       livMaj(t, function(l){ if(l.to.indexOf(m) < 0) l.to.push(m); });
     });
     sur("[data-tmailadd]", "click", function(b){ var t = tTrouve(b.dataset.tid); if(t) livMaj(t, function(l){ l.to.push(b.dataset.tmailadd); }); });
     sur("[data-tmailsup]", "click", function(b){ var t = tTrouve(b.dataset.tid); if(t) livMaj(t, function(l){ l.to = l.to.filter(function(x){ return x !== b.dataset.tmailsup; }); }); });
     sur("[data-tlien]", "change", function(el){ var t = tTrouve(el.dataset.tlien); if(t) livMaj(t, function(l){ l.liens = el.value.trim() ? [el.value.trim()] : []; }); });
+    sur("[data-tlivmode]", "click", function(b){ TV.livMode = b.dataset.tlivmode; rendre(); });
+    // choisir une proposition dans la liste ajoute directement le destinataire
+    sur(".tmailf input", "change", function(el){ if(/@/.test(el.value) && el.form) el.form.requestSubmit(); });
+    sur("[data-tlivok]", "click", function(b){
+      var t = tTrouve(b.dataset.tlivok); if(!t) return;
+      var d = app.querySelector('[data-tlivle="' + b.dataset.tlivok + '"]'), c = app.querySelector('[data-tlivcanal="' + b.dataset.tlivok + '"]');
+      var l = tLiv(t); l.le = d && d.value ? d.value + "T12:00:00" : new Date().toISOString(); l.canal = c ? c.value : "Mail Outlook"; t.livraison = l;
+      tMaj(t, "Livraison notée : envoyée à " + l.to.join(", ") + " (" + l.canal + ")"); toast("Envoi enregistré."); rendre();
+    });
     sur("[data-tenvoye]", "click", function(b){
       var t = tTrouve(b.dataset.tenvoye); if(!t) return;
       var l = tLiv(t); l.le = new Date().toISOString(); l.canal = "Mail Outlook"; t.livraison = l;
@@ -2684,6 +2791,11 @@
         enregistrer(c, true); toast("Journée retirée du projet.");
       });
     });
+    sur("[data-tcatsel]", "change", function(el){
+      var t = tTrouve(el.dataset.tcatsel); if(!t) return;
+      t.categorie = el.value; tMaj(t, "Catégorie : " + el.options[el.selectedIndex].text);
+      toast("Rangée dans « " + el.options[el.selectedIndex].text + " »."); rendre();
+    });
     sur("[data-tcat]", "click", function(b){
       var t = tTrouve(b.dataset.tcat); if(!t) return;
       t.categorie = tEstTournage(t) ? "tache" : "tournage"; tMaj(t);
@@ -2697,14 +2809,14 @@
       creer({ kind:"tache", categorie:f.querySelector("#tk_c").value, titre:titre, projet:pr, projetId: lie ? lie.id : "", detail:"", points:[],
               assigne:f.querySelector("#tk_a").value, statut:"avenir", echeance:f.querySelector("#tk_e").value, avancement:0,
               source:"Régie", cle:"", cree:new Date().toISOString(), termineLe:"" });
-      TV.espace = f.querySelector("#tk_c").value === "tournage" ? "tournages" : "avenir";
+      var cc = f.querySelector("#tk_c").value; TV.espace = cc === "tournage" ? "tournages" : cc === "creation" ? "creation" : "encours";
     });
   }
 
   function vuePlanning(){
     var esp = TV.espace, liste = mesTaches();
     var sel = TV.sel ? tTrouve(TV.sel) : null;
-    if(sel && tEspace(sel) !== esp && !(esp === "tournages" && tEstTournage(sel))) sel = null;
+    if(sel && esp !== "agenda" && tListe(esp).concat(esp === "tournages" ? liste.filter(tEstTournage) : []).indexOf(sel) < 0) sel = null;
     var info = T_ESP.filter(function(x){ return x.k === esp; })[0] || T_ESP[2];
 
     // menu : les espaces de Tâches, puis le reste de la Régie
@@ -2715,7 +2827,7 @@
           var n = tCompte(x.k);
           return '<button type="button" data-tesp="' + x.k + '" aria-current="' + (x.k === esp) + '"><i style="background:' + x.c + '"></i>' + esc(x.l) + (n !== "" ? '<span>' + n + '</span>' : '') + '</button>'; }).join("") + '</div>'
       + '<div class="tnav autres">'
-      + [["avenir","À venir"],["cal","Calendrier"],["suivi","Après tournage"],["tous","Projets"],["contacts","Contacts"]].map(function(x){
+      + [["avenir","À venir"],["cal","Calendrier"],["tous","Projets"],["contacts","Contacts"]].map(function(x){
           return '<button type="button" data-go="' + x[0] + '">' + x[1] + '</button>'; }).join("") + '</div>'
       + '<button type="button" class="btn lime tnew" data-go="new">+ Nouveau projet</button></nav>';
 
@@ -2730,6 +2842,12 @@
                      : '<p class="mp-vide">' + (MOI && !TV.tous ? 'Aucun tournage à venir où tu es dans l’équipe.' : 'Aucun tournage à venir.') + '</p>')
         + (tgT.length ? '<h4 class="mp-cat">Tâches de tournage</h4><div class="tcards">' + tgT.map(tCarte).join("") + '</div>' : '')
         + '</div>';
+    } else if(esp === "creation"){
+      var lc = tListe("creation"), pc = mesCreations();
+      h += '<div class="tzone" style="--z:' + info.c + '">'
+        + (pc.length ? '<h4 class="mp-cat">Projets de création</h4><div class="tcards">' + pc.map(pCarte).join("") + '</div>' : '')
+        + (lc.length ? (pc.length ? '<h4 class="mp-cat">Tâches de création</h4>' : '') + '<div class="tcards">' + lc.map(tCarte).join("") + '</div>' : '')
+        + (!pc.length && !lc.length ? '<p class="mp-vide">Aucune création en cours.</p>' : '') + '</div>';
     } else if(esp === "agenda"){
       h += vueAgenda();
     } else {
@@ -2854,12 +2972,12 @@
     return '<div class="f puces"><label for="i_decor">Décor du studio<span class="hint">Le set-up à installer pour le tournage. Photos tirées de Playbook.</span></label>'
       + '<select id="i_decor" name="decor" tabindex="-1" aria-hidden="true"><option value=""' + (v ? '' : ' selected') + '>Aucun</option>'
       + DECORS.map(function(x){ return '<option value="' + x.id + '"' + (x.id === v ? ' selected' : '') + '>' + esc(x.nom) + '</option>'; }).join("") + '</select>'
-      + '<div class="dc-grille" role="radiogroup" aria-label="Décor du studio">'
+      + '<div class="dc-grille' + (v ? ' choisi' : '') + '" role="radiogroup" aria-label="Décor du studio">'
       + '<button type="button" class="aucun" role="radio" aria-checked="' + (!v) + '" data-puce="decor" data-v="">Pas de décor studio</button>'
       + DECORS.map(function(x){
           return '<button type="button" role="radio" aria-checked="' + (x.id === v) + '" data-puce="decor" data-v="' + x.id + '" title="' + esc(x.d) + '">'
             + '<img src="decors/' + x.id + '.jpg" alt="" loading="lazy"><span>' + esc(x.nom) + '</span></button>';
-        }).join("") + '</div></div>';
+        }).join("") + '</div>' + decorGrand(v) + '</div>';
   }
   function blocDecor(p){
     var dc = decorDe(p); if(!dc) return "";
@@ -2868,7 +2986,15 @@
       + '<div><b>' + esc(dc.nom) + '</b><p>' + esc(dc.d) + '</p>'
       + '<a href="' + PB_URL + dc.pb + '" target="_blank" rel="noopener">Voir les photos du décor dans Playbook ↗</a></div></div></div>';
   }
-  /* Décor en grand : au clic dans le formulaire (en plus de le choisir) ou sur la photo de la fiche. */
+  /* Le décor choisi, en grand sous la grille du formulaire. */
+  function decorGrand(id){
+    var dc = DECORS.filter(function(x){ return x.id === id; })[0];
+    if(!dc) return '<figure class="dc-grand" hidden></figure>';
+    return '<figure class="dc-grand"><img src="decors/' + dc.id + '.jpg" alt="Décor ' + esc(dc.nom) + '">'
+      + '<figcaption><b>' + esc(dc.nom) + '</b><p>' + esc(dc.d) + '</p>'
+      + '<a href="' + PB_URL + dc.pb + '" target="_blank" rel="noopener">Toutes les photos dans Playbook ↗</a></figcaption></figure>';
+  }
+  /* Décor en grand dans une fenêtre : seulement depuis la photo de la fiche projet. */
   function voirDecor(id){
     var dc = DECORS.filter(function(x){ return x.id === id; })[0]; if(!dc) return;
     var o = document.createElement("div");
@@ -2883,9 +3009,15 @@
     document.body.appendChild(o); o.querySelector(".x").focus();
   }
   document.addEventListener("click", function(e){
-    var b = e.target.closest && e.target.closest('[data-puce="decor"], .dc-fiche img');
-    if(!b) return;
-    var id = b.dataset.v || ((b.getAttribute("src") || "").match(/decors\/([\w-]+)\.jpg/) || [])[1];
+    var d = e.target.closest && e.target.closest('[data-puce="decor"]');
+    if(d){                                   // formulaire : le décor choisi s'affiche en grand dessous, les autres se grisent
+      var g = d.closest(".dc-grille"); if(!g) return;
+      g.classList.toggle("choisi", !!d.dataset.v);
+      var f = g.parentNode.querySelector(".dc-grand"); if(f) f.outerHTML = decorGrand(d.dataset.v);
+      return;
+    }
+    var im = e.target.closest && e.target.closest(".dc-fiche img");
+    var id = im && ((im.getAttribute("src") || "").match(/decors\/([\w-]+)\.jpg/) || [])[1];
     if(id) voirDecor(id);
   });
   function miniDecor(dc){ return dc ? '<span class="dc-mini"><img src="decors/' + dc.id + '.jpg" alt="">Décor ' + esc(dc.nom) + '</span>' : ''; }
@@ -2906,13 +3038,66 @@
     fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/planning?pour=playbook", { headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code } })
       .then(function(r){ return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
       .then(function(x){ PBK.enCours = false; PBK.at = Date.now(); PBK.data = x.ok && x.j ? x.j.planning : null;
-                         if(PBK.data && (VUE === "fiche" || VUE === "planning" || VUE === "ksf")) rendre(); },
+                         if(PBK.data && (VUE === "fiche" || VUE === "planning" || VUE === "tous" || VUE === "ksf")) rendre(); },
             function(){ PBK.enCours = false; });
   }
+  /* Dossiers liés à un projet ou une tâche : le relevé du lundi, corrigé à la main (champ pbLiens de la ligne :
+     retires = clés à ne plus afficher, ajouts = clés du relevé à ajouter, perso = liens Playbook collés à la main). */
+  function pbLigne(type, id){ return (type === "projets" ? P : TA).filter(function(x){ return x.id === id; })[0] || null; }
+  function pbCorr(row){ var c = (row && row.pbLiens) || {}; return { retires: c.retires || [], ajouts: c.ajouts || [], perso: c.perso || [] }; }
   function pbDossiers(type, id){
     pbCharger(false);
-    var d = PBK.data; if(!d || !d[type] || !d[type][id]) return [];
-    return d[type][id].map(function(k){ return d.dossiers[k]; }).filter(Boolean);
+    var d = PBK.data, row = pbLigne(type, id), c = pbCorr(row);
+    var cles = (d && d[type] && d[type][id]) ? d[type][id].slice() : [];
+    c.ajouts.forEach(function(k){ if(cles.indexOf(k) < 0) cles.push(k); });
+    var out = cles.filter(function(k){ return c.retires.indexOf(k) < 0 && d && d.dossiers[k]; })
+      .map(function(k){ var x = d.dossiers[k]; x._cle = k; return x; });
+    c.perso.forEach(function(x, i){ out.push({ _cle:"perso:" + i, nom:x.nom || "Lien Playbook", n:0, resume:"Ajouté à la main.", videos:[], boards:[{ url:x.url, chemin:[x.nom || "Lien Playbook"] }] }); });
+    return out;
+  }
+  /* Éditeur des liens Playbook (bouton « Modifier les liens »). */
+  var PBED = "";
+  function pbEditeur(type, id){
+    var cle = type + ":" + id, dos = pbDossiers(type, id), d = PBK.data;
+    if(PBED !== cle) return '<button type="button" class="btn pbedit" data-pbed="' + esc(cle) + '">Modifier les liens</button>';
+    var pris = dos.map(function(x){ return x._cle; });
+    var autres = d ? Object.keys(d.dossiers).filter(function(k){ return pris.indexOf(k) < 0; }) : [];
+    function lib(k){ var x = d.dossiers[k], b = (x.boards || [])[0]; return (b && b.chemin ? b.chemin.join(" › ") : x.nom); }
+    return '<div class="pbed" data-pbzone="' + esc(cle) + '"><div class="tbt">Modifier les liens Playbook <button type="button" class="tlien" data-pbed="">Terminé</button></div>'
+      + (dos.length ? '<ul class="pbed-l">' + dos.map(function(x){
+          return '<li><span>' + esc(x.nom) + '</span><button type="button" class="tk-cat sup" data-pbretire="' + esc(x._cle) + '">Retirer</button></li>'; }).join("") + '</ul>' : '<p class="tsm">Aucun dossier lié.</p>')
+      + (autres.length ? '<div class="pbed-a"><select data-pbchoix="1" aria-label="Dossier Playbook à lier"><option value="">Lier un dossier du relevé…</option>'
+          + autres.sort(function(a, b){ return lib(a).localeCompare(lib(b)); }).map(function(k){ return '<option value="' + esc(k) + '">' + esc(lib(k)) + '</option>'; }).join("") + '</select>'
+          + '<button type="button" class="btn" data-pblier="1">Lier</button></div>' : '')
+      + '<form class="pbed-a" data-pbperso="1"><input type="text" name="nom" placeholder="Nom (ex. Wingos ITW V2)" aria-label="Nom du lien"><input type="url" name="url" placeholder="https://www.playbook.com/…" aria-label="Lien Playbook" required><button type="submit" class="btn">Ajouter</button></form>'
+      + '<p class="tsm">Le relevé du lundi garde tes corrections.</p></div>';
+  }
+  function lierPbEditeur(){
+    function sur(sel, ev, f){ app.querySelectorAll(sel).forEach(function(el){ el.addEventListener(ev, function(e){ f(el, e); }); }); }
+    sur("[data-pbed]", "click", function(b){ PBED = b.dataset.pbed; rendre(); });
+    function corriger(f){
+      var k = PBED.split(":"), type = k[0], id = k.slice(1).join(":"), row = pbLigne(type, id); if(!row) return;
+      var c = JSON.parse(JSON.stringify(row)), corr = pbCorr(c); f(corr); c.pbLiens = corr;
+      if(type === "taches"){ TA = TA.map(function(x){ return x.id === id ? c : x; }); } else { P = P.map(function(x){ return x.id === id ? c : x; }); }
+      enregistrer(c, true); toast("Liens Playbook mis à jour."); rendre();
+    }
+    sur("[data-pbretire]", "click", function(b){
+      var k = b.dataset.pbretire;
+      corriger(function(c){
+        if(/^perso:/.test(k)){ c.perso.splice(+k.split(":")[1], 1); return; }
+        c.ajouts = c.ajouts.filter(function(x){ return x !== k; });
+        if(c.retires.indexOf(k) < 0) c.retires.push(k);
+      });
+    });
+    sur("[data-pblier]", "click", function(){
+      var sel = app.querySelector("[data-pbchoix]"), k = sel && sel.value; if(!k) return;
+      corriger(function(c){ c.retires = c.retires.filter(function(x){ return x !== k; }); if(c.ajouts.indexOf(k) < 0) c.ajouts.push(k); });
+    });
+    sur("form[data-pbperso]", "submit", function(f, e){
+      e.preventDefault();
+      var url = f.elements.url.value.trim(); if(!/^https:\/\/(www\.)?playbook\.com\//.test(url)){ toast("Collez un lien playbook.com."); return; }
+      corriger(function(c){ c.perso.push({ nom:f.elements.nom.value.trim(), url:url }); });
+    });
   }
   /* Liens Playbook : dossier (board) et vidéo. Les chemins et jetons viennent du relevé du lundi (lecture seule). */
   var PB_ASSET = PB_URL + "{dossier}?assetToken={asset}";   // forme d'URL d'une vidéo dans l'espace, si Playbook en expose une ; sinon on ouvre son dossier
@@ -2924,7 +3109,7 @@
       var bs = Array.isArray(x.boards) ? x.boards : [];
       var h = '<div class="pb-d"><header><b>' + esc(x.nom) + '</b><span>' + (x.n || 0) + ' fichier' + ((x.n || 0) > 1 ? 's' : '') + '</span></header>';
       bs.forEach(function(bd){
-        h += '<a class="pb-chemin" href="' + esc(pbLienDossier(bd.token)) + '" target="_blank" rel="noopener" title="Ouvrir le dossier dans Playbook">'
+        h += '<a class="pb-chemin" href="' + esc(bd.url || pbLienDossier(bd.token)) + '" target="_blank" rel="noopener" title="Ouvrir le dossier dans Playbook">'
           + (bd.chemin || []).map(function(c){ return '<span>' + esc(c) + '</span>'; }).join('<i>›</i>') + '<em>Ouvrir ↗</em></a>';
       });
       h += (x.resume ? '<p>' + esc(x.resume) + '</p>' : '');
@@ -2942,8 +3127,8 @@
     }).join("") + '</div>';
   }
   function blocPlaybook(p){
-    var dos = pbDossiers("projets", p.id); if(!dos.length) return "";
-    return '<div class="blk"><h3>Dans Playbook</h3>' + pbBloc(dos)
+    var dos = pbDossiers("projets", p.id);
+    return '<div class="blk"><h3>Dans Playbook</h3>' + (dos.length ? pbBloc(dos) : '<p class="tsm">Aucun dossier Playbook lié.</p>') + pbEditeur("projets", p.id)
       + '<p class="mp-src" style="margin-top:10px">Relevé dans Playbook' + (PBK.data && PBK.data.majLe ? ' le ' + esc(jourCourt(String(PBK.data.majLe).slice(0, 10))) : '') + ', mis à jour chaque lundi.</p></div>';
   }
   /* ---------- vidéos KSF en stock ----------
@@ -3123,7 +3308,6 @@
     { id:"avenir", nom:"À venir" },
     { id:"cal",    nom:"Calendrier" },
     { id:"planning", nom:"Tâches" },
-    { id:"suivi",  nom:"Après tournage" },
     { id:"tous",   nom:"Projets" },
     { id:"contacts", nom:"Contacts" },
     { id:"new",    nom:"+ Nouveau projet" }
@@ -3423,9 +3607,96 @@
     return h;
   }
 
+  /* ---------- Projets, rangés comme Tâches ----------
+     À venir (tournage à venir), En cours (post-production), Passés (dates passées mais statut resté « Confirmé »),
+     Terminés (publiés). Chaque carte a sa barre d'avancement, d'après le statut. */
+  var PV = { grp:"encours", sel:"" };
+  var P_GRP = [
+    { k:"avenir",  l:"À venir",  c:"#e9e43a" },
+    { k:"encours", l:"En cours", c:"#9d8cff" },
+    { k:"passe",   l:"Passés",   c:"#f08a4b" },
+    { k:"termine", l:"Terminés", c:"#5fbf86" }
+  ];
+  var P_AV = { "Confirmé":10, "Tourné":35, "Montage":55, "En validation":80, "Publié":100 };
+  function pAv(p){ return estMontage(p) && p.statut === "Confirmé" ? 15 : (P_AV[p.statut] || 0); }
+  function pGroupe(p){
+    if(p.statut === "Publié") return "termine";
+    if(p.statut && p.statut !== "Confirmé") return "encours";
+    return prochaine(p) ? "avenir" : (estMontage(p) ? "encours" : "passe");
+  }
+  function pDates(p){
+    var js = (p.jours || []).map(function(j){ return j.date; }).filter(Boolean).sort();
+    if(!js.length) return "Date à préciser";
+    return js.length === 1 ? jourCourt(js[0]) : jourCourt(js[0]) + " → " + jourCourt(js[js.length - 1]);
+  }
+  function pListe(k){
+    var l = P.filter(function(p){ return pGroupe(p) === k; });
+    return k === "avenir" ? l.sort(parDebut) : l.sort(parDebut).reverse();
+  }
+  function pCarte(p){
+    var av = pAv(p), ro = retoursOuverts(p), g = pGroupe(p);
+    return '<button type="button" class="tk2' + (PV.sel === p.id && VUE === "tous" ? ' sel' : '') + '" ' + (VUE === "tous" ? 'data-psel' : 'data-id') + '="' + esc(p.id) + '">'
+      + '<span class="tl"><span class="tt">' + esc(p.client || "Client à préciser") + (p.projet ? ' — ' + esc(p.projet) : '') + '</span>'
+      + '<span class="ttag">' + esc(libType(p)) + '</span>'
+      + (ro ? '<span class="tbadge late">' + ro + ' retour' + (ro > 1 ? 's' : '') + '</span>' : '')
+      + (g === "passe" ? '<span class="tbadge late">Statut à mettre à jour</span>' : '') + '</span>'
+      + '<span class="tm"><span>' + esc(pDates(p)) + '</span>'
+      + (p.motif ? '<span class="tmotif">' + esc(p.motif) + '</span>' : '') + '</span>'
+      + '<span class="tr"><span class="tbar"><b style="width:' + av + '%"></b></span><span class="tsm">' + esc(libStatut(p, p.statut) || "") + ' · ' + av + ' %</span></span></button>';
+  }
+  function pPanneau(p){
+    if(!p) return '<aside class="tpan vide"><p>Choisissez un projet pour voir son avancement, ses retours, Playbook et la livraison.</p></aside>';
+    var ro = retoursOuverts(p), rl = retours(p).filter(function(r){ return !r.fait; }).slice(-4), pj = prochaine(p), ms = tContactsProjet(p);
+    var h = '<aside class="tpan" aria-label="Projet">'
+      + '<div class="tcrumb"><span>Projet · ' + esc((P_GRP.filter(function(x){ return x.k === pGroupe(p); })[0] || {}).l || "") + '</span><button type="button" data-pferme="1" aria-label="Fermer">✕</button></div>'
+      + '<h2>' + esc(p.client || "") + (p.projet ? ' — ' + esc(p.projet) : '') + '</h2>'
+      + '<div class="tkv"><div><small>Prestation</small><span>' + esc(libType(p) || "—") + '</span></div>'
+      + '<div><small>' + (pj ? 'Prochain jour' : 'Dates') + '</small><span>' + esc(pj ? jourCourt(pj.date) : pDates(p)) + '</span></div>'
+      + '<div><small>Livraison</small><span>' + esc(p.livDate ? jourCourt(p.livDate) : p.photoDate ? jourCourt(p.photoDate) : "—") + '</span></div></div>'
+      + '<section class="tbox"><div class="tbt">Avancement <b>' + pAv(p) + ' %</b></div>'
+      + '<span class="tbar large"><b style="width:' + pAv(p) + '%"></b></span>'
+      + '<div class="tk-st" role="group" aria-label="Statut">' + statutsDe(p).map(function(x){
+          return '<button type="button" data-pstat="' + esc(x) + '" data-pid="' + esc(p.id) + '" aria-pressed="' + (p.statut === x) + '">' + esc(libStatut(p, x)) + '</button>'; }).join("") + '</div>'
+      + '<label class="tf"><span>Pourquoi ce statut</span><input type="text" data-pmot="' + esc(p.id) + '" value="' + esc(p.motif || "") + '" placeholder="En attente du retour de… / bloqué par… / prêt à livrer"></label></section>';
+    h += '<section class="tbox"><div class="tbt">Retours <b>' + (ro ? ro + ' à traiter' : 'aucun ouvert') + '</b></div>'
+      + (rl.length ? '<ul class="tret">' + rl.map(function(r){ return '<li>' + esc(r.texte || "") + '</li>'; }).join("") + '</ul>' : '') + '</section>';
+    var dos = pbDossiers("projets", p.id);
+    h += '<section class="tbox"><div class="tbt">Playbook</div>' + (dos.length ? pbBloc(dos) : '<p class="tsm">Aucun dossier lié.</p>') + pbEditeur("projets", p.id) + '</section>';
+    h += '<section class="tbox liv"><div class="tbt">Livraison ' + (p.livEnvoi && p.livEnvoi.le ? '<b class="ok">✓ envoyée le ' + esc(quandCourt(p.livEnvoi.le)) + '</b>' : '') + '</div>'
+      + (ms.length ? '<p class="tsm">' + ms.map(esc).join(", ") + '</p><div class="tchips">'
+          + '<a class="btn" target="_blank" rel="noopener" href="' + esc(mailLivraison(ms, p, false)) + '">Mail : version à valider ↗</a>'
+          + '<a class="btn lime" target="_blank" rel="noopener" href="' + esc(mailLivraison(ms, p, true)) + '">Mail : version finale ↗</a></div>'
+        : '<p class="tsm warn">Pas encore de contact client : ajoute-le depuis la fiche.</p>') + '</section>';
+    h += '<button type="button" class="btn lime tnew" data-id="' + esc(p.id) + '">Ouvrir la fiche complète →</button>';
+    return h + '</aside>';
+  }
   function vueTous(){
-    return '<h2 class="sec">Tous les projets</h2>'
-      + (P.length ? '<div class="cgrid">' + P.slice().sort(parDebut).reverse().map(carteProjet).join("") + '</div>' : vide("Aucun projet enregistré."));
+    var g = PV.grp, info = P_GRP.filter(function(x){ return x.k === g; })[0] || P_GRP[1];
+    var sel = PV.sel ? P.filter(function(x){ return x.id === PV.sel && pGroupe(x) === g; })[0] : null;
+    var nav = '<nav class="tside" aria-label="Projets"><div class="tnav">' + P_GRP.map(function(x){
+        return '<button type="button" data-pgrp="' + x.k + '" aria-current="' + (x.k === g) + '"><i style="background:' + x.c + '"></i>' + esc(x.l) + '<span>' + pListe(x.k).length + '</span></button>'; }).join("") + '</div>'
+      + '<div class="tnav autres">' + [["avenir","À venir"],["cal","Calendrier"],["planning","Tâches"],["contacts","Contacts"]].map(function(x){
+          return '<button type="button" data-go="' + x[0] + '">' + x[1] + '</button>'; }).join("") + '</div>'
+      + '<button type="button" class="btn lime tnew" data-go="new">+ Nouveau projet</button></nav>';
+    var l = pListe(g);
+    return '<div class="tlay' + (sel ? ' avecpan' : '') + '">' + nav + '<main class="tmain">'
+      + '<div class="thead"><h2>Projets · ' + esc(info.l) + '</h2><span class="tcnt">' + l.length + ' projet' + (l.length > 1 ? 's' : '') + '</span></div>'
+      + (g === "passe" && l.length ? '<p class="tsm">Leurs dates de tournage sont passées mais leur statut est resté « Confirmé » : passe-les en Tourné, Montage ou Publié.</p>' : '')
+      + '<div class="tzone" style="--z:' + info.c + '"><div class="tcards">' + (l.length ? l.map(pCarte).join("") : '<p class="mp-vide">Aucun projet ici.</p>') + '</div></div>'
+      + '</main>' + pPanneau(sel) + '</div>';
+  }
+  function lierProjets(){
+    if(VUE !== "tous") return;
+    function sur(sel, ev, f){ app.querySelectorAll(sel).forEach(function(el){ el.addEventListener(ev, function(e){ f(el, e); }); }); }
+    sur("[data-pgrp]", "click", function(b){ PV.grp = b.dataset.pgrp; PV.sel = ""; rendre(); });
+    sur("[data-psel]", "click", function(b){ PV.sel = PV.sel === b.dataset.psel ? "" : b.dataset.psel; rendre();
+      var pan = app.querySelector(".tpan"); if(pan && window.innerWidth < 1100) pan.scrollIntoView({ behavior:"smooth", block:"start" }); });
+    sur("[data-pferme]", "click", function(){ PV.sel = ""; rendre(); });
+    function maj(id, f){ var p = P.filter(function(x){ return x.id === id; })[0]; if(!p) return; var c = JSON.parse(JSON.stringify(p)); f(c); enregistrer(c, true); }
+    sur("[data-pstat]", "click", function(b){
+      maj(b.dataset.pid, function(c){ c.statut = b.dataset.pstat; }); toast("Statut : " + b.dataset.pstat + ".");
+    });
+    sur("[data-pmot]", "change", function(el){ maj(el.dataset.pmot, function(c){ c.motif = el.value.trim(); c.motifLe = new Date().toISOString(); }); toast("Enregistré."); });
   }
 
   /* Le bloc « à réaliser » tel qu'il s'affiche sur une fiche. */
@@ -4403,13 +4674,13 @@
     else if(VUE === "mat"){ h = vueMat(); }
     else if(VUE === "cal"){ h = vueCalendrier(); }
     else if(VUE === "planning"){ h = vuePlanning(); }
-    else if(VUE === "suivi"){ h = vueSuivi(); }
+    else if(VUE === "suivi"){ VUE = "tous"; PV.grp = "encours"; h = vueTous(); }   // l'onglet Après tournage est devenu Projets › En cours
     else if(/^ksf/.test(VUE)){ h = vueKsf(); }
     else if(VUE === "tous"){ h = vueTous(); }
     else { h = vueAvenir(); }
-    if(PRET && ["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
-    document.body.classList.toggle("vue-taches", PRET && VUE === "planning");
-    if(PRET && ["avenir","cal","suivi","tous","contacts","fiche","contact"].indexOf(VUE) >= 0)
+    if(PRET && ["avenir","cal","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
+    document.body.classList.toggle("vue-taches", PRET && (VUE === "planning" || VUE === "tous"));
+    if(PRET && ["avenir","cal","contacts","fiche","contact"].indexOf(VUE) >= 0)
       h += '<button type="button" class="fab" data-go="new" aria-label="Nouveau projet">+ Nouveau projet</button>';
 
     if(PRET && !EN_LIGNE){
@@ -4426,6 +4697,8 @@
       b.addEventListener("click", function(){ VUE = b.dataset.tile; rendre(); window.scrollTo(0,0); });
     });
     lierTaches();
+    lierProjets();
+    lierPbEditeur();
     rendreTabs();
     rendreMoi();
     lier();
@@ -4589,13 +4862,15 @@
     function pLiv(f){ var p = projet(); if(!p) return; var c = JSON.parse(JSON.stringify(p)); c.mailsClient = Array.isArray(c.mailsClient) ? c.mailsClient : []; f(c); enregistrer(c, true); }
     var pmf = app.querySelector("[data-pmailform]");
     if(pmf) pmf.addEventListener("submit", function(e){
-      e.preventDefault(); var m = pmf.elements.m.value.trim().toLowerCase();
+      e.preventDefault(); var m = mailDe(pmf.elements.m.value);
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)){ toast("Adresse mail incomplète."); return; }
       pLiv(function(c){ if(c.mailsClient.indexOf(m) < 0) c.mailsClient.push(m); });
     });
     app.querySelectorAll("[data-pmailsup]").forEach(function(b){
       b.addEventListener("click", function(){ pLiv(function(c){ c.mailsClient = c.mailsClient.filter(function(x){ return x !== b.dataset.pmailsup; }); }); });
     });
+    var pmi = pmf && pmf.elements.m;
+    if(pmi) pmi.addEventListener("change", function(){ if(/@/.test(pmi.value)) pmf.requestSubmit(); });
     var penv = app.querySelector("[data-penvoye]");
     if(penv) penv.addEventListener("click", function(){
       pLiv(function(c){ c.livEnvoi = { le:new Date().toISOString(), to:c.mailsClient.slice(), qui:MOI || "" }; }); toast("Envoi noté.");
