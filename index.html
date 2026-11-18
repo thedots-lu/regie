@@ -399,6 +399,125 @@
   @media (max-width:640px){ .tk-add{ grid-template-columns:1fr 1fr; } .tk-add #tk_t{ grid-column:1 / -1; } .tg{ grid-template-columns:1fr; } }
   .mp-src{ margin:0; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
   /* Décors du studio (photos Playbook) */
+
+  /* ---------- Tâches : trois colonnes (menu, liste, panneau) ---------- */
+  body.vue-taches .wrap, body.studio.vue-taches .wrap{ max-width:none !important; padding-inline:clamp(12px, 2vw, 28px); }
+  .tlay{ display:grid; grid-template-columns:230px minmax(0,1fr) minmax(360px, 440px); gap:22px; align-items:start; margin-top:18px; }
+  .tside{ position:sticky; top:96px; display:flex; flex-direction:column; gap:12px; }
+  .tnav{ display:flex; flex-direction:column; gap:2px; }
+  .tnav button{ font:inherit; font-size:14px; display:flex; align-items:center; gap:10px; text-align:left; color:var(--ink); opacity:.82; background:none; border:0; border-radius:10px; padding:9px 12px; cursor:pointer; }
+  .tnav button:hover{ background:var(--surface); opacity:1; }
+  .tnav button[aria-current="true"]{ background:var(--surface-2); opacity:1; font-weight:600; }
+  .tnav button i{ width:8px; height:8px; border-radius:50%; flex:none; }
+  .tnav button span{ margin-left:auto; font-family:"Space Mono",monospace; font-size:12px; color:var(--muted); }
+  .tnav.autres{ border-top:1px solid var(--line); padding-top:10px; }
+  .tnav.autres button{ font-size:13.5px; color:var(--muted); }
+  .tnew{ width:100%; justify-content:center; }
+  .tmain{ min-width:0; display:flex; flex-direction:column; gap:14px; }
+  .thead{ display:flex; align-items:baseline; gap:14px; }
+  .thead h2{ margin:0; font-family:"Inter Tight",sans-serif; font-size:clamp(24px, 2.4vw, 30px); letter-spacing:-.02em; }
+  .tcnt{ font-family:"Space Mono",monospace; color:var(--muted); font-size:14px; }
+  .tzone{ border:1px solid color-mix(in srgb, var(--z) 38%, transparent); background:color-mix(in srgb, var(--z) 4%, transparent); border-radius:16px; padding:14px; display:flex; flex-direction:column; gap:10px; }
+  .tcards{ display:flex; flex-direction:column; gap:8px; }
+  .tk2{ width:100%; font:inherit; color:var(--ink); text-align:left; cursor:pointer; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 16px; align-items:center;
+        background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:13px 16px; }
+  .tk2:hover{ border-color:color-mix(in srgb, var(--z, var(--lime)) 50%, var(--line)); }
+  .tk2.sel{ border-color:var(--z, var(--lime)); background:var(--surface-2); }
+  .tk2 .tl{ display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; min-width:0; }
+  .tk2 .tt{ font-weight:700; font-size:15px; }
+  .ttag{ font-size:12px; color:var(--muted); border:1px solid var(--line); border-radius:6px; padding:1px 7px; }
+  .tbadge{ font-family:"Space Mono",monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; border-radius:999px; padding:2px 8px; border:1px solid; }
+  .tbadge.late{ color:#FF8A5B; border-color:#FF8A5B; }
+  .tk2 .tm{ grid-column:1; display:flex; flex-wrap:wrap; gap:4px 16px; align-items:center; font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); }
+  .twho{ display:inline-flex; align-items:center; gap:6px; font-family:"Inter Tight",sans-serif; font-size:12.5px; color:var(--ink); }
+  .tav{ width:20px; height:20px; border-radius:50%; display:inline-grid; place-items:center; font-size:10px; font-weight:700; color:#111; flex:none; }
+  .tk2 .tr{ grid-column:2; grid-row:1 / 3; display:flex; flex-direction:column; align-items:flex-end; gap:6px; min-width:150px; }
+  .tbar{ display:block; width:150px; height:6px; border-radius:6px; background:var(--surface-2); overflow:hidden; }
+  .tbar b{ display:block; height:100%; background:var(--z, var(--lime)); border-radius:6px; }
+  .tsm{ font-family:"Space Mono",monospace; font-size:11.5px; color:var(--muted); margin:0; }
+  .tw{ font-size:12.5px; color:var(--ink); } .tw.ok{ color:#5fbf86; } .tw.warn, .tsm.warn{ color:#FF8A5B; }
+  .tpan{ position:sticky; top:96px; max-height:calc(100vh - 116px); overflow:auto; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:18px; display:flex; flex-direction:column; gap:14px; }
+  .tpan.vide{ color:var(--muted); font-size:14px; }
+  .tcrumb{ display:flex; justify-content:space-between; align-items:center; font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .tcrumb button{ font:inherit; background:none; border:0; color:var(--muted); cursor:pointer; font-size:14px; }
+  .tpan h2{ margin:0; font-family:"Inter Tight",sans-serif; font-size:20px; line-height:1.2; }
+  .tkv{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; }
+  .tkv > div{ background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:7px 9px; min-width:0; }
+  .tkv small{ display:block; font-family:"Space Mono",monospace; font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:3px; }
+  .tkv span, .tkv select, .tkv input{ font:inherit; font-size:13px; font-weight:600; color:var(--ink); background:none; border:0; padding:0; width:100%; min-width:0; }
+  .tkv input.late{ color:#FF8A5B; }
+  .tlien{ font:inherit; font-size:13px; font-weight:600; color:var(--lime); background:none; border:0; padding:0; cursor:pointer; text-align:left; }
+  .tbox{ background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:13px 14px; display:flex; flex-direction:column; gap:10px; }
+  .tbox.att{ border-color:color-mix(in srgb, #9d8cff 45%, var(--line)); }
+  .tbox.liv.fin{ border-color:color-mix(in srgb, #5fbf86 45%, var(--line)); }
+  .tbt{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-family:"Space Mono",monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+  .tbt b{ color:var(--ink); font-size:13px; letter-spacing:0; text-transform:none; } .tbt b.ok{ color:#5fbf86; }
+  .tbt .tlien{ font-family:"Inter Tight",sans-serif; letter-spacing:0; text-transform:none; }
+  .tslider{ -webkit-appearance:none; appearance:none; width:100%; height:8px; border-radius:8px; margin:6px 0 0;
+            background:linear-gradient(90deg, var(--lime) var(--v), var(--surface) var(--v)); cursor:pointer; }
+  .tslider::-webkit-slider-thumb{ -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:#fff; box-shadow:0 0 0 5px color-mix(in srgb, var(--lime) 30%, transparent); }
+  .tslider::-moz-range-thumb{ width:22px; height:22px; border:0; border-radius:50%; background:#fff; }
+  .tsteps{ display:grid; grid-template-columns:repeat(5, 1fr); gap:5px; }
+  .tsteps button{ font:inherit; font-size:11.5px; display:flex; flex-direction:column; align-items:center; gap:1px; padding:5px 0; border-radius:8px; border:1px solid var(--line); background:none; color:var(--muted); cursor:pointer; }
+  .tsteps button b{ font-family:"Space Mono",monospace; font-size:10px; font-weight:400; }
+  .tsteps button.on{ color:var(--ink); border-color:color-mix(in srgb, var(--lime) 40%, var(--line)); }
+  .tsteps button.cur{ background:var(--lime); color:var(--lime-ink); border-color:var(--lime); font-weight:600; }
+  .tf{ display:flex; flex-direction:column; gap:4px; }
+  .tf > span{ font-family:"Space Mono",monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  .tf input{ font:inherit; font-size:13.5px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:8px 10px; min-width:0; }
+  .tchips{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .tchips > button:not(.btn), .tchips > a:not(.btn){ font:inherit; font-size:12px; color:var(--muted); border:1px dashed var(--line); border-radius:999px; padding:4px 10px; background:none; cursor:pointer; text-decoration:none; }
+  .tchips.bas{ justify-content:space-between; }
+  .proj .pl{ display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; }
+  .tret{ margin:0; padding-left:18px; color:var(--muted); font-size:13px; display:flex; flex-direction:column; gap:3px; }
+  .ttabs{ display:flex; gap:2px; border-bottom:1px solid var(--line); margin:-4px -4px 2px; }
+  .ttabs button{ font:inherit; font-size:13px; color:var(--muted); background:none; border:0; border-bottom:2px solid transparent; padding:7px 10px; margin-bottom:-1px; cursor:pointer; }
+  .ttabs button[aria-selected="true"]{ color:var(--ink); font-weight:600; border-bottom-color:var(--lime); }
+  .ttabs em{ font-style:normal; font-family:"Space Mono",monospace; font-size:11px; color:var(--muted); margin-left:5px; }
+  .tcm{ display:flex; gap:10px; padding:8px 0; border-bottom:1px dashed var(--line); }
+  .tcm .tav{ width:26px; height:26px; font-size:11px; }
+  .tcm .h{ font-size:12.5px; font-weight:600; display:flex; gap:8px; align-items:baseline; }
+  .tcm time, .thist time{ font-family:"Space Mono",monospace; font-size:11px; color:var(--muted); font-weight:400; }
+  .tcm p{ margin:3px 0 0; font-size:13px; color:var(--ink); opacity:.9; line-height:1.45; overflow-wrap:anywhere; }
+  .tcm a, .tlk{ color:var(--lime); }
+  .tcm .tx{ margin-left:auto; font:inherit; font-size:11px; color:var(--muted); background:none; border:0; cursor:pointer; opacity:.5; }
+  .tcin{ display:flex; gap:8px; } .tcin input{ flex:1; min-width:0; font:inherit; font-size:13.5px; color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:8px 10px; }
+  .tlk{ display:flex; gap:10px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:9px; padding:7px 10px; font-size:12.5px; text-decoration:none; overflow-wrap:anywhere; }
+  .tlk .ico{ width:22px; height:22px; border-radius:6px; display:grid; place-items:center; font-size:11px; font-weight:800; color:#111; background:#fff; flex:none; }
+  .thist{ margin:0; padding:0; list-style:none; font-size:13px; display:flex; flex-direction:column; gap:5px; }
+  .tmails{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+  .tmail{ display:inline-flex; gap:6px; align-items:center; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:3px 10px; font-size:12.5px; color:var(--ink); }
+  .tmail button{ font:inherit; font-size:11px; background:none; border:0; color:var(--muted); cursor:pointer; padding:0; }
+  .tmail.sugg{ border-style:dashed; color:var(--muted); cursor:pointer; font:inherit; font-size:12.5px; }
+  .tmailf input{ font:inherit; font-size:12.5px; color:var(--ink); background:none; border:0; border-bottom:1px dashed var(--line); padding:3px 2px; width:170px; }
+  @media (max-width:1280px){ .tlay{ grid-template-columns:200px minmax(0,1fr) 360px; gap:16px; } }
+  @media (max-width:1099px){
+    .tlay{ grid-template-columns:1fr; }
+    .tside{ position:static; } .tnav{ flex-direction:row; flex-wrap:wrap; } .tnav.autres, .tnew{ display:none; }
+    .tnav button{ border:1px solid var(--line); border-radius:999px; padding:6px 12px; font-size:13px; }
+    .tpan{ position:static; max-height:none; }
+    .tk2 .tr{ min-width:0; } .tbar{ width:90px; }
+  }
+  @media (max-width:560px){ .tk2{ grid-template-columns:1fr; } .tk2 .tr{ grid-column:1; grid-row:auto; align-items:flex-start; flex-direction:row; } .tkv{ grid-template-columns:1fr 1fr; } }
+  .pmotif{ margin-top:12px; }
+  /* Grand écran : la Régie occupe la largeur, les cartes passent en grille. */
+  .cgrid{ display:flex; flex-direction:column; gap:12px; }
+  .cgrid > .card{ margin:0; }
+  @media (min-width:1200px){
+    body.studio .wrap{ max-width:min(1480px, calc(100vw - 64px)); }
+    body.studio .top-in{ max-width:min(1480px, calc(100vw - 64px)); }
+    .cgrid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(400px, 1fr)); align-items:stretch; }
+    .cgrid > .card{ height:100%; }
+    body.studio .intro .lead{ max-width:62ch; }
+  }
+  .dc-voir{ position:fixed; inset:0; z-index:200; background:rgba(6,6,10,.86); display:grid; place-items:center; padding:24px; cursor:zoom-out; }
+  .dc-voir figure{ margin:0; max-width:min(1100px, 100%); background:var(--surface); border:1px solid var(--line); border-radius:18px; overflow:hidden; cursor:default; }
+  .dc-voir img{ display:block; width:100%; max-height:72vh; object-fit:contain; background:#000; }
+  .dc-voir figcaption{ display:flex; flex-wrap:wrap; gap:6px 16px; align-items:baseline; padding:14px 18px; }
+  .dc-voir figcaption b{ font-size:18px; } .dc-voir figcaption p{ margin:0; color:var(--muted); flex:1 1 320px; }
+  .dc-voir figcaption a{ color:var(--lime); font-size:13px; }
+  .dc-voir .x{ position:absolute; top:18px; right:22px; font:inherit; font-size:14px; color:#fff; background:rgba(255,255,255,.12); border:0; border-radius:999px; padding:8px 14px; cursor:pointer; }
+  .dc-fiche img{ cursor:zoom-in; }
   .dc-grille{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; margin-top:6px; }
   .dc-grille button{ position:relative; padding:0; border:2px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface-2); cursor:pointer; text-align:left; font:inherit; color:var(--ink); }
   .dc-grille button img{ display:block; width:100%; aspect-ratio:16/10; object-fit:cover; }
@@ -922,6 +1041,7 @@
   body.studio .btn.lime{ background:var(--lime); color:var(--lime-ink); }
   body.studio .btn.lime:hover{ filter:brightness(1.06); }
   body.studio .step{ background:transparent; }
+  body.studio .step.on{ background:var(--lime); color:var(--lime-ink); }
   body.studio .fiche-head{ border:1px solid var(--line); border-radius:14px;
     background:linear-gradient(180deg, rgba(9,9,14,.72), rgba(9,9,14,.92)), #111118 url("studio-banniere.jpg") 0% 50%/320% auto no-repeat; }
   body.studio .fiche-head h2, body.studio .calbar .tt{ font-family:"Unbounded",sans-serif; font-weight:500; letter-spacing:-.01em; }
@@ -2188,90 +2308,313 @@
     var ea = a.echeance || "9999", eb = b.echeance || "9999";
     return ea.localeCompare(eb) || String(a.cree || "").localeCompare(String(b.cree || ""));
   }
+  /* ---------- Tâches, façon maquette ----------
+     Trois colonnes sur grand écran : menu (espaces), liste, panneau de la tâche choisie.
+     Sur téléphone, les espaces passent en pastilles et le panneau s'ouvre sous la liste.
+     Champs ajoutés aux tâches :
+       avancement  0 | 25 | 50 | 75 | 100 (Brief, Dérush, Montage, Retours, Livré)
+       attente     { qui, motif, depuis }  — de qui on attend, pourquoi, depuis quand
+       coms        [{ id, qui, le, txt }]  — commentaires, liens et anecdotes
+       hist        [{ le, qui, txt }]      — changements de statut et d'avancement
+       livraison   { to:[], liens:[], le, canal } — trace d'envoi au client
+       projetId    id du projet de la Régie lié (sinon rapprochement par le nom) */
+  var T_AV = [[0,"Brief"],[25,"Dérush"],[50,"Montage"],[75,"Retours"],[100,"Livré"]];
+  var T_ESP = [
+    { k:"tournages", l:"Tournages",  c:"var(--lime)" },
+    { k:"avenir",    l:"À venir",    c:"#8b8b9b" },
+    { k:"encours",   l:"En cours",   c:"#e9e43a" },
+    { k:"attente",   l:"En attente", c:"#9d8cff" },
+    { k:"terminee",  l:"Terminées",  c:"#5fbf86" },
+    { k:"agenda",    l:"Mes deux semaines", c:"#5aa3ff" }
+  ];
+  if(!TV.espace) TV.espace = "encours";
+  function tAv(t){ var v = +t.avancement; return isNaN(v) ? (t.statut === "terminee" ? 100 : 0) : v; }
+  function tComs(t){ return Array.isArray(t.coms) ? t.coms : []; }
+  function tLiv(t){ var l = t.livraison || {}; return { to: Array.isArray(l.to) ? l.to : [], liens: Array.isArray(l.liens) ? l.liens : [], le: l.le || "", canal: l.canal || "" }; }
+  function tNorm(s){ return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, " ").trim(); }
+  /* Le projet de la Régie qui correspond à la tâche : lien explicite, sinon même nom de client ou de projet. */
+  function tProjet(t){
+    if(t.projetId){ var p0 = P.filter(function(x){ return x.id === t.projetId; })[0]; if(p0) return p0; }
+    var n = tNorm(t.projet); if(!n) return null;
+    var c = P.filter(function(x){ return tNorm(x.projet) === n || tNorm(x.client) === n; });
+    if(!c.length) c = P.filter(function(x){ var a = tNorm(x.client), b = tNorm(x.projet); return (a && (a.indexOf(n) >= 0 || n.indexOf(a) >= 0)) || (b && b.indexOf(n) >= 0); });
+    return c.sort(function(a, b){ return String(b.cree || "").localeCompare(String(a.cree || "")); })[0] || null;
+  }
+  function tAvatar(n){
+    var s = String(n || "?"), h = 0; for(var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360;
+    return '<span class="tav" style="background:hsl(' + h + ',62%,78%)">' + esc(s.charAt(0).toUpperCase() || "?") + '</span>';
+  }
+  function tDepuis(d){
+    if(!d) return "";
+    var n = Math.round((new Date(iso(new Date()) + "T12:00:00") - new Date(String(d).slice(0, 10) + "T12:00:00")) / 864e5);
+    if(isNaN(n) || n < 0) return "";
+    return n === 0 ? "depuis aujourd'hui" : n < 14 ? "depuis " + n + " jour" + (n > 1 ? "s" : "") : "depuis " + Math.round(n / 7) + " sem.";
+  }
+  function tLiens(txt){
+    return esc(txt).replace(/(https?:\/\/[^\s<]+)/g, function(u){ return '<a href="' + u + '" target="_blank" rel="noopener">' + u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 48) + (u.length > 60 ? "…" : "") + '</a>'; });
+  }
+  function tEspace(t){ return t.statut || "avenir"; }
+  function tListe(k){
+    var l = mesTaches().filter(function(t){ return !tEstTournage(t) && tEspace(t) === k; });
+    if(k === "terminee") return l.sort(function(a, b){ return String(b.termineLe || "").localeCompare(String(a.termineLe || "")); });
+    if(k === "attente") return l.sort(function(a, b){ return String((a.attente || {}).depuis || "9").localeCompare(String((b.attente || {}).depuis || "9")) || tTri(a, b); });
+    return l.sort(tTri);
+  }
+  function tCompte(k){
+    if(k === "tournages") return mesTournages().length + mesTaches().filter(function(t){ return tEstTournage(t) && t.statut !== "terminee"; }).length;
+    if(k === "agenda") return "";
+    return tListe(k).length;
+  }
+
+  /* Une carte de la liste. */
   function tCarte(t){
-    var st = t.statut || "avenir", retard = tEnRetard(t), ouvert = TV.ouvert === t.id;
+    var st = tEspace(t), retard = tEnRetard(t), av = tAv(t), lv = tLiv(t), at = t.attente || {};
+    var droite = "";
+    if(st === "attente") droite = '<span class="tw">⏳ ' + esc(at.qui || at.motif || "Motif à préciser") + '</span><span class="tsm">' + esc(tDepuis(at.depuis) || "") + '</span>';
+    else if(st === "terminee") droite = lv.to.length ? '<span class="tw ok">✉ Envoyée à ' + lv.to.length + ' contact' + (lv.to.length > 1 ? 's' : '') + '</span>' + (lv.liens.length ? '<span class="tsm">+ lien</span>' : '')
+                                                     : '<span class="tw warn">⚠ Destinataire à renseigner</span>';
+    else droite = '<span class="tbar"><b style="width:' + av + '%"></b></span><span class="tsm">' + av + ' %</span>';
+    return '<button type="button" class="tk2' + (TV.sel === t.id ? ' sel' : '') + '" data-tsel="' + esc(t.id) + '">'
+      + '<span class="tl"><span class="tt">' + esc(t.titre || "Tâche") + '</span>'
+      + (t.projet ? '<span class="ttag">' + esc(t.projet) + '</span>' : '')
+      + (retard ? '<span class="tbadge late">En retard</span>' : '') + '</span>'
+      + '<span class="tm">' + (st === "terminee" && t.termineLe ? '<span>Terminée ' + esc(jourCourt(String(t.termineLe).slice(0, 10))) + '</span>'
+                              : '<span>' + (t.echeance ? 'Échéance ' + esc(jourCourt(t.echeance)) : 'Sans échéance') + '</span>')
+      + '<span class="twho">' + tAvatar(t.assigne || "?") + esc(t.assigne || "Personne") + '</span>'
+      + (tComs(t).length ? '<span>💬 ' + tComs(t).length + '</span>' : '') + '</span>'
+      + '<span class="tr">' + droite + '</span></button>';
+  }
+
+  /* Le panneau de droite : tout sur la tâche choisie. */
+  function tPanneau(t){
+    if(!t) return '<aside class="tpan vide"><p>Choisissez une tâche pour voir son avancement, ses commentaires, le projet lié et la livraison.</p></aside>';
+    var st = tEspace(t), av = tAv(t), at = t.attente || {}, lv = tLiv(t), p = tProjet(t);
     var equipe = equipeConnue(); if(t.assigne && equipe.indexOf(t.assigne) < 0) equipe.push(t.assigne);
-    var h = '<li class="tk ' + esc(st) + (retard ? ' retard' : '') + '" data-tache="' + esc(t.id) + '">'
-      + '<div class="tk-l1"><button type="button" class="tk-t" data-touvre="' + esc(t.id) + '" aria-expanded="' + (ouvert ? "true" : "false") + '">' + esc(t.titre || "Tâche") + '</button>'
-      + (t.projet ? '<span class="tk-p">' + esc(t.projet) + '</span>' : '')
-      + (retard ? '<span class="mp-chip late">En retard</span>' : '')
-      + (st === "attente" ? '<span class="mp-chip info">En attente</span>' : '')
-      + '</div>'
-      + '<div class="tk-l2">'
-      + (t.echeance ? '<span>Échéance ' + esc(jourCourt(t.echeance)) + '</span>' : '')
-      + (st === "terminee" && t.termineLe ? '<span>Terminée le ' + esc(jourCourt(String(t.termineLe).slice(0,10))) + '</span>' : '')
-      + '<label class="tk-qui"><span class="sr">Attribuée à</span><select data-tassigne="' + esc(t.id) + '">'
-      + '<option value="">Personne</option>'
-      + equipe.map(function(n){ return '<option' + (n === t.assigne ? " selected" : "") + '>' + esc(n) + '</option>'; }).join("")
-      + '</select></label>'
-      + '<button type="button" class="tk-cat" data-tcat="' + esc(t.id) + '">' + (tEstTournage(t) ? 'Passer en tâche' : 'Passer en tournage') + '</button>'
+    var lib = (T_STATUTS.filter(function(x){ return x[0] === st; })[0] || [0, ""])[1];
+    var h = '<aside class="tpan" aria-label="Tâche">'
+      + '<div class="tcrumb"><span>Tâche · ' + esc(lib) + '</span><button type="button" data-tferme="1" aria-label="Fermer">✕</button></div>'
+      + '<h2>' + esc(t.titre || "Tâche") + '</h2>'
+      + '<div class="tkv"><div><small>Projet</small>' + (p ? '<button type="button" class="tlien" data-id="' + esc(p.id) + '">' + esc(t.projet || p.client) + ' ↗</button>' : '<span>' + esc(t.projet || "—") + '</span>') + '</div>'
+      + '<div><small>Assignée</small><select data-tassigne="' + esc(t.id) + '"><option value="">Personne</option>'
+      + equipe.map(function(n){ return '<option' + (n === t.assigne ? " selected" : "") + '>' + esc(n) + '</option>'; }).join("") + '</select></div>'
+      + '<div><small>Échéance</small><input type="date" data-tech="' + esc(t.id) + '" value="' + esc(t.echeance || "") + '"' + (tEnRetard(t) ? ' class="late"' : '') + '></div></div>'
+      + '<div class="tk-st" role="group" aria-label="Statut">' + T_STATUTS.map(function(x){
+          return '<button type="button" data-tstat="' + x[0] + '" data-tid="' + esc(t.id) + '" aria-pressed="' + (st === x[0] ? "true" : "false") + '">' + x[1] + '</button>'; }).join("") + '</div>';
+
+    // avancement
+    h += '<section class="tbox"><div class="tbt">Avancement <b>' + av + ' %</b></div>'
+      + '<input type="range" class="tslider" min="0" max="100" step="25" value="' + av + '" data-tav="' + esc(t.id) + '" style="--v:' + av + '%" aria-label="Avancement">'
+      + '<div class="tsteps">' + T_AV.map(function(x){
+          return '<button type="button" data-tavb="' + x[0] + '" data-tid="' + esc(t.id) + '" class="' + (x[0] <= av ? 'on' : '') + (x[0] === av ? ' cur' : '') + '"><b>' + x[0] + '</b>' + x[1] + '</button>'; }).join("") + '</div></section>';
+
+    // en attente / motif
+    if(st === "attente"){
+      h += '<section class="tbox att"><div class="tbt">En attente de <b>' + esc(at.depuis ? 'depuis le ' + jourCourt(String(at.depuis).slice(0, 10)) : '') + '</b></div>'
+        + '<label class="tf"><span>De qui</span><input type="text" data-tatt="qui" data-tid="' + esc(t.id) + '" value="' + esc(at.qui || "") + '" placeholder="Jenna Savio, le client, Sidonie…"></label>'
+        + '<label class="tf"><span>Pourquoi</span><input type="text" data-tatt="motif" data-tid="' + esc(t.id) + '" value="' + esc(at.motif || "") + '" placeholder="Retour sur la V4, nouveau texte, validation musique…"></label>'
+        + '<div class="tchips"><button type="button" data-tstat="encours" data-tid="' + esc(t.id) + '">Repasser en cours</button>'
+        + (lv.to.length ? '<a href="' + esc(tMailto(t, p, true)) + '">Relancer par mail</a>' : '') + '</div></section>';
+    } else {
+      h += '<section class="tbox"><label class="tf"><span>Où on en est</span><input type="text" data-tatt="motif" data-tid="' + esc(t.id) + '" value="' + esc(at.motif || "") + '" placeholder="Pourquoi la tâche est dans cet état (facultatif)"></label></section>';
+    }
+
+    // projet lié
+    if(p){
+      var ro = retoursOuverts(p), rl = retours(p).filter(function(r){ return !r.fait; }).slice(-3), pj = prochaine(p);
+      h += '<section class="tbox proj"><div class="tbt">Projet <button type="button" class="tlien" data-id="' + esc(p.id) + '">Ouvrir la fiche ↗</button></div>'
+        + '<div class="pl"><b>' + esc(p.client || "") + (p.projet ? ' — ' + esc(p.projet) : '') + '</b>'
+        + '<span class="pill ' + (CLASSE[p.statut] || "") + '">' + esc(libStatut(p, p.statut) || "") + '</span></div>'
+        + (p.motif ? '<p class="tsm">' + esc(p.motif) + '</p>' : '')
+        + '<p class="tsm">' + esc(libType(p)) + (pj ? ' · tournage ' + esc(jourCourt(pj.date)) : '') + (p.livDate ? ' · livraison ' + esc(jourCourt(p.livDate)) : '') + '</p>'
+        + (ro ? '<p class="tsm"><b>' + ro + ' retour' + (ro > 1 ? 's' : '') + ' à traiter</b></p><ul class="tret">' + rl.map(function(r){ return '<li>' + esc(r.texte || r.txt || "") + '</li>'; }).join("") + '</ul>' : '<p class="tsm">Aucun retour ouvert dans la Régie.</p>')
+        + '</section>';
+    }
+
+    // commentaires / liens / historique
+    var coms = tComs(t), liens = [];
+    coms.forEach(function(c){ (String(c.txt).match(/https?:\/\/[^\s]+/g) || []).forEach(function(u){ liens.push(u); }); });
+    var pb = pbDossiers("taches", t.id);
+    var onglet = TV.ptab || "com";
+    h += '<section class="tbox"><div class="ttabs" role="tablist">'
+      + '<button type="button" data-tptab="com" aria-selected="' + (onglet === "com") + '">Commentaires<em>' + coms.length + '</em></button>'
+      + '<button type="button" data-tptab="liens" aria-selected="' + (onglet === "liens") + '">Liens<em>' + (liens.length + pb.length) + '</em></button>'
+      + '<button type="button" data-tptab="hist" aria-selected="' + (onglet === "hist") + '">Historique</button></div>';
+    if(onglet === "com"){
+      h += (t.detail ? '<p class="tsm">' + esc(t.detail) + '</p>' : '')
+        + (t.points && t.points.length ? '<ul class="tret">' + t.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>' : '')
+        + coms.map(function(c){ return '<div class="tcm">' + tAvatar(c.qui) + '<div><div class="h">' + esc(c.qui || "") + ' <time>' + esc(quandCourt(c.le)) + '</time>'
+            + '<button type="button" class="tx" data-tcomsup="' + esc(c.id) + '" data-tid="' + esc(t.id) + '" aria-label="Supprimer le commentaire">✕</button></div><p>' + tLiens(c.txt) + '</p></div></div>'; }).join("")
+        + '<form class="tcin" data-tcom="' + esc(t.id) + '"><input type="text" name="txt" placeholder="Ajouter un commentaire, un lien, une anecdote…" aria-label="Commentaire"><button class="btn" type="submit">Envoyer</button></form>';
+    } else if(onglet === "liens"){
+      h += (liens.length || pb.length ? '' : '<p class="tsm">Aucun lien pour l’instant : collez-en un dans un commentaire.</p>')
+        + liens.map(function(u){ return '<a class="tlk" href="' + esc(u) + '" target="_blank" rel="noopener"><span class="ico">' + (/playbook/.test(u) ? 'P' : /wetransfer/.test(u) ? 'W' : '↗') + '</span>' + esc(u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 60)) + '</a>'; }).join("")
+        + (pb.length ? pbBloc(pb) : '');
+    } else {
+      var hi = (Array.isArray(t.hist) ? t.hist : []).slice().reverse();
+      h += hi.length ? '<ul class="thist">' + hi.map(function(x){ return '<li><time>' + esc(quandCourt(x.le)) + '</time> ' + esc(x.qui ? x.qui + ' — ' : '') + esc(x.txt) + '</li>'; }).join("") + '</ul>'
+                     : '<p class="tsm">Rien encore. Les changements de statut et d’avancement s’inscrivent ici.</p>';
+    }
+    h += '</section>';
+
+    // livraison
+    var cand = tContactsProjet(p).filter(function(m){ return lv.to.indexOf(m) < 0; });
+    h += '<section class="tbox liv' + (st === "terminee" ? ' fin' : '') + '"><div class="tbt">Livraison · trace d’envoi ' + (lv.le ? '<b class="ok">✓ envoyée le ' + esc(quandCourt(lv.le)) + '</b>' : '') + '</div>'
+      + '<div class="tf"><span>Envoyée à</span><div class="tmails">' + lv.to.map(function(m){ return '<span class="tmail">✉ ' + esc(m) + ' <button type="button" data-tmailsup="' + esc(m) + '" data-tid="' + esc(t.id) + '" aria-label="Retirer">✕</button></span>'; }).join("")
+      + cand.map(function(m){ return '<button type="button" class="tmail sugg" data-tmailadd="' + esc(m) + '" data-tid="' + esc(t.id) + '">+ ' + esc(m) + '</button>'; }).join("")
+      + '<form class="tmailf" data-tmailform="' + esc(t.id) + '"><input type="email" name="m" placeholder="+ ajouter un mail" aria-label="Ajouter un destinataire"></form></div></div>'
+      + '<label class="tf"><span>Lien envoyé</span><input type="url" data-tlien="' + esc(t.id) + '" value="' + esc(lv.liens[0] || (p && (p.livLien || p.photoLien)) || "") + '" placeholder="Lien Playbook ou WeTransfer"></label>'
+      + '<div class="tchips">'
+      + (lv.to.length ? '<a class="btn lime" href="' + esc(tMailto(t, p)) + '" data-tmailgo="' + esc(t.id) + '">Préparer le mail de livraison</a>' : '<span class="tsm warn">Ajoutez un destinataire pour préparer le mail.</span>')
+      + (lv.to.length && !lv.le ? '<button type="button" class="btn" data-tenvoye="' + esc(t.id) + '">Marquer comme envoyé</button>' : '')
+      + '</div></section>';
+
+    h += '<div class="tchips bas"><button type="button" class="tk-cat" data-tcat="' + esc(t.id) + '">' + (tEstTournage(t) ? 'Passer en tâche' : 'Passer en tournage') + '</button>'
       + '<button type="button" class="tk-cat sup" data-tsup="' + esc(t.id) + '">Supprimer</button></div>';
-    if(ouvert || st !== "terminee"){
-      if(t.detail) h += '<p class="tk-d">' + esc(t.detail) + '</p>';
-      if(t.points && t.points.length) h += '<ul class="tk-pts">' + t.points.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join("") + '</ul>';
-      var tdc = decorTache(t); if(tdc) h += '<p class="tk-d">' + miniDecor(tdc) + '</p>';
-      var tpb = pbDossiers("taches", t.id);
-      if(tpb.length){
-        var nc = 0; tpb.forEach(function(x){ (x.videos || []).forEach(function(v){ nc += v.com.length; }); });
-        h += '<details class="tk-pb"><summary>Playbook · ' + esc(tpb.map(function(x){ return x.nom; }).join(", "))
-          + (nc ? ' · ' + nc + ' retour' + (nc > 1 ? 's' : '') : '') + '</summary>' + pbBloc(tpb) + '</details>';
-      }
-    }
-    h += '<div class="tk-st" role="group" aria-label="Statut">' + T_STATUTS.map(function(x){
-        return '<button type="button" data-tstat="' + x[0] + '" data-tid="' + esc(t.id) + '" aria-pressed="' + (st === x[0] ? "true" : "false") + '">' + x[1] + '</button>';
-      }).join("") + '</div></li>';
-    return h;
+    return h + '</aside>';
   }
-  function tGroupes(liste, ajout){
-    var av = liste.filter(function(t){ return (t.statut || "avenir") === "avenir"; }).sort(tTri);
-    var ec = liste.filter(function(t){ return t.statut === "encours" || t.statut === "attente"; })
-                  .sort(function(a, b){ return (a.statut === "attente") - (b.statut === "attente") || tTri(a, b); });
-    var fi = liste.filter(function(t){ return t.statut === "terminee"; })
-                  .sort(function(a, b){ return String(b.termineLe || "").localeCompare(String(a.termineLe || "")); });
-    function col(titre, cls, l, vide){
-      return '<section class="tk-col ' + cls + '"><h4>' + titre + ' <span>' + l.length + '</span></h4>'
-        + (l.length ? '<ul class="tk-list">' + l.map(tCarte).join("") + '</ul>' : '<p class="mp-vide">' + vide + '</p>') + '</section>';
-    }
-    return '<div class="tk-cols">'
-      + col("À venir", "avenir", av, "Rien à venir.")
-      + col("En cours", "encours", ec, "Rien en cours.")
-      + '</div>'
-      + '<details class="tk-fini"' + (fi.length && fi.length < 4 ? " open" : "") + '><summary>Terminées <span>' + fi.length + '</span></summary>'
-      + (fi.length ? '<ul class="tk-list">' + fi.slice(0, 40).map(tCarte).join("") + '</ul>' : '<p class="mp-vide">Aucune tâche terminée pour l’instant.</p>')
-      + '</details>';
+
+  /* Contacts client connus pour un projet (relevés dans les mails, rangés dans la fiche projet). */
+  function tContactsProjet(p){
+    if(!p) return [];
+    var l = Array.isArray(p.mailsClient) ? p.mailsClient.slice() : [];
+    (p.jours || []).forEach(function(j){ if(j.contactMail && l.indexOf(j.contactMail) < 0) l.push(j.contactMail); });
+    return l.filter(function(m){ return /@/.test(m) && !/@thedots\.lu$/i.test(m); });
   }
+  /* Fiche projet : contacts client et mail de livraison. */
+  function blocLivraisonClient(p){
+    var ms = tContactsProjet(p), env = p.livEnvoi;
+    return '<div class="tbox liv" style="margin-top:12px">'
+      + '<div class="tbt">Livraison au client ' + (env && env.le ? '<b class="ok">✓ envoyée le ' + esc(quandCourt(env.le)) + '</b>' : '') + '</div>'
+      + '<div class="tf"><span>Contacts client</span><div class="tmails">'
+      + (Array.isArray(p.mailsClient) ? p.mailsClient : []).map(function(m){ return '<span class="tmail">✉ ' + esc(m) + ' <button type="button" data-pmailsup="' + esc(m) + '" aria-label="Retirer">✕</button></span>'; }).join("")
+      + '<form class="tmailf" data-pmailform="1"><input type="email" name="m" placeholder="+ ajouter un mail" aria-label="Ajouter un contact client"></form></div></div>'
+      + '<div class="tchips">' + (ms.length
+          ? '<a class="btn lime" href="' + esc(mailLivraison(ms, nomLivraison(p), p.livLien || p.photoLien || "")) + '">Préparer le mail de livraison</a>'
+            + '<button type="button" class="btn" data-penvoye="1">Marquer comme envoyé</button>'
+          : '<span class="tsm warn">Ajoutez le mail du client pour préparer la livraison.</span>') + '</div></div>';
+  }
+  /* Le mail de livraison, sur le ton des mails du studio : « Hello {prénom} », tutoiement, lien Playbook seul sur sa ligne. */
+  function nomLivraison(p){
+    if(!p) return "";
+    var c = p.client || "", j = p.projet || "";
+    if(!j) return c; if(!c) return j;
+    return tNorm(j).indexOf(tNorm(c).split(" ")[0]) >= 0 ? j : j + " – " + c;
+  }
+  function prenomDe(m){ var x = String(m || "").split("@")[0].split(/[._-]/)[0]; return /^(info|contact|marketing|hello|team|studio|communication)$/i.test(x) || x.length < 2 ? "" : x.charAt(0).toUpperCase() + x.slice(1); }
+  function mailLivraison(to, quoi, lien){
+    var pre = to.length === 1 ? prenomDe(to[0]) : "";
+    var sujet = (quoi || "Votre vidéo") + " – version finale 🎬";
+    var corps = "Hello" + (pre ? " " + pre : "") + ",\n\nJ'espère que tu vas bien ?\n\nVoici la version finale de la vidéo " + (quoi || "") + " :\n" + (lien || "[lien Playbook à ajouter]")
+      + "\n\nTu peux la visionner et la télécharger directement depuis le lien Playbook. Si tu as encore un petit retour, n'hésite pas à laisser un commentaire directement sur la vidéo, on s'en occupe rapidement."
+      + "\n\nMerci à toi pour ta confiance et belle journée 😊\n\n" + (MOI || "L'équipe") + "\nStudio by The Dots";
+    return "mailto:" + to.map(encodeURIComponent).join(",") + "?cc=studio%40thedots.lu&subject=" + encodeURIComponent(sujet) + "&body=" + encodeURIComponent(corps);
+  }
+  /* Mail de livraison prêt à relire dans Outlook. */
+  function tMailto(t, p, relance){
+    var lv = tLiv(t), lien = lv.liens[0] || (p && (p.livLien || p.photoLien)) || "";
+    var quoi = nomLivraison(p) || t.projet || t.titre || "votre vidéo";
+    var sig = (MOI || "L'équipe") + "\nStudio by The Dots";
+    var sujet, corps;
+    if(relance){
+      sujet = "Relance — " + quoi;
+      var pre = lv.to.length === 1 ? prenomDe(lv.to[0]) : "";
+      corps = "Hello" + (pre ? " " + pre : "") + ",\n\nJe me permets de revenir vers toi au sujet de « " + quoi + " »."
+        + ((t.attente && t.attente.motif) ? "\nIl nous manque encore : " + t.attente.motif + "." : "")
+        + (lien ? "\n\nPour rappel, tout est ici :\n" + lien : "")
+        + "\n\nMerci à toi et belle journée 😊\n\n" + sig;
+    } else return mailLivraison(lv.to, quoi, lien);
+    return "mailto:" + lv.to.map(encodeURIComponent).join(",") + "?subject=" + encodeURIComponent(sujet) + "&body=" + encodeURIComponent(corps);
+  }
+
   function tFormAjout(){
     var equipe = equipeConnue();
+    var noms = {}; P.forEach(function(p){ if(p.client) noms[p.client] = 1; if(p.projet) noms[p.projet] = 1; });
     return '<form class="tk-add" id="tkAdd">'
       + '<select id="tk_c" aria-label="Catégorie"><option value="tache">Tâche</option><option value="tournage">Tournage</option></select>'
       + '<input type="text" id="tk_t" placeholder="Nouvelle tâche…" aria-label="Nouvelle tâche" required>'
-      + '<input type="text" id="tk_p" placeholder="Projet" aria-label="Projet">'
+      + '<input type="text" id="tk_p" placeholder="Projet" aria-label="Projet" list="tk_pl"><datalist id="tk_pl">'
+      + Object.keys(noms).sort().map(function(n){ return '<option value="' + esc(n) + '">'; }).join("") + '</datalist>'
       + '<select id="tk_a" aria-label="Attribuer à"><option value="">Personne</option>'
       + equipe.map(function(n){ return '<option' + (n === MOI ? " selected" : "") + '>' + esc(n) + '</option>'; }).join("") + '</select>'
       + '<input type="date" id="tk_e" aria-label="Échéance">'
       + '<button class="btn lime" type="submit">Ajouter</button></form>';
   }
+
+  /* Enregistre une modification de tâche, avec une ligne d'historique si besoin. */
+  function tMaj(t, histo){
+    if(histo){ t.hist = (Array.isArray(t.hist) ? t.hist : []).concat([{ le:new Date().toISOString(), qui:MOI || "", txt:histo }]).slice(-40); }
+    enregistrer(t, true);
+  }
+  function tTrouve(id){ return TA.filter(function(x){ return x.id === id; })[0]; }
+
   function lierTaches(){
-    app.querySelectorAll("[data-tstat]").forEach(function(b){
-      b.addEventListener("click", function(){
-        var t = TA.filter(function(x){ return x.id === b.dataset.tid; })[0]; if(!t) return;
-        var v = b.dataset.tstat; if(t.statut === v) return;
-        t.statut = v;
-        t.termineLe = v === "terminee" ? new Date().toISOString() : "";
-        enregistrer(t, true); toast(v === "terminee" ? "Tâche terminée." : "Statut : " + T_STATUTS.filter(function(x){ return x[0] === v; })[0][1] + ".");
-        rendre();
-      });
+    function sur(sel, ev, f){ app.querySelectorAll(sel).forEach(function(el){ el.addEventListener(ev, function(e){ f(el, e); }); }); }
+    sur("[data-tesp]", "click", function(b){ TV.espace = b.dataset.tesp; TV.sel = ""; rendre(); });
+    sur("[data-tsel]", "click", function(b){ TV.sel = TV.sel === b.dataset.tsel ? "" : b.dataset.tsel; TV.ptab = "com"; rendre();
+      var pan = app.querySelector(".tpan"); if(pan && window.innerWidth < 1100) pan.scrollIntoView({ behavior:"smooth", block:"start" }); });
+    sur("[data-tferme]", "click", function(){ TV.sel = ""; rendre(); });
+    sur("[data-tptab]", "click", function(b){ TV.ptab = b.dataset.tptab; rendre(); });
+    sur("[data-tstat]", "click", function(b){
+      var t = tTrouve(b.dataset.tid); if(!t) return;
+      var v = b.dataset.tstat; if(t.statut === v) return;
+      t.statut = v;
+      t.termineLe = v === "terminee" ? new Date().toISOString() : "";
+      if(v === "attente"){ t.attente = t.attente || {}; if(!t.attente.depuis) t.attente.depuis = iso(new Date()); }
+      else if(t.attente) t.attente.depuis = "";
+      if(v === "terminee") t.avancement = 100;
+      var lib = T_STATUTS.filter(function(x){ return x[0] === v; })[0][1];
+      tMaj(t, "Statut : " + lib); toast(v === "terminee" ? "Tâche terminée." : "Statut : " + lib + ".");
+      TV.espace = v; rendre();
     });
-    app.querySelectorAll("[data-tassigne]").forEach(function(sel){
-      sel.addEventListener("change", function(){
-        var t = TA.filter(function(x){ return x.id === sel.dataset.tassigne; })[0]; if(!t) return;
-        t.assigne = sel.value; enregistrer(t, true);
-        toast(sel.value ? "Attribuée à " + sel.value + "." : "Tâche sans attribution."); rendre();
-      });
+    function avancer(t, v){
+      v = Math.max(0, Math.min(100, Math.round(v / 25) * 25)); if(tAv(t) === v) return;
+      t.avancement = v;
+      var lib = T_AV.filter(function(x){ return x[0] === v; })[0][1];
+      tMaj(t, "Avancement : " + v + " % (" + lib + ")"); rendre();
+    }
+    sur("[data-tav]", "input", function(el){ el.style.setProperty("--v", el.value + "%"); });
+    sur("[data-tav]", "change", function(el){ var t = tTrouve(el.dataset.tav); if(t) avancer(t, +el.value); });
+    sur("[data-tavb]", "click", function(b){ var t = tTrouve(b.dataset.tid); if(t) avancer(t, +b.dataset.tavb); });
+    sur("[data-tatt]", "change", function(el){
+      var t = tTrouve(el.dataset.tid); if(!t) return;
+      t.attente = t.attente || {}; t.attente[el.dataset.tatt] = el.value.trim(); tMaj(t); toast("Enregistré.");
     });
+    sur("[data-tassigne]", "change", function(sel){
+      var t = tTrouve(sel.dataset.tassigne); if(!t) return;
+      t.assigne = sel.value; tMaj(t, sel.value ? "Attribuée à " + sel.value : "Sans attribution");
+      toast(sel.value ? "Attribuée à " + sel.value + "." : "Tâche sans attribution."); rendre();
+    });
+    sur("[data-tech]", "change", function(el){ var t = tTrouve(el.dataset.tech); if(!t) return; t.echeance = el.value; tMaj(t, "Échéance : " + (el.value ? jourCourt(el.value) : "aucune")); rendre(); });
+    sur("form[data-tcom]", "submit", function(f, e){
+      e.preventDefault();
+      var t = tTrouve(f.dataset.tcom), txt = f.elements.txt.value.trim(); if(!t || !txt) return;
+      t.coms = tComs(t).concat([{ id:"c" + Date.now().toString(36), qui:MOI || "", le:new Date().toISOString(), txt:txt }]);
+      tMaj(t); rendre();
+      var i = app.querySelector("form[data-tcom] input"); if(i) i.focus();
+    });
+    sur("[data-tcomsup]", "click", function(b){
+      var t = tTrouve(b.dataset.tid); if(!t) return;
+      t.coms = tComs(t).filter(function(c){ return c.id !== b.dataset.tcomsup; }); tMaj(t); rendre();
+    });
+    function livMaj(t, f){ var l = tLiv(t); f(l); t.livraison = l; tMaj(t); rendre(); }
+    sur("form[data-tmailform]", "submit", function(f, e){
+      e.preventDefault();
+      var t = tTrouve(f.dataset.tmailform), m = f.elements.m.value.trim().toLowerCase(); if(!t || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)) { toast("Adresse mail incomplète."); return; }
+      livMaj(t, function(l){ if(l.to.indexOf(m) < 0) l.to.push(m); });
+    });
+    sur("[data-tmailadd]", "click", function(b){ var t = tTrouve(b.dataset.tid); if(t) livMaj(t, function(l){ l.to.push(b.dataset.tmailadd); }); });
+    sur("[data-tmailsup]", "click", function(b){ var t = tTrouve(b.dataset.tid); if(t) livMaj(t, function(l){ l.to = l.to.filter(function(x){ return x !== b.dataset.tmailsup; }); }); });
+    sur("[data-tlien]", "change", function(el){ var t = tTrouve(el.dataset.tlien); if(t) livMaj(t, function(l){ l.liens = el.value.trim() ? [el.value.trim()] : []; }); });
+    sur("[data-tenvoye]", "click", function(b){
+      var t = tTrouve(b.dataset.tenvoye); if(!t) return;
+      var l = tLiv(t); l.le = new Date().toISOString(); l.canal = "Mail Outlook"; t.livraison = l;
+      tMaj(t, "Livraison envoyée à " + l.to.join(", ")); toast("Envoi noté."); rendre();
+    });
+    sur("[data-ttous]", "click", function(b){ TV.tous = b.dataset.ttous === "1"; rendre(); });
     /* Suppression en deux temps : le premier clic demande confirmation. */
     function deuxTemps(b, faire){
-      b.addEventListener("click", function(){
+      b.addEventListener("click", function(e){
+        e.stopPropagation();
         if(b.dataset.sur !== "1"){ b.dataset.sur = "1"; b.classList.add("sur"); b.textContent = "Confirmer ?";
           setTimeout(function(){ if(b.isConnected && b.dataset.sur === "1"){ b.dataset.sur = ""; b.classList.remove("sur"); b.textContent = "Supprimer"; } }, 4000);
           return; }
@@ -2279,7 +2622,7 @@
       });
     }
     app.querySelectorAll("[data-tsup]").forEach(function(b){
-      deuxTemps(b, function(){ TA = TA.filter(function(x){ return x.id !== b.dataset.tsup; }); supprimer(b.dataset.tsup, "Tâche supprimée."); rendre(); });
+      deuxTemps(b, function(){ TA = TA.filter(function(x){ return x.id !== b.dataset.tsup; }); TV.sel = ""; supprimer(b.dataset.tsup, "Tâche supprimée."); rendre(); });
     });
     app.querySelectorAll("[data-tgsup]").forEach(function(b){
       deuxTemps(b, function(){
@@ -2290,63 +2633,85 @@
         enregistrer(c, true); toast("Journée retirée du projet.");
       });
     });
-    app.querySelectorAll("[data-tcat]").forEach(function(b){
-      b.addEventListener("click", function(){
-        var t = TA.filter(function(x){ return x.id === b.dataset.tcat; })[0]; if(!t) return;
-        t.categorie = tEstTournage(t) ? "tache" : "tournage"; enregistrer(t, true);
-        toast(t.categorie === "tournage" ? "Rangée dans les tournages." : "Rangée dans les tâches."); rendre();
-      });
-    });
-    app.querySelectorAll("[data-touvre]").forEach(function(b){
-      b.addEventListener("click", function(){ TV.ouvert = TV.ouvert === b.dataset.touvre ? "" : b.dataset.touvre; rendre(); });
-    });
-    app.querySelectorAll("[data-ttous]").forEach(function(b){
-      b.addEventListener("click", function(){ TV.tous = b.dataset.ttous === "1"; rendre(); });
+    sur("[data-tcat]", "click", function(b){
+      var t = tTrouve(b.dataset.tcat); if(!t) return;
+      t.categorie = tEstTournage(t) ? "tache" : "tournage"; tMaj(t);
+      toast(t.categorie === "tournage" ? "Rangée dans les tournages." : "Rangée dans les tâches."); rendre();
     });
     var f = app.querySelector("#tkAdd");
     if(f) f.addEventListener("submit", function(e){
       e.preventDefault();
       var titre = f.querySelector("#tk_t").value.trim(); if(!titre) return;
-      creer({ kind:"tache", categorie:f.querySelector("#tk_c").value, titre:titre, projet:f.querySelector("#tk_p").value.trim(), detail:"", points:[],
-              assigne:f.querySelector("#tk_a").value, statut:"avenir", echeance:f.querySelector("#tk_e").value,
+      var pr = f.querySelector("#tk_p").value.trim(), lie = P.filter(function(x){ return x.client === pr || x.projet === pr; })[0];
+      creer({ kind:"tache", categorie:f.querySelector("#tk_c").value, titre:titre, projet:pr, projetId: lie ? lie.id : "", detail:"", points:[],
+              assigne:f.querySelector("#tk_a").value, statut:"avenir", echeance:f.querySelector("#tk_e").value, avancement:0,
               source:"Régie", cle:"", cree:new Date().toISOString(), termineLe:"" });
+      TV.espace = f.querySelector("#tk_c").value === "tournage" ? "tournages" : "avenir";
     });
   }
+
   function vuePlanning(){
+    var esp = TV.espace, liste = mesTaches();
+    var sel = TV.sel ? tTrouve(TV.sel) : null;
+    if(sel && tEspace(sel) !== esp && !(esp === "tournages" && tEstTournage(sel))) sel = null;
+    var info = T_ESP.filter(function(x){ return x.k === esp; })[0] || T_ESP[2];
+
+    // menu : les espaces de Tâches, puis le reste de la Régie
+    var nav = '<nav class="tside" aria-label="Tâches">'
+      + (MOI ? '<div class="mp-seg"><button type="button" data-ttous="0" aria-pressed="' + (!TV.tous) + '">Les miennes</button>'
+             + '<button type="button" data-ttous="1" aria-pressed="' + TV.tous + '">Toute l’équipe</button></div>' : '')
+      + '<div class="tnav">' + T_ESP.map(function(x){
+          var n = tCompte(x.k);
+          return '<button type="button" data-tesp="' + x.k + '" aria-current="' + (x.k === esp) + '"><i style="background:' + x.c + '"></i>' + esc(x.l) + (n !== "" ? '<span>' + n + '</span>' : '') + '</button>'; }).join("") + '</div>'
+      + '<div class="tnav autres">'
+      + [["avenir","À venir"],["cal","Calendrier"],["suivi","Après tournage"],["tous","Projets"],["contacts","Contacts"]].map(function(x){
+          return '<button type="button" data-go="' + x[0] + '">' + x[1] + '</button>'; }).join("") + '</div>'
+      + '<button type="button" class="btn lime tnew" data-go="new">+ Nouveau projet</button></nav>';
+
+    var h = '<div class="tlay' + (sel ? ' avecpan' : '') + '">' + nav + '<main class="tmain">'
+      + '<div class="thead"><h2>' + esc(info.l) + '</h2><span class="tcnt">' + (esp === "agenda" ? '' : tCompte(esp) + (esp === "tournages" ? ' à venir' : ' tâche' + (tCompte(esp) > 1 ? 's' : ''))) + '</span></div>';
+    if(esp !== "agenda") h += tFormAjout();
+
+    if(esp === "tournages"){
+      var tg = mesTournages(), tgT = liste.filter(function(t){ return tEstTournage(t) && t.statut !== "terminee"; });
+      h += '<div class="tzone" style="--z:' + info.c + '">'
+        + (tg.length ? '<ul class="tg-list">' + tg.map(tgLigne).join("") + '</ul>'
+                     : '<p class="mp-vide">' + (MOI && !TV.tous ? 'Aucun tournage à venir où tu es dans l’équipe.' : 'Aucun tournage à venir.') + '</p>')
+        + (tgT.length ? '<h4 class="mp-cat">Tâches de tournage</h4><div class="tcards">' + tgT.map(tCarte).join("") + '</div>' : '')
+        + '</div>';
+    } else if(esp === "agenda"){
+      h += vueAgenda();
+    } else {
+      var l = tListe(esp);
+      h += '<div class="tzone" style="--z:' + info.c + '"><div class="tcards">'
+        + (l.length ? l.slice(0, esp === "terminee" ? 60 : 200).map(tCarte).join("") : '<p class="mp-vide">Rien ici pour l’instant.</p>') + '</div></div>';
+    }
+    h += '</main>' + (esp === "agenda" ? '' : tPanneau(sel)) + '</div>';
+    return h;
+  }
+
+  /* L'agenda des deux semaines (refait chaque lundi), devenu un espace de Tâches. */
+  function vueAgenda(){
     var D = PL.data;
+    if(!D) return '<p class="mp-vide">L’agenda des deux semaines n’est pas encore disponible.</p>';
     var fmtJ = new Intl.DateTimeFormat("fr-FR", { weekday:"short" });
     var fmtM = new Intl.DateTimeFormat("fr-FR", { day:"numeric", month:"long" });
     var fmtMaj = new Intl.DateTimeFormat("fr-FR", { weekday:"long", day:"numeric", month:"long", hour:"2-digit", minute:"2-digit" });
     function jr(x){ return new Date(x + "T12:00:00"); }
     var auj = iso(new Date());
-    var h = '<div class="mp">';
-
-    var liste = mesTaches();
-    h += '<div class="mp-hbar"><h3 class="mp-h">' + (MOI && !TV.tous ? 'Mes tâches' : 'Tâches de l’équipe') + '</h3>'
-       + (MOI ? '<div class="mp-seg"><button type="button" data-ttous="0" aria-pressed="' + (!TV.tous) + '">Les miennes</button>'
-              + '<button type="button" data-ttous="1" aria-pressed="' + TV.tous + '">Toute l’équipe</button></div>' : '')
-       + '</div>' + tFormAjout();
-    var tg = mesTournages(), tgT = liste.filter(tEstTournage), tch = liste.filter(function(t){ return !tEstTournage(t); });
-    h += '<h4 class="mp-cat">Tournages <span>' + (tg.length + tgT.filter(function(t){ return t.statut !== "terminee"; }).length) + '</span></h4>'
-       + (tg.length ? '<ul class="tg-list">' + tg.map(tgLigne).join("") + '</ul>'
-                    : '<p class="mp-vide">' + (MOI && !TV.tous ? 'Aucun tournage à venir où tu es dans l’équipe.' : 'Aucun tournage à venir.') + '</p>');
-    if(tgT.length) h += '<div style="margin-top:10px">' + tGroupes(tgT) + '</div>';
-    h += '<h4 class="mp-cat">Tâches <span>' + tch.filter(function(t){ return t.statut !== "terminee"; }).length + '</span></h4>' + tGroupes(tch);
-
-    if(D){
-      h += '<h3 class="mp-h">Agenda</h3><p class="mp-meta">' + (D.du && D.au ? 'Du ' + esc(fmtM.format(jr(D.du))) + ' au ' + esc(fmtM.format(jr(D.au))) + ' · ' : '')
-         + (D.majLe ? 'mis à jour ' + esc(fmtMaj.format(new Date(D.majLe))) : '') + '</p>'
-         + '<div class="mp-leg"><span><i class="tournage"></i>Tournage</span><span><i class="montage"></i>Montage</span>'
-         + '<span><i class="rdv"></i>Rendez-vous</span><span><i class="ksf"></i>KSF</span><span><i class="alerte"></i>À arbitrer</span></div>'
-         + mpJours(D.jours || [], auj, fmtJ);
-      function liste2(a, v){ return a && a.length ? '<ul>' + a.map(function(x){ return '<li>' + (typeof x === "string" ? esc(x) : '<b>' + esc(x.titre) + '</b>' + (x.detail ? ' — ' + esc(x.detail) : '')) + '</li>'; }).join("") + '</ul>' : '<p class="mp-vide">' + v + '</p>'; }
-      h += '<div class="mp-cols"><div class="mp-box"><h4>Rendu ou validé depuis lundi dernier</h4>'
-         + liste2(D.rendu, "Rien encore. Les projets passés en « Publié » et les livraisons envoyées par mail apparaîtront ici.") + '</div>'
-         + '<div class="mp-box"><h4>À vérifier dans la Régie</h4>' + liste2(D.aVerifier, "Tout est à jour.") + '</div></div>'
-         + '<p class="mp-src">Sources : ' + esc(D.sources || "") + '. Agenda refait chaque lundi matin.</p>';
-    }
+    var h = '<div class="mp"><p class="mp-meta">' + (D.du && D.au ? 'Du ' + esc(fmtM.format(jr(D.du))) + ' au ' + esc(fmtM.format(jr(D.au))) + ' · ' : '')
+       + (D.majLe ? 'mis à jour ' + esc(fmtMaj.format(new Date(D.majLe))) : '') + '</p>'
+       + '<div class="mp-leg"><span><i class="tournage"></i>Tournage</span><span><i class="montage"></i>Montage</span>'
+       + '<span><i class="rdv"></i>Rendez-vous</span><span><i class="ksf"></i>KSF</span><span><i class="alerte"></i>À arbitrer</span></div>'
+       + mpJours(D.jours || [], auj, fmtJ);
+    function liste2(a, v){ return a && a.length ? '<ul>' + a.map(function(x){ return '<li>' + (typeof x === "string" ? esc(x) : '<b>' + esc(x.titre) + '</b>' + (x.detail ? ' — ' + esc(x.detail) : '')) + '</li>'; }).join("") + '</ul>' : '<p class="mp-vide">' + v + '</p>'; }
+    h += '<div class="mp-cols"><div class="mp-box"><h4>Rendu ou validé depuis lundi dernier</h4>'
+       + liste2(D.rendu, "Rien encore.") + '</div>'
+       + '<div class="mp-box"><h4>À vérifier dans la Régie</h4>' + liste2(D.aVerifier, "Tout est à jour.") + '</div></div>'
+       + '<p class="mp-src">Sources : ' + esc(D.sources || "") + '. Agenda refait chaque lundi matin.</p>';
     return h + '</div>';
   }
+
   function mpJours(jours, auj, fmtJ){
     var h = '<div class="mp-days">';
     jours.forEach(function(j){
@@ -2452,6 +2817,26 @@
       + '<div><b>' + esc(dc.nom) + '</b><p>' + esc(dc.d) + '</p>'
       + '<a href="' + PB_URL + dc.pb + '" target="_blank" rel="noopener">Voir les photos du décor dans Playbook ↗</a></div></div></div>';
   }
+  /* Décor en grand : au clic dans le formulaire (en plus de le choisir) ou sur la photo de la fiche. */
+  function voirDecor(id){
+    var dc = DECORS.filter(function(x){ return x.id === id; })[0]; if(!dc) return;
+    var o = document.createElement("div");
+    o.className = "dc-voir"; o.setAttribute("role", "dialog"); o.setAttribute("aria-label", "Décor " + dc.nom);
+    o.innerHTML = '<button type="button" class="x">Fermer ✕</button><figure><img src="decors/' + dc.id + '.jpg" alt="Décor ' + esc(dc.nom) + '">'
+      + '<figcaption><b>' + esc(dc.nom) + '</b><p>' + esc(dc.d) + '</p>'
+      + '<a href="' + PB_URL + dc.pb + '" target="_blank" rel="noopener">Toutes les photos dans Playbook ↗</a></figcaption></figure>';
+    function fermer(){ o.remove(); document.removeEventListener("keydown", touche); }
+    function touche(e){ if(e.key === "Escape") fermer(); }
+    o.addEventListener("click", function(e){ if(e.target === o || e.target.classList.contains("x")) fermer(); });
+    document.addEventListener("keydown", touche);
+    document.body.appendChild(o); o.querySelector(".x").focus();
+  }
+  document.addEventListener("click", function(e){
+    var b = e.target.closest && e.target.closest('[data-puce="decor"], .dc-fiche img');
+    if(!b) return;
+    var id = b.dataset.v || ((b.getAttribute("src") || "").match(/decors\/([\w-]+)\.jpg/) || [])[1];
+    if(id) voirDecor(id);
+  });
   function miniDecor(dc){ return dc ? '<span class="dc-mini"><img src="decors/' + dc.id + '.jpg" alt="">Décor ' + esc(dc.nom) + '</span>' : ''; }
   /* Une tâche « de tournage » hérite du décor du projet dont elle porte le nom. */
   function decorTache(t){
@@ -2674,7 +3059,7 @@
   var ONGLETS = [
     { id:"avenir", nom:"À venir" },
     { id:"cal",    nom:"Calendrier" },
-    { id:"planning", nom:"Mon planning" },
+    { id:"planning", nom:"Tâches" },
     { id:"suivi",  nom:"Après tournage" },
     { id:"tous",   nom:"Projets" },
     { id:"contacts", nom:"Contacts" },
@@ -2889,7 +3274,7 @@
     lignes.sort(function(a, b){ return String(a.j.date || "9999").localeCompare(String(b.j.date || "9999")); });
     return bandeauImminent()
       + '<h2 class="sec">' + (filtreActif() ? "Mes prochains tournages" : "Projets à venir") + '</h2>'
-      + (lignes.length ? lignes.map(function(x){ return carteAVenir(x.p, x.j); }).join("")
+      + (lignes.length ? '<div class="cgrid">' + lignes.map(function(x){ return carteAVenir(x.p, x.j); }).join("") + '</div>'
          + '<div class="actions"><button class="btn" data-icsall="1">'
          + (filtreActif() ? "Mes journées dans mon calendrier" : "Tout le planning dans mon calendrier")
          + '</button></div>'
@@ -2904,8 +3289,8 @@
     var s = P.filter(enCours).sort(parDebut);
     var pub = P.filter(function(p){ return p.statut === "Publié"; }).sort(parDebut).reverse().slice(0, 6);
     return '<h2 class="sec">En cours de post-production</h2>'
-      + (s.length ? s.map(carteProjet).join("") : vide("Rien en post-production."))
-      + (pub.length ? '<h2 class="sec">Derniers publiés</h2>' + pub.map(carteProjet).join("") : "");
+      + (s.length ? '<div class="cgrid">' + s.map(carteProjet).join("") + '</div>' : vide("Rien en post-production."))
+      + (pub.length ? '<h2 class="sec">Derniers publiés</h2><div class="cgrid">' + pub.map(carteProjet).join("") + '</div>' : "");
   }
   /* Le carnet : un contact par ligne, modifiable, appelable, exportable. */
   function vueContacts(){
@@ -2977,7 +3362,7 @@
 
   function vueTous(){
     return '<h2 class="sec">Tous les projets</h2>'
-      + (P.length ? P.slice().sort(parDebut).reverse().map(carteProjet).join("") : vide("Aucun projet enregistré."));
+      + (P.length ? '<div class="cgrid">' + P.slice().sort(parDebut).reverse().map(carteProjet).join("") + '</div>' : vide("Aucun projet enregistré."));
   }
 
   /* Le bloc « à réaliser » tel qu'il s'affiche sur une fiche. */
@@ -3246,6 +3631,9 @@
       h += '<button class="step' + (p.statut === s ? " on" : "") + '" data-statut="' + esc(s) + '">' + esc(libStatut(p, s)) + '</button>';
     });
     h += '</div>'
+      + '<label class="tf pmotif"><span>Pourquoi ce statut' + (p.motifLe ? ' · noté le ' + esc(jourCourt(String(p.motifLe).slice(0, 10))) : '') + '</span>'
+      + '<input type="text" data-pmotif="1" value="' + esc(p.motif || "") + '" placeholder="En attente du retour de… / bloqué par… / prêt à livrer"></label>'
+      + blocLivraisonClient(p)
       + (!post && p.ssd ? '<div class="kv" style="margin-top:12px;"><span class="k">Rushes</span><span class="v">' + esc(p.ssd) + '</span></div>' : '')
       + (!post && p.validant ? '<div class="kv"><span class="k">Valide le montage</span><span class="v">' + esc(p.validant) + '</span></div>' : '')
       + '</div>';
@@ -3678,13 +4066,13 @@
           return '<button type="button" role="radio" aria-checked="' + (o === v) + '" data-puce="' + n + '" data-v="' + esc(o) + '">' + esc(o) + '</button>'; }).join("")
       + '</div></div>';
   }
-  /* Prestations : plusieurs choix possibles. Montage reste seul (pas de tournage). */
+  /* Prestation : un seul choix ; il applique ses réglages (PRESETS). */
   function pucesTypes(b){
     var ts = typesDe(b);
-    return '<div class="f puces"><label>Type de prestation<span class="hint">Plusieurs choix possibles.</span></label>'
+    return '<div class="f puces"><label>Type de prestation</label>'
       + '<input type="hidden" id="i_types" name="types" value="' + esc(ts.join("|")) + '">'
-      + '<div class="pc" role="group" aria-label="Type de prestation">' + TYPES.map(function(o){
-          return '<button type="button" role="checkbox" aria-checked="' + (ts.indexOf(o) >= 0) + '" data-ptype="' + esc(o) + '">' + esc(LIB_TYPE[o] || o) + '</button>'; }).join("")
+      + '<div class="pc" role="radiogroup" aria-label="Type de prestation">' + TYPES.map(function(o){
+          return '<button type="button" role="radio" aria-checked="' + (ts.indexOf(o) >= 0) + '" data-ptype="' + esc(o) + '">' + esc(LIB_TYPE[o] || o) + '</button>'; }).join("")
       + '</div></div>';
   }
   function appliquerPreset(b, t){
@@ -3956,7 +4344,8 @@
     else if(/^ksf/.test(VUE)){ h = vueKsf(); }
     else if(VUE === "tous"){ h = vueTous(); }
     else { h = vueAvenir(); }
-    if(PRET && ["avenir","cal","planning","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
+    if(PRET && ["avenir","cal","suivi","tous","contacts"].indexOf(VUE) >= 0) h = sIntro() + h;
+    document.body.classList.toggle("vue-taches", PRET && VUE === "planning");
     if(PRET && ["avenir","cal","suivi","tous","contacts","fiche","contact"].indexOf(VUE) >= 0)
       h += '<button type="button" class="fab" data-go="new" aria-label="Nouveau projet">+ Nouveau projet</button>';
 
@@ -4129,6 +4518,25 @@
       var id = ID; VUE = "avenir"; ID = null; supprimer(id); rendre();
     });
 
+    var pm = app.querySelector("[data-pmotif]");
+    if(pm) pm.addEventListener("change", function(){
+      var p = projet(); if(!p) return;
+      var c = JSON.parse(JSON.stringify(p)); c.motif = pm.value.trim(); c.motifLe = new Date().toISOString(); enregistrer(c);
+    });
+    function pLiv(f){ var p = projet(); if(!p) return; var c = JSON.parse(JSON.stringify(p)); c.mailsClient = Array.isArray(c.mailsClient) ? c.mailsClient : []; f(c); enregistrer(c, true); }
+    var pmf = app.querySelector("[data-pmailform]");
+    if(pmf) pmf.addEventListener("submit", function(e){
+      e.preventDefault(); var m = pmf.elements.m.value.trim().toLowerCase();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)){ toast("Adresse mail incomplète."); return; }
+      pLiv(function(c){ if(c.mailsClient.indexOf(m) < 0) c.mailsClient.push(m); });
+    });
+    app.querySelectorAll("[data-pmailsup]").forEach(function(b){
+      b.addEventListener("click", function(){ pLiv(function(c){ c.mailsClient = c.mailsClient.filter(function(x){ return x !== b.dataset.pmailsup; }); }); });
+    });
+    var penv = app.querySelector("[data-penvoye]");
+    if(penv) penv.addEventListener("click", function(){
+      pLiv(function(c){ c.livEnvoi = { le:new Date().toISOString(), to:c.mailsClient.slice(), qui:MOI || "" }; }); toast("Envoi noté.");
+    });
     app.querySelectorAll("[data-statut]").forEach(function(b){
       b.addEventListener("click", function(){
         var p = projet(); if(!p || p.statut === b.dataset.statut) return;
@@ -4246,14 +4654,11 @@
       bt.addEventListener("click", function(){
         if(!BROUILLON) return;
         lireForm();
-        var t = bt.dataset.ptype, ts = typesDe(BROUILLON).slice(), i = ts.indexOf(t);
-        if(i >= 0){
-          if(ts.length === 1) return;                                       // toujours au moins une prestation
-          ts.splice(i, 1);
-          if(PRESETS[t] && PRESETS[t].decor && BROUILLON.decor === PRESETS[t].decor) BROUILLON.decor = "";
-        }
-        else if(t === "Montage") ts = ["Montage"];
-        else { ts = ts.filter(function(x){ return x !== "Montage"; }).concat([t]); appliquerPreset(BROUILLON, t); }
+        // une seule prestation par projet : le choix remplace le précédent
+        var t = bt.dataset.ptype, avant = BROUILLON.type, ts = [t];
+        if(avant === t) return;
+        if(PRESETS[avant] && PRESETS[avant].decor && BROUILLON.decor === PRESETS[avant].decor) BROUILLON.decor = "";
+        appliquerPreset(BROUILLON, t);
         BROUILLON.types = ts; BROUILLON.type = ts[0];
         BROUILLON.materiel = null; SUP = null;                              // le kit suit les prestations
         rendre();
