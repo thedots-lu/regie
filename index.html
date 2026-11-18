@@ -414,6 +414,7 @@
   .tnav.autres button{ font-size:13.5px; color:var(--muted); }
   .tnew{ width:100%; justify-content:center; }
   .tmain{ min-width:0; display:flex; flex-direction:column; gap:14px; }
+  .tmain .tk-add{ grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); } .tmain .tk-add #tk_t{ grid-column:span 2; }
   .thead{ display:flex; align-items:baseline; gap:14px; }
   .thead h2{ margin:0; font-family:"Inter Tight",sans-serif; font-size:clamp(24px, 2.4vw, 30px); letter-spacing:-.02em; }
   .tcnt{ font-family:"Space Mono",monospace; color:var(--muted); font-size:14px; }
@@ -510,6 +511,11 @@
     .cgrid > .card{ height:100%; }
     body.studio .intro .lead{ max-width:62ch; }
   }
+  .pb-chemin{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin:6px 0 2px; padding:7px 10px; border:1px solid var(--line); border-radius:9px; background:var(--surface); font-size:12.5px; color:var(--ink); text-decoration:none; }
+  .pb-chemin i{ font-style:normal; color:var(--muted); }
+  .pb-chemin em{ margin-left:auto; font-style:normal; font-family:"Space Mono",monospace; font-size:11px; color:var(--lime); }
+  .pb-chemin:hover{ border-color:var(--lime); }
+  .kv-l a.t{ color:var(--ink); text-decoration:underline; text-decoration-color:color-mix(in srgb, var(--lime) 60%, transparent); text-underline-offset:2px; }
   .dc-voir{ position:fixed; inset:0; z-index:200; background:rgba(6,6,10,.86); display:grid; place-items:center; padding:24px; cursor:zoom-out; }
   .dc-voir figure{ margin:0; max-width:min(1100px, 100%); background:var(--surface); border:1px solid var(--line); border-radius:18px; overflow:hidden; cursor:default; }
   .dc-voir img{ display:block; width:100%; max-height:72vh; object-fit:contain; background:#000; }
@@ -2413,7 +2419,7 @@
         + '<label class="tf"><span>De qui</span><input type="text" data-tatt="qui" data-tid="' + esc(t.id) + '" value="' + esc(at.qui || "") + '" placeholder="Jenna Savio, le client, Sidonie…"></label>'
         + '<label class="tf"><span>Pourquoi</span><input type="text" data-tatt="motif" data-tid="' + esc(t.id) + '" value="' + esc(at.motif || "") + '" placeholder="Retour sur la V4, nouveau texte, validation musique…"></label>'
         + '<div class="tchips"><button type="button" data-tstat="encours" data-tid="' + esc(t.id) + '">Repasser en cours</button>'
-        + (lv.to.length ? '<a href="' + esc(tMailto(t, p, true)) + '">Relancer par mail</a>' : '') + '</div></section>';
+        + (lv.to.length ? '<a target="_blank" rel="noopener" href="' + esc(tMailto(t, p, true)) + '">Relancer par mail</a>' : '') + '</div></section>';
     } else {
       h += '<section class="tbox"><label class="tf"><span>Où on en est</span><input type="text" data-tatt="motif" data-tid="' + esc(t.id) + '" value="' + esc(at.motif || "") + '" placeholder="Pourquoi la tâche est dans cet état (facultatif)"></label></section>';
     }
@@ -2434,6 +2440,7 @@
     var coms = tComs(t), liens = [];
     coms.forEach(function(c){ (String(c.txt).match(/https?:\/\/[^\s]+/g) || []).forEach(function(u){ liens.push(u); }); });
     var pb = pbDossiers("taches", t.id);
+    if(p) pbDossiers("projets", p.id).forEach(function(x){ if(pb.indexOf(x) < 0) pb.push(x); });   // dossiers du projet lié aussi
     var onglet = TV.ptab || "com";
     h += '<section class="tbox"><div class="ttabs" role="tablist">'
       + '<button type="button" data-tptab="com" aria-selected="' + (onglet === "com") + '">Commentaires<em>' + coms.length + '</em></button>'
@@ -2464,7 +2471,7 @@
       + '<form class="tmailf" data-tmailform="' + esc(t.id) + '"><input type="email" name="m" placeholder="+ ajouter un mail" aria-label="Ajouter un destinataire"></form></div></div>'
       + '<label class="tf"><span>Lien envoyé</span><input type="url" data-tlien="' + esc(t.id) + '" value="' + esc(lv.liens[0] || (p && (p.livLien || p.photoLien)) || "") + '" placeholder="Lien Playbook ou WeTransfer"></label>'
       + '<div class="tchips">'
-      + (lv.to.length ? '<a class="btn lime" href="' + esc(tMailto(t, p)) + '" data-tmailgo="' + esc(t.id) + '">Préparer le mail de livraison</a>' : '<span class="tsm warn">Ajoutez un destinataire pour préparer le mail.</span>')
+      + (lv.to.length ? '<a class="btn lime" target="_blank" rel="noopener" href="' + esc(tMailto(t, p)) + '" data-tmailgo="' + esc(t.id) + '">Préparer le mail dans Outlook ↗</a>' : '<span class="tsm warn">Ajoutez un destinataire pour préparer le mail.</span>')
       + (lv.to.length && !lv.le ? '<button type="button" class="btn" data-tenvoye="' + esc(t.id) + '">Marquer comme envoyé</button>' : '')
       + '</div></section>';
 
@@ -2489,41 +2496,85 @@
       + (Array.isArray(p.mailsClient) ? p.mailsClient : []).map(function(m){ return '<span class="tmail">✉ ' + esc(m) + ' <button type="button" data-pmailsup="' + esc(m) + '" aria-label="Retirer">✕</button></span>'; }).join("")
       + '<form class="tmailf" data-pmailform="1"><input type="email" name="m" placeholder="+ ajouter un mail" aria-label="Ajouter un contact client"></form></div></div>'
       + '<div class="tchips">' + (ms.length
-          ? '<a class="btn lime" href="' + esc(mailLivraison(ms, nomLivraison(p), p.livLien || p.photoLien || "")) + '">Préparer le mail de livraison</a>'
+          ? '<a class="btn" target="_blank" rel="noopener" href="' + esc(mailLivraison(ms, p, false)) + '">Mail : version à valider ↗</a>'
+            + '<a class="btn lime" target="_blank" rel="noopener" href="' + esc(mailLivraison(ms, p, true)) + '">Mail : version finale ↗</a>'
             + '<button type="button" class="btn" data-penvoye="1">Marquer comme envoyé</button>'
           : '<span class="tsm warn">Ajoutez le mail du client pour préparer la livraison.</span>') + '</div></div>';
   }
   /* Le mail de livraison, sur le ton des mails du studio : « Hello {prénom} », tutoiement, lien Playbook seul sur sa ligne. */
   function nomLivraison(p){
     if(!p) return "";
-    var c = p.client || "", j = p.projet || "";
-    if(!j) return c; if(!c) return j;
-    return tNorm(j).indexOf(tNorm(c).split(" ")[0]) >= 0 ? j : j + " – " + c;
+    function net(x){ return String(x || "").replace(/\([^)]*\)/g, "").replace(/\s+/g, " ").trim(); }
+    var c = net(p.client), j = net(p.projet);
+    if(!j || tNorm(j) === tNorm(libType(p)) || tNorm(j) === tNorm(p.type)) return c || j;   // « 90s Outside » seul : on garde le nom du client
+    return j;
   }
   function prenomDe(m){ var x = String(m || "").split("@")[0].split(/[._-]/)[0]; return /^(info|contact|marketing|hello|team|studio|communication)$/i.test(x) || x.length < 2 ? "" : x.charAt(0).toUpperCase() + x.slice(1); }
-  function mailLivraison(to, quoi, lien){
-    var pre = to.length === 1 ? prenomDe(to[0]) : "";
-    var sujet = (quoi || "Votre vidéo") + " – version finale 🎬";
-    var corps = "Hello" + (pre ? " " + pre : "") + ",\n\nJ'espère que tu vas bien ?\n\nVoici la version finale de la vidéo " + (quoi || "") + " :\n" + (lien || "[lien Playbook à ajouter]")
-      + "\n\nTu peux la visionner et la télécharger directement depuis le lien Playbook. Si tu as encore un petit retour, n'hésite pas à laisser un commentaire directement sur la vidéo, on s'en occupe rapidement."
-      + "\n\nMerci à toi pour ta confiance et belle journée 😊\n\n" + (MOI || "L'équipe") + "\nStudio by The Dots";
-    return "mailto:" + to.map(encodeURIComponent).join(",") + "?cc=studio%40thedots.lu&subject=" + encodeURIComponent(sujet) + "&body=" + encodeURIComponent(corps);
+  /* Brouillon ouvert directement dans Outlook (web), sur le compte connecté — pas dans Mail d'Apple. */
+  function outlookCompose(to, sujet, corps){
+    return "https://outlook.office.com/mail/deeplink/compose?to=" + encodeURIComponent(to.join(","))
+      + "&cc=" + encodeURIComponent("studio@thedots.lu")
+      + "&subject=" + encodeURIComponent(sujet) + "&body=" + encodeURIComponent(corps);
   }
-  /* Mail de livraison prêt à relire dans Outlook. */
+  /* Le mail de livraison, rédigé à partir du projet : quoi (vidéo, photos, 90s, KSF…), quelle version
+     (première version à valider ou version finale), format, découpe, sous-titres, lien. Ton du studio :
+     « Hello {prénom} », tutoiement, lien seul sur sa ligne. */
+  function redigerLivraison(to, p, secours, finale){
+    var pre = to.length === 1 ? prenomDe(to[0]) : "";
+    var t = p ? p.type : "", photo = p ? faitPhoto(p) : false, video = p ? (faitVideo(p) || estMontage(p)) : true;
+    var nom = nomLivraison(p) || (secours && (secours.projet || secours.titre)) || "";
+    function url(x){ return /^https?:\/\//i.test(String(x || "").trim()) ? String(x).trim() : ""; }
+    var lienV = url(secours && secours.lien) || url(p && p.livLien), lienP = url(p && p.photoLien);
+    var aValider = !finale;
+    var avecRetours = p && retours(p).some(function(r){ return r.fait; });
+    var quoiV = t === "90 secondes OUTSIDE" ? "ton 90s Outside" : t === "KSF" ? "l'épisode de Kamel Sans Filtre"
+      : t === "Podcast studio" ? "l'épisode du podcast" : t === "Captation événement" ? "la vidéo de l'événement"
+      : t === "Expert insights" ? "la vidéo Expert insights" : t === "Interview corporate" ? "l'interview" : "la vidéo";
+    var plur = p && p.livDecoupe && /par/.test(p.livDecoupe);
+    if(plur) quoiV = p.livDecoupe === "Une vidéo par intervenant" ? "les vidéos (une par intervenant)" : "les vidéos (une par thème)";
+    var L = [];
+    L.push("Hello" + (pre ? " " + pre : "") + ",", "", "J'espère que tu vas bien ?", "");
+    if(video && !(p && photoSeule(p))){
+      var version = aValider ? (avecRetours ? "la nouvelle version de " + quoiV + ", avec tes retours" : "une première version de " + quoiV)
+                             : "la version finale de " + quoiV;
+      var details = [];
+      if(p && p.livDuree && /[a-z]/i.test(p.livDuree)) details.push(p.livDuree);
+      if(p && p.format === "Vertical") details.push("au format vertical, prête pour les réseaux");
+      else if(p && p.format === "Les deux") details.push("en horizontal et en vertical");
+      if(p && p.livSt && p.livSt !== "Aucun") details.push("sous-titrée en " + p.livSt.toLowerCase().replace("autre langue", "langue demandée"));
+      L.push("Voici " + version + (nom ? " « " + nom + " »" : "") + (details.length ? " (" + details.join(", ") + ")" : "") + " :");
+      L.push(lienV || "[lien Playbook à ajouter]", "");
+      L.push(aValider
+        ? "Tu peux faire tes retours directement en commentaire sur la vidéo dans Playbook, au bon moment de la timeline : c'est le plus simple pour nous. Qu'en penses-tu ?"
+        : "Tu peux la visionner et la télécharger en HD directement depuis le lien. Si tu as encore un petit retour, n'hésite pas à laisser un commentaire sur la vidéo, on s'en occupe rapidement.");
+    }
+    if(photo){
+      if(L.length > 4) L.push("");
+      var nb = p && /^\d+$/.test(String(p.photoNb || "").trim()) ? p.photoNb + " photos" : "les photos";
+      L.push("Voici " + nb + (nom ? " de « " + nom + " »" : "") + (p && p.photoRetouche && /compl/.test(p.photoRetouche) ? ", retouchées" : "") + " :");
+      L.push(lienP || "[lien de la galerie à ajouter]", "");
+      L.push("Tu peux les télécharger directement depuis la galerie.");
+    }
+    L.push("", "Merci à toi pour ta confiance et belle journée 😊", "", (MOI || "L'équipe"), "Studio by The Dots");
+    var sujet = (nom || "Votre vidéo") + (aValider ? " – " + (avecRetours ? "nouvelle version" : "première version") + " à valider" : " – version finale") + " 🎬";
+    if(p && photoSeule(p)) sujet = (nom || "Vos photos") + " – les photos 📸";
+    return outlookCompose(to, sujet, L.join("\n"));
+  }
+  function mailLivraison(to, p, finale){ return redigerLivraison(to, p, null, finale); }
   function tMailto(t, p, relance){
     var lv = tLiv(t), lien = lv.liens[0] || (p && (p.livLien || p.photoLien)) || "";
     var quoi = nomLivraison(p) || t.projet || t.titre || "votre vidéo";
-    var sig = (MOI || "L'équipe") + "\nStudio by The Dots";
-    var sujet, corps;
-    if(relance){
-      sujet = "Relance — " + quoi;
-      var pre = lv.to.length === 1 ? prenomDe(lv.to[0]) : "";
-      corps = "Hello" + (pre ? " " + pre : "") + ",\n\nJe me permets de revenir vers toi au sujet de « " + quoi + " »."
-        + ((t.attente && t.attente.motif) ? "\nIl nous manque encore : " + t.attente.motif + "." : "")
-        + (lien ? "\n\nPour rappel, tout est ici :\n" + lien : "")
-        + "\n\nMerci à toi et belle journée 😊\n\n" + sig;
-    } else return mailLivraison(lv.to, quoi, lien);
-    return "mailto:" + lv.to.map(encodeURIComponent).join(",") + "?subject=" + encodeURIComponent(sujet) + "&body=" + encodeURIComponent(corps);
+    if(!relance){
+      var q = p ? JSON.parse(JSON.stringify(p)) : null;
+      if(q && lv.liens[0]) q.livLien = lv.liens[0];
+      return redigerLivraison(lv.to, q, { projet:t.projet, titre:t.titre, lien:lien }, t.statut === "terminee" || tAv(t) >= 100);
+    }
+    var pre = lv.to.length === 1 ? prenomDe(lv.to[0]) : "";
+    var corps = "Hello" + (pre ? " " + pre : "") + ",\n\nJe me permets de revenir vers toi au sujet de « " + quoi + " »."
+      + ((t.attente && t.attente.motif) ? "\nIl nous manque encore : " + t.attente.motif + "." : "")
+      + (lien ? "\n\nPour rappel, tout est ici :\n" + lien : "")
+      + "\n\nMerci à toi et belle journée 😊\n\n" + (MOI || "L'équipe") + "\nStudio by The Dots";
+    return outlookCompose(lv.to, "Relance — " + quoi, corps);
   }
 
   function tFormAjout(){
@@ -2863,13 +2914,25 @@
     var d = PBK.data; if(!d || !d[type] || !d[type][id]) return [];
     return d[type][id].map(function(k){ return d.dossiers[k]; }).filter(Boolean);
   }
+  /* Liens Playbook : dossier (board) et vidéo. Les chemins et jetons viennent du relevé du lundi (lecture seule). */
+  var PB_ASSET = PB_URL + "{dossier}?assetToken={asset}";   // forme d'URL d'une vidéo dans l'espace, si Playbook en expose une ; sinon on ouvre son dossier
+  function pbLienDossier(tok){ return tok ? PB_URL + tok : ""; }
+  function pbLienVideo(v){ return (PB_ASSET && v.asset) ? PB_ASSET.replace("{dossier}", v.dossier || "").replace("{asset}", v.asset) : pbLienDossier(v.dossier); }
   function pbBloc(dos){
     if(!dos.length) return "";
     return '<div class="pb">' + dos.map(function(x){
-      var h = '<div class="pb-d"><header><b>' + esc(x.nom) + '</b><span>' + (x.n || 0) + ' fichier' + ((x.n || 0) > 1 ? 's' : '') + '</span></header>'
-        + (x.resume ? '<p>' + esc(x.resume) + '</p>' : '');
+      var bs = Array.isArray(x.boards) ? x.boards : [];
+      var h = '<div class="pb-d"><header><b>' + esc(x.nom) + '</b><span>' + (x.n || 0) + ' fichier' + ((x.n || 0) > 1 ? 's' : '') + '</span></header>';
+      bs.forEach(function(bd){
+        h += '<a class="pb-chemin" href="' + esc(pbLienDossier(bd.token)) + '" target="_blank" rel="noopener" title="Ouvrir le dossier dans Playbook">'
+          + (bd.chemin || []).map(function(c){ return '<span>' + esc(c) + '</span>'; }).join('<i>›</i>') + '<em>Ouvrir ↗</em></a>';
+      });
+      h += (x.resume ? '<p>' + esc(x.resume) + '</p>' : '');
       if((x.videos || []).length) h += '<ul class="kv-l">' + x.videos.map(function(v){
-        var li = '<li><div class="r"><span class="t">' + esc(v.t) + '</span>' + (v.fmt ? '<span class="kv-d">' + esc(v.fmt) + '</span>' : '')
+        var lien = pbLienVideo(v);
+        var li = '<li><div class="r">' + (lien ? '<a class="t" href="' + esc(lien) + '" target="_blank" rel="noopener">' + esc(v.t) + ' ↗</a>' : '<span class="t">' + esc(v.t) + '</span>')
+          + (v.dossierNom ? '<span class="kv-d">' + esc(v.dossierNom) + '</span>' : '')
+          + (v.fmt ? '<span class="kv-d">' + esc(v.fmt) + '</span>' : '')
           + (v.date ? '<span class="kv-d">' + esc(jourCourt(v.date)) + '</span>' : '') + (v.com.length ? '<span class="kv-tag cours">' + v.com.length + ' retour' + (v.com.length > 1 ? 's' : '') + '</span>' : '') + '</div>';
         if(v.com.length) li += '<ul class="kv-com">' + v.com.map(function(c){
           return '<li' + (c.ok ? ' class="fait"' : '') + '><em>' + esc(c.qui) + ' · ' + esc(jourCourt(c.quand)) + '</em>' + esc(c.txt) + '</li>'; }).join("") + '</ul>';
