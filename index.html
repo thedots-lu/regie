@@ -1339,7 +1339,8 @@
   .ru-leg{ display:flex; flex-wrap:wrap; gap:6px 16px; align-items:center; font-size:12.5px; color:var(--muted); margin:10px 0 0; }
   .ru-leg i{ display:inline-block; width:4px; height:12px; border:0 !important; border-radius:2px; margin-right:-10px; background:var(--muted); }
   .ru-leg i.tg{ background:var(--cyan); } .ru-leg i.liv{ background:#9d8cff; } .ru-leg i.ta{ background:#f08a4b; } .ru-leg i.ks{ background:#A8FF1F; }
-  .ru-add input, .ru-add select{ width:auto; } .ru-add select, .ru-add .btn{ flex:0 0 auto; }
+  .ru-add input, .ru-add select{ width:auto; }
+  input.grise{ opacity:.6; cursor:not-allowed; background:var(--surface-3); } .ru-add select, .ru-add .btn{ flex:0 0 auto; }
   .ru-qgrid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:10px; }
   .ru-qp, .ru-inv{ background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:10px 14px 12px; min-width:0; }
   .ru-inv{ margin-bottom:10px; box-shadow:inset 3px 0 0 #A8FF1F; }
@@ -1668,6 +1669,8 @@
      intervenants ni sur qui pose les questions. Un projet qui en porte
      déjà garde ses champs — on ne cache jamais une info saisie. */
   var SANS_ITW = ["Captation événement", "Shooting photo", "Montage", "Création (design, motion)"];
+  /* 90s Outside : c'est toujours nous qui posons les questions. KSF : toujours Kamel. */
+  function questionsAuto(p){ return aType(p, "90 secondes OUTSIDE") ? "Studio by The Dots (nous)" : aType(p, "KSF") ? "Kamel" : ""; }
   function aInterview(p){
     if(p.intervenants || p.questions) return true;       // déjà renseigné
     if(photoSeule(p)) return false;
@@ -1931,7 +1934,7 @@
       }
       if(aInterview(p)){
         vide(!p.intervenants, "les intervenants à l'écran");
-        vide(!p.questions, "qui pose les questions");
+        vide(!p.questions && !questionsAuto(p), "qui pose les questions");
         conf(p.intervenants, "les intervenants");
         conf(p.questions, "qui pose les questions");
       }
@@ -4059,7 +4062,7 @@
           ? '<div class="kv"><span class="k">Dispositif image</span><span class="v">' + esc(p.dispositif) + '</span></div>' : '')
       + (estMontage(p) || !aInterview(p) ? ''
           : '<div class="kv"><span class="k">À l\'écran</span><span class="v">' + val(p.intervenants) + '</span></div>'
-          + '<div class="kv"><span class="k">Qui interroge</span><span class="v">' + val(p.questions) + '</span></div>')
+          + '<div class="kv"><span class="k">Qui interroge</span><span class="v">' + val(questionsAuto(p) || p.questions) + '</span></div>')
       + (p.notes ? '<div class="kv"><span class="k">À savoir</span><span class="v">' + val(p.notes) + '</span></div>' : '')
       + '</div>';
 
@@ -4554,10 +4557,12 @@
       var plus = (mtg ? '' : champ("PAT — prêt à tourner", "j" + i + "_heurePat", j.heurePat, "time"))
         + champ(mtg ? "Durée" : "Durée sur place", "j" + i + "_duree", j.duree, "text", "Par exemple : 2 h, ou la journée.")
         + (mtg ? '' :
-            (j.lieu === "Notre studio" || studioImpose(b) ? '' : champ("Adresse complète", "j" + i + "_adresse", j.adresse))
-          + champ("Accès", "j" + i + "_acces", j.acces, "text", "Étage, code, interphone, parking.")
-          + '<div class="row2">' + champ("Contact sur place", "j" + i + "_contactNom", j.contactNom)
-          + champ("Son téléphone", "j" + i + "_contactTel", j.contactTel, "tel") + '</div>')
+            (j.lieu === "Notre studio" || studioImpose(b)
+              ? '<div class="f"><label>Adresse</label><input type="text" value="' + esc(STUDIO_ADR) + '" disabled class="grise"></div>'
+              : champ("Adresse complète", "j" + i + "_adresse", j.adresse)
+                + champ("Accès", "j" + i + "_acces", j.acces, "text", "Étage, code, interphone, parking.")
+                + '<div class="row2">' + champ("Contact sur place", "j" + i + "_contactNom", j.contactNom)
+                + champ("Son téléphone", "j" + i + "_contactTel", j.contactTel, "tel") + '</div>'))
         + blocEquipe(j, i)
         + zone("Ce jour-là", "j" + i + "_note", j.note, "Chargement, démontage, horaires particuliers.");
       h += '<div class="jour-f"><div class="jh"><h4>' + (b.jours.length > 1 ? 'Jour ' + (i + 1) : 'La journée') + '</h4>'
@@ -4570,7 +4575,7 @@
                 + '<input type="hidden" name="j' + i + '_lieu" value="Notre studio"></div>'
               : puces("Lieu", "j" + i + "_lieu", LIEUX, j.lieu)
                 + (j.lieu === "Notre studio" ? '<p class="kitmeta" style="margin:-4px 0 0">' + esc(STUDIO_ADR) + '</p>' : ''))
-         + plie("j" + i, mtg ? "Durée, équipe, note" : "Adresse, contact, équipe, note", "facultatif", plus)
+         + plie("j" + i, mtg ? "Durée, équipe, note" : (j.lieu === "Notre studio" || studioImpose(b)) ? "Durée, équipe, note" : "Adresse, contact, équipe, note", "facultatif", plus)
          + '</div>';
     });
     h += '<button type="button" class="ajout" data-addj="1">+ Ajouter une journée</button></div>';
@@ -4582,7 +4587,8 @@
       + (MAT_FORM ? blocMateriel(b) : '');
     var proj = (mtg || !aInterview(b) ? '' :
           zone("Intervenants", "intervenants", b.intervenants, "Un par ligne : prénom, nom, fonction à afficher.")
-        + champ("Qui pose les questions", "questions", b.questions))
+        + (questionsAuto(b) ? '<div class="f"><label>Qui pose les questions</label><input type="text" value="' + esc(questionsAuto(b)) + '" disabled class="grise"></div>'
+                            : champ("Qui pose les questions", "questions", b.questions)))
       + zone("À savoir", "notes", b.notes, mtg ? "Le brief de montage : durée visée, rythme, ce qu'il faut garder ou couper." : "Ce qui vaut pour toutes les journées.");
     var suivi = choix("Statut", "statut", statutsDe(b), b.statut, function(s){ return libStatut(b, s); })
       + champ(photoSeule(b) ? "Fichiers photo" : "Rushes", "ssd", b.ssd, "text", "Sur quel SSD ou disque, et où il se trouve.")
@@ -4793,7 +4799,7 @@
     var e = kEtat(p), v = kVues(p);
     return rItem(p.type === "podcast" ? "🎙" : "▶",
       esc(jourCourt(p.date)) + (p.time ? " · " + esc(p.time) : "") + " — " + esc(K_TYPES[p.type] || "") + " « " + esc(p.title || "Sans titre") + " »",
-      esc(e.l) + (p.guest ? " · " + esc(p.guest) : "") + " · Kamel " + rVal(kv(p, "vK")) + " · client " + rVal(kv(p, "vC")) + (v ? " · " + kK(v) + " vues" : ""),
+      esc(e.l) + (p.guest ? " · " + esc(p.guest) : "") + (v ? " · " + kK(v) + " vues" : ""),
       'data-rkp="' + esc(p.id) + '"', e.c === "rouge" ? "rouge" : "");
   }
   function rVal(s){ return s === "ok" ? "✓" : s === "no" ? "✗" : "○"; }
@@ -4812,17 +4818,18 @@
     return { vues:l.reduce(function(s, x){ return s + x.metric; }, 0), n:l.length, top:l.slice().sort(function(x, y){ return y.metric - x.metric; })[0] || null };
   }
   /* Les questions tirées des fiches : ce qui manque ou reste « à confirmer ». */
+  var R_PAS_PRIO = /rushes|o[uù] sont les photos|qui valide|date de livraison|date de remise|brief de montage|brief de retouche|le validant/i;
+  function rPrio(c){ return !R_PAS_PRIO.test(c.q); }
   function rQuestion(c){
     var q = c.q.charAt(0).toUpperCase() + c.q.slice(1);
     return c.n === "conf" ? q + " : à confirmer" : q + " ?";
   }
   function rPrepaKsf(p, j){
     var out = [];
-    controlesProjet(p).forEach(function(c){ out.push(rQuestion(c) + (c.jour ? " (" + c.jour + ")" : "")); });
-    out.push("Questions de l’interview préparées et validées par Kamel ?");
+    controlesProjet(p).filter(rPrio).forEach(function(c){ out.push(rQuestion(c) + (c.jour ? " (" + c.jour + ")" : "")); });
+    out.push("Questions de l’interview prêtes pour Kamel ?");
     out.push("Bio, photo et liens de l’invité reçus pour les visuels ?");
     out.push("Sujets sensibles ou à éviter avec l’invité ?");
-    out.push("Qui valide les shorts côté invité ?");
     return out;
   }
 
@@ -4901,17 +4908,17 @@
       else if(p.motif && p.statut !== "Publié") bl.push(rItem("⏸", esc(rNomP(p)), '<span class="ru-tag">' + esc(p.statut || "Confirmé") + '</span> ' + esc(p.motif), 'data-id="' + esc(p.id) + '"'));
       if(ro && p.statut !== "Publié") bl.push(rItem("↺", esc(rNomP(p)), '<span class="ru-tag">' + ro + ' retour' + (ro > 1 ? 's' : '') + ' client à traiter</span>', 'data-id="' + esc(p.id) + '"'));
     });
-    var kb = kTri(KS.filter(function(p){ var f = kFlags(p); return f.late || (f.confirm && !kStats(p).length) || (f.needval && rDans(p.date, auj, kAdd(auj, 8))); })).map(rKp);
+    var kb = kTri(KS.filter(function(p){ var f = kFlags(p); return f.late || (f.confirm && !kStats(p).length); })).map(rKp);
     S.push({ k:"bloque", t:"Ce qui nous manque pour avancer", h:
       '<div class="ru-cols"><div><h4 class="ru-h4">Studio</h4>' + rListe(bl, "Rien de bloqué.") + '</div>'
-      + '<div><h4 class="ru-h4 ksf">KSF · retards et validations</h4>' + rListe(kb, "Aucune publication en retard ni en attente de validation.") + '</div></div>' });
+      + '<div><h4 class="ru-h4 ksf">KSF · retards</h4>' + rListe(kb, "Aucune publication KSF en retard.") + '</div></div>' });
 
     // 05 — questions sur les projets à venir et en cours
     var proj = P.filter(function(p){ var g = pGroupe(p); if(estKsfProjet(p)) return false;
         if(g === "encours") return true; var pj = prochaine(p); return g === "avenir" && pj && pj.date < loin; })
       .sort(parDebut);
     var qp = proj.map(function(p){
-      var qs = controlesProjet(p).map(function(c){ return rQuestion(c) + (c.jour ? " (" + c.jour + ")" : ""); });
+      var qs = controlesProjet(p).filter(rPrio).map(function(c){ return rQuestion(c) + (c.jour ? " (" + c.jour + ")" : ""); });
       if(!qs.length) return "";
       var pj = prochaine(p);
       return '<div class="ru-qp"><button type="button" class="ru-qh" data-id="' + esc(p.id) + '"><b>' + esc(rNomP(p)) + '</b><span>' + esc(pj ? "tournage " + jourCourt(pj.date) : (p.statut || "")) + ' · ' + esc(libType(p) || "") + '</span></button>'
@@ -4963,7 +4970,7 @@
                             : TA.filter(function(t){ return (t.statut || "avenir") === x[1]; }).length;
       return [x[0], n, x[2]]; });
     function barres(a){ var m = Math.max.apply(null, [1].concat(a.map(function(x){ return x[1]; })));
-      return '<div class="ru-bars">' + a.map(function(x){ return '<div class="ru-bar"><span>' + esc(x[0]) + '</span><i><b style="width:' + Math.round(x[1] / m * 100) + '%;background:' + x[2] + '"></b></i><em>' + x[1] + '</em></div>'; }).join("") + '</div>'; }
+      return '<div class="ru-tiles">' + a.map(function(x){ return tuile(x[1], x[0]); }).join("") + '</div>'; }
     S.push({ k:"stats", t:"Les stats", h:
       '<div class="ru-cols"><div><h4 class="ru-h4 ksf">KSF</h4>'
       + (s7 ? '<div class="ru-tiles">' + tuile(kK(s7.vues), "vues sur 7 jours", ev == null ? "" : '<b class="' + (ev >= 0 ? 'up' : 'down') + '">' + (ev > 0 ? "+" : "") + ev + ' %</b> vs les 7 jours d’avant', "ksf")
@@ -4971,7 +4978,7 @@
           + (s7.top ? '<div class="ru-top"><small>Le plus vu de la semaine · ' + esc(s7.top.platform) + ' · ' + esc(s7.top.guest) + '</small><b>' + kNf(s7.top.metric) + ' vues</b><p>' + esc(s7.top.text.replace(/\s+/g, " ").slice(0, 140)) + '</p></div>' : '')
         : rVide(kbEtat()))
       + '<button type="button" class="lien" data-go="ksf">Toutes les stats KSF →</button></div>'
-      + '<div><h4 class="ru-h4">Projets du studio</h4>' + barres(grp) + '<h4 class="ru-h4">Tâches</h4>' + barres(tst) + '</div></div>' });
+      + '<div><h4 class="ru-h4">Studio · projets</h4>' + barres(grp) + '<h4 class="ru-h4">Studio · tâches</h4>' + barres(tst) + '</div></div>' });
 
     // 08 — décisions et notes
     var dec = R.decisions || [], eq = equipeConnue();
@@ -5098,7 +5105,7 @@
       + '<span class="tl"><span class="tt">' + esc(p.title || "Sans titre") + '</span><span class="ttag">' + esc(K_TYPES[p.type] || "") + '</span>'
       + (e.c === "rouge" ? '<span class="tbadge late">' + esc(e.l) + '</span>' : '') + '</span>'
       + '<span class="tm"><span>' + esc(jourCourt(p.date)) + (p.time ? ' · ' + esc(p.time) : '') + '</span>' + (p.guest ? '<span>' + esc(p.guest) + '</span>' : '')
-      + '<span>Kamel ' + rVal(kv(p, "vK")) + ' · client ' + rVal(kv(p, "vC")) + '</span></span>'
+      + '</span>'
       + '<span class="tr"><span class="tsm">' + (e.c === "rouge" ? '' : esc(e.l)) + (v ? ' · ▶ ' + kK(v) : '') + '</span></span></button>';
   }
   function vueTachesKsf(info){
@@ -5465,7 +5472,7 @@
       sel.addEventListener("change", function(){
         lireForm();
         var i = +sel.id.replace(/^i_j(\d+)_lieu$/, "$1"), j = BROUILLON && BROUILLON.jours[i];
-        if(j && sel.value === "Notre studio") j.adresse = STUDIO_ADR;
+        if(j && sel.value === "Notre studio"){ j.adresse = STUDIO_ADR; j.acces = ""; j.contactNom = ""; j.contactTel = ""; }
         else if(j && j.adresse === STUDIO_ADR) j.adresse = "";
         rendre();
       });
@@ -5723,7 +5730,7 @@
       late:    passe && p.status !== "sched" && p.status !== "done",
       confirm: passe && p.status === "sched",
       risk:    !passe && p.date === kAdd(now.slice(0, 10), 1) && (!p.status || p.status === "todo" || p.status === "montage"),
-      needval: p.status !== "done" && !kOk(p)
+      needval: false
     };
   }
   function kEtat(p){
@@ -6009,6 +6016,7 @@
   function kType(p){ return '<span class="ktype ' + esc(p.type) + '">' + esc(K_TYPES[p.type] || p.type) + '</span>'; }
   function kPl(pl){ return (pl || []).map(function(k){ return K_PCOURT[k]; }).filter(Boolean).join(" · ") || "—"; }
   function kValsTxt(p){
+    return "";   // plus de validation Kamel / client sur les podcasts et les shorts
     return '<span class="kvals" title="Validations Kamel / client">' + K_VAL.map(function(v){
       var s = kv(p, v.k);
       return '<span class="' + (s === "ok" ? "ok" : s === "no" ? "no" : "") + '">' + v.l.charAt(0) + (s === "ok" ? "✓" : s === "no" ? "✗" : "○") + '</span>';
@@ -6028,7 +6036,7 @@
     var f = KSF.filtres, h = '<div class="kfil" role="group" aria-label="Filtres">';
     h += '<button class="step' + (Object.keys(f).length ? "" : " on") + '" data-kfil="">Tout</button>';
     K_ST.forEach(function(s){ h += '<button class="step' + (f[s.k] ? " on" : "") + '" data-kfil="' + s.k + '">' + esc(s.l) + '</button>'; });
-    [["late","En retard"],["risk","À risque"],["needval","Attend une validation"]].forEach(function(x){
+    [["late","En retard"],["risk","À risque"]].forEach(function(x){
       h += '<button class="step' + (x[0] === "late" ? " retard" : "") + (f[x[0]] ? " on" : "") + '" data-kfil="' + x[0] + '">' + x[1] + '</button>';
     });
     return h + '</div>';
@@ -6208,7 +6216,7 @@
          + '<button class="kplus" data-knew="' + d + '">+ publication</button></div></div>';
     }
     h += '</div><p class="legende">Le podcast sort le jeudi, puis un short tous les deux jours. '
-       + 'K et C : validations de Kamel et du client (✓ acceptée, ✗ refusée, ○ en attente).</p>';
+       + '</p>';
     return h;
   }
 
