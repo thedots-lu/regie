@@ -1459,6 +1459,51 @@
   .kyoy i{ width:9px; border-radius:3px 3px 0 0; display:block; min-height:2px; } .kyoy i.a{ background:var(--lime); } .kyoy i.b{ background:#5b6670; }
   .kyoy span{ font-size:11px; opacity:.7; }
   @media (max-width:1100px){ .klay{ grid-template-columns:1fr; } .kvol{ position:static; } .kpr{ grid-template-columns:1fr 1fr; } }
+
+  /* ---------- Jarvis ---------- */
+  .jv-btn{ position:fixed; right:max(20px, env(safe-area-inset-right, 0px)); bottom:calc(20px + env(safe-area-inset-bottom, 0px)); z-index:60;
+    display:flex; align-items:center; gap:10px; padding:8px 16px 8px 8px; border-radius:40px; border:1px solid #1f3a4a; cursor:pointer;
+    background:#07141c; color:#dff6ff; font:inherit; font-weight:600; letter-spacing:.04em; box-shadow:0 10px 30px -10px rgba(0,180,255,.55); }
+  .jv-btn:hover{ box-shadow:0 10px 36px -8px rgba(0,200,255,.8); }
+  body.jv-ouvert .jv-btn{ display:none; }
+  body.ru-pres .jv-btn{ opacity:.35; } body.ru-pres .jv-btn:hover{ opacity:1; }
+  .jv-orbe{ position:relative; width:34px; height:34px; border-radius:50%; flex:none;
+    background:radial-gradient(circle at 50% 50%, #e8fbff 0 14%, #3fd2ff 22%, #0a6f9c 48%, #06202d 70%); box-shadow:0 0 14px #2cc7ff, inset 0 0 8px #bff1ff; }
+  .jv-orbe i{ position:absolute; inset:-4px; border-radius:50%; border:2px solid transparent; border-top-color:#5fe0ff; border-left-color:rgba(95,224,255,.35); animation:jvTourne 2.4s linear infinite; }
+  .jv-orbe.grand{ width:74px; height:74px; } .jv-orbe.grand i{ inset:-7px; border-width:3px; }
+  @keyframes jvTourne{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .jv-orbe i{ animation:none; } }
+  .jv{ position:fixed; right:max(16px, env(safe-area-inset-right, 0px)); bottom:calc(16px + env(safe-area-inset-bottom, 0px)); top:calc(16px + env(safe-area-inset-top, 0px)); z-index:61;
+    width:min(440px, calc(100vw - 32px)); display:flex; flex-direction:column; border-radius:22px; overflow:hidden;
+    background:#06121a; color:#e3f4fb; border:1px solid #1d3a4b; box-shadow:0 24px 70px -20px rgba(0,0,0,.7), 0 0 0 1px rgba(63,210,255,.08); }
+  .jv[hidden]{ display:none !important; }
+  .jv-h{ display:flex; align-items:center; gap:12px; padding:14px 14px 12px; border-bottom:1px solid #14303e; background:linear-gradient(180deg, #0a2230, #06121a); }
+  .jv-h div{ flex:1; min-width:0; display:flex; flex-direction:column; } .jv-h b{ font-size:17px; letter-spacing:.08em; text-transform:uppercase; color:#8fe6ff; }
+  .jv-h small{ color:#7fa3b3; font-size:12px; }
+  .jv-ic{ font:inherit; font-size:15px; width:34px; height:34px; border-radius:10px; border:1px solid #1d3a4b; background:#0b1e29; color:#cfeefa; cursor:pointer; flex:none; }
+  .jv-ic[aria-pressed="true"], .jv-ic.on{ background:#3fd2ff; color:#03202d; border-color:#3fd2ff; }
+  .jv-ic.on{ animation:jvPulse 1.2s ease-in-out infinite; }
+  @keyframes jvPulse{ 50%{ box-shadow:0 0 0 6px rgba(63,210,255,.25); } }
+  .jv-fil{ flex:1; overflow-y:auto; padding:16px 14px; display:flex; flex-direction:column; gap:10px; }
+  .jv-vide{ margin:auto 0; display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; color:#b6d6e3; }
+  .jv-vide p{ margin:0; max-width:34ch; }
+  .jv-sugg{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
+  .jv-sugg button{ font:inherit; font-size:13px; color:#cdeefb; background:#0b1e29; border:1px solid #1d3a4b; border-radius:20px; padding:6px 11px; cursor:pointer; }
+  .jv-sugg button:hover{ border-color:#3fd2ff; }
+  .jv-m{ max-width:88%; padding:10px 13px; border-radius:16px; font-size:14.5px; line-height:1.5; overflow-wrap:anywhere; }
+  .jv-m.moi{ align-self:flex-end; background:#3fd2ff; color:#03202d; border-bottom-right-radius:5px; }
+  .jv-m.lui{ align-self:flex-start; background:#0d2331; border:1px solid #17384a; border-bottom-left-radius:5px; }
+  .jv-m p{ margin:0 0 6px; } .jv-m p:last-child{ margin-bottom:0; } .jv-m ul{ margin:4px 0 6px; padding-left:18px; } .jv-m li{ margin:2px 0; } .jv-m b{ color:#9feaff; }
+  .jv-pense{ display:inline-flex; gap:4px; } .jv-pense i{ width:7px; height:7px; border-radius:50%; background:#3fd2ff; animation:jvPt 1s infinite; }
+  .jv-pense i:nth-child(2){ animation-delay:.15s; } .jv-pense i:nth-child(3){ animation-delay:.3s; }
+  @keyframes jvPt{ 50%{ opacity:.25; transform:translateY(-3px); } }
+  .jv-f{ display:flex; gap:8px; padding:12px; border-top:1px solid #14303e; background:#081822; }
+  .jv-f input{ flex:1; min-width:0; font:inherit; color:#e3f4fb; background:#0b1e29; border:1px solid #1d3a4b; border-radius:12px; padding:9px 12px; }
+  .jv-f input:focus{ outline:2px solid #3fd2ff; outline-offset:0; }
+  @media (max-width:760px){
+    .jv-btn{ right:auto; left:max(16px, env(safe-area-inset-left, 0px)); padding:6px; } .jv-btn .jv-nom{ display:none; }
+    .jv{ top:auto; height:min(78vh, 640px); right:8px; left:8px; width:auto; bottom:calc(8px + env(safe-area-inset-bottom, 0px)); }
+  }
 </style>
 </head>
 <body class="studio">
@@ -5450,6 +5495,7 @@
     lierTaches();
     lierProjets();
     lierReunion();
+    if(PRET) jvInit();
     lierPbEditeur();
     rendreTabs();
     rendreMoi();
@@ -7622,6 +7668,109 @@
       porte();
     } else demarrer();
   });
+
+  /* ---------- Jarvis : l'assistant de la Régie ----------
+     Un bouton rond ouvre un volet de discussion. Les questions partent vers la fonction regie-jarvis
+     (code d'équipe dans l'en-tête), qui lit la Régie et répond au fil de l'eau. Micro et voix facultatifs.
+     Raccourci : Cmd/Ctrl + J. */
+  var JV = { ouvert:false, msgs:[], enCours:false, voix:false, ecoute:null };
+  try{ JV.msgs = JSON.parse(sessionStorage.getItem("sbtd-jarvis") || "[]") || []; JV.voix = localStorage.getItem("sbtd-jarvis-voix") === "1"; }catch(e){}
+  var JV_SUGG = ["Qu’est-ce qu’on tourne cette semaine ?", "Qu’est-ce qui est en retard ?", "Résume-moi le point KSF", "Qui est sur le tournage de demain ?", "Quels projets attendent un retour client ?"];
+  function jvSauver(){ try{ sessionStorage.setItem("sbtd-jarvis", JSON.stringify(JV.msgs.slice(-30))); }catch(e){} }
+  function jvMd(t){
+    var h = esc(t).replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>");
+    var out = [], liste = false;
+    h.split("\n").forEach(function(l){
+      var m = l.match(/^\s*[-•]\s+(.*)$/);
+      if(m){ if(!liste){ out.push("<ul>"); liste = true; } out.push("<li>" + m[1] + "</li>"); return; }
+      if(liste){ out.push("</ul>"); liste = false; }
+      out.push(l.trim() ? "<p>" + l + "</p>" : "");
+    });
+    if(liste) out.push("</ul>");
+    return out.join("");
+  }
+  function jvRendre(){
+    var el = document.getElementById("jarvis"); if(!el) return;
+    el.hidden = !JV.ouvert; document.body.classList.toggle("jv-ouvert", JV.ouvert);
+    var b = document.getElementById("jvBtn"); if(b) b.setAttribute("aria-expanded", JV.ouvert);
+    if(!JV.ouvert) return;
+    var fil = el.querySelector(".jv-fil");
+    fil.innerHTML = (JV.msgs.length ? '' : '<div class="jv-vide"><div class="jv-orbe grand" aria-hidden="true"><i></i></div><p>Bonjour' + (MOI ? ' ' + esc(MOI) : '') + '. Je connais les projets, les tâches, l’agenda et KSF. Que veux-tu savoir ?</p>'
+        + '<div class="jv-sugg">' + JV_SUGG.map(function(s){ return '<button type="button" data-jvq="' + esc(s) + '">' + esc(s) + '</button>'; }).join("") + '</div></div>')
+      + JV.msgs.map(function(m){ return '<div class="jv-m ' + (m.role === "user" ? "moi" : "lui") + '">' + (m.role === "user" ? esc(m.content) : jvMd(m.content) || '<span class="jv-pense"><i></i><i></i><i></i></span>') + '</div>'; }).join("");
+    fil.scrollTop = fil.scrollHeight;
+    el.querySelector("[data-jvvoix]").setAttribute("aria-pressed", JV.voix);
+    el.querySelector("[data-jvenv]").disabled = JV.enCours;
+    fil.querySelectorAll("[data-jvq]").forEach(function(x){ x.addEventListener("click", function(){ jvDemander(x.dataset.jvq); }); });
+  }
+  function jvParler(t){
+    if(!JV.voix || !window.speechSynthesis) return;
+    try{ speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t.replace(/\*\*/g, "").replace(/^\s*-\s+/gm, "")); u.lang = "fr-FR"; u.rate = 1.05; speechSynthesis.speak(u); }catch(e){}
+  }
+  function jvDemander(q){
+    q = String(q || "").trim(); if(!q || JV.enCours) return;
+    var histo = JV.msgs.slice(-12).map(function(m){ return { role:m.role, content:m.content }; });
+    JV.msgs.push({ role:"user", content:q }); var rep = { role:"assistant", content:"" }; JV.msgs.push(rep);
+    JV.enCours = true; jvRendre();
+    var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
+    function fin(txt){ if(txt) rep.content = txt; JV.enCours = false; if(!rep.content) rep.content = "Je n’ai pas de réponse."; jvSauver(); jvRendre(); jvParler(rep.content); }
+    if(!EN_LIGNE){ fin("Jarvis a besoin de la connexion à la Régie (mode démonstration)."); return; }
+    fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/regie-jarvis", {
+      method:"POST", headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code, "Content-Type":"application/json" },
+      body:JSON.stringify({ question:q, historique:histo, moi:MOI || "", vue:VUE })
+    }).then(function(r){
+      if(r.status === 503) return fin("Je ne suis pas encore branché : il manque la clé ANTHROPIC_API_KEY dans Supabase (Edge Functions › Secrets).");
+      if(r.status === 401) return fin("Le code d’équipe n’est pas reconnu : recharge la page et entre-le à nouveau.");
+      if(!r.ok || !r.body) return fin("Je n’ai pas pu répondre (erreur " + r.status + "). Réessaie dans un instant.");
+      var lec = r.body.getReader(), dec = new TextDecoder();
+      function lire(){ return lec.read().then(function(x){
+        if(x.done){ fin(); return; }
+        rep.content += dec.decode(x.value, { stream:true });
+        var dern = document.querySelector("#jarvis .jv-m.lui:last-child"); if(dern){ dern.innerHTML = jvMd(rep.content); var f = dern.parentNode; f.scrollTop = f.scrollHeight; }
+        return lire();
+      }); }
+      return lire();
+    }).catch(function(){ fin("Pas de connexion : je n’ai pas pu joindre la Régie."); });
+  }
+  function jvMicro(){
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SR){ toast("La dictée vocale n’est pas disponible dans ce navigateur (essaie Chrome ou Safari)."); return; }
+    if(JV.ecoute){ try{ JV.ecoute.stop(); }catch(e){} return; }
+    var r = new SR(), champ = document.getElementById("jvIn"), btn = document.querySelector("[data-jvmic]");
+    r.lang = "fr-FR"; r.interimResults = true; r.continuous = false;
+    r.onresult = function(e){ var t = ""; for(var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; champ.value = t; };
+    r.onend = function(){ JV.ecoute = null; btn.classList.remove("on"); if(champ.value.trim()){ var q = champ.value; champ.value = ""; jvDemander(q); } };
+    r.onerror = function(){ JV.ecoute = null; btn.classList.remove("on"); };
+    JV.ecoute = r; btn.classList.add("on"); try{ r.start(); }catch(e){ JV.ecoute = null; btn.classList.remove("on"); }
+  }
+  function jvOuvrir(v){ JV.ouvert = v == null ? !JV.ouvert : v; jvRendre(); if(JV.ouvert){ var c = document.getElementById("jvIn"); if(c) setTimeout(function(){ c.focus(); }, 50); } }
+  function jvInit(){
+    if(document.getElementById("jvBtn")) return;
+    var b = document.createElement("button");
+    b.id = "jvBtn"; b.type = "button"; b.className = "jv-btn"; b.setAttribute("aria-label", "Ouvrir Jarvis, l’assistant de la Régie"); b.setAttribute("aria-expanded", "false");
+    b.innerHTML = '<span class="jv-orbe" aria-hidden="true"><i></i></span><span class="jv-nom">Jarvis</span>';
+    var p = document.createElement("section");
+    p.id = "jarvis"; p.className = "jv"; p.hidden = true; p.setAttribute("aria-label", "Jarvis");
+    p.innerHTML = '<header class="jv-h"><span class="jv-orbe" aria-hidden="true"><i></i></span><div><b>Jarvis</b><small>Assistant de la Régie · lit les projets, tâches, agenda et KSF</small></div>'
+      + '<button type="button" class="jv-ic" data-jvvoix aria-pressed="false" title="Lire les réponses à voix haute">🔊</button>'
+      + '<button type="button" class="jv-ic" data-jvnet title="Nouvelle conversation">↺</button>'
+      + '<button type="button" class="jv-ic" data-jvferme aria-label="Fermer">✕</button></header>'
+      + '<div class="jv-fil" aria-live="polite"></div>'
+      + '<form class="jv-f"><button type="button" class="jv-ic" data-jvmic title="Poser la question à voix haute">🎙</button>'
+      + '<input id="jvIn" type="text" autocomplete="off" placeholder="Pose ta question…" aria-label="Question pour Jarvis">'
+      + '<button type="submit" class="btn lime" data-jvenv>Envoyer</button></form>';
+    document.body.appendChild(b); document.body.appendChild(p);
+    b.addEventListener("click", function(){ jvOuvrir(); });
+    p.querySelector("[data-jvferme]").addEventListener("click", function(){ jvOuvrir(false); });
+    p.querySelector("[data-jvnet]").addEventListener("click", function(){ if(JV.enCours) return; JV.msgs = []; jvSauver(); jvRendre(); });
+    p.querySelector("[data-jvvoix]").addEventListener("click", function(){ JV.voix = !JV.voix; try{ localStorage.setItem("sbtd-jarvis-voix", JV.voix ? "1" : "0"); }catch(e){} if(!JV.voix && window.speechSynthesis) speechSynthesis.cancel(); jvRendre(); });
+    p.querySelector("[data-jvmic]").addEventListener("click", jvMicro);
+    p.querySelector(".jv-f").addEventListener("submit", function(e){ e.preventDefault(); var c = document.getElementById("jvIn"); var q = c.value; c.value = ""; jvDemander(q); });
+    document.addEventListener("keydown", function(e){
+      if((e.metaKey || e.ctrlKey) && (e.key === "j" || e.key === "J")){ e.preventDefault(); jvOuvrir(); }
+      else if(e.key === "Escape" && JV.ouvert && !(VUE === "reunion" && RV.pres)){ jvOuvrir(false); }
+    });
+  }
 })();
 </script>
 </body>
