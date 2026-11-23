@@ -1566,6 +1566,42 @@
   .jvb::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:3px; background:linear-gradient(90deg,#F4C21B,#F06A1F 18%,#D9284F 36%,#B0308F 54%,#6B3BD8 72%,#2F6BE0 88%,#1FB5C9); animation:jvbCoin .8s .2s both; }
   .jvb-nom b{ font-weight:700; letter-spacing:.3em; padding-left:.3em; }
   .jvb-grille{ background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); }
+
+  /* ---------- Visualiseur « Jarvis parle » (DA Régie, toujours sur fond sombre) ---------- */
+  .jvh{ --niv:0; position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom, 0px)); transform:translateX(-50%); z-index:58;
+    width:min(980px, calc(100vw - 32px)); display:flex; align-items:center; gap:18px; padding:14px 20px 14px 14px;
+    background:rgba(11,11,17,.92); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); color:#EEF1F8;
+    border:1px solid rgba(255,255,255,.1); border-radius:22px; box-shadow:0 24px 60px -18px rgba(0,0,0,.8), 0 0 calc(10px + var(--niv) * 40px) rgba(228,230,59,calc(.08 + var(--niv) * .25));
+    animation:jvhIn .45s cubic-bezier(.2,.8,.2,1) both; overflow:hidden; }
+  .jvh::before{ content:""; position:absolute; left:0; right:0; top:0; height:2px; background:linear-gradient(90deg,#F4C21B,#F06A1F 18%,#D9284F 36%,#B0308F 54%,#6B3BD8 72%,#2F6BE0 88%,#1FB5C9); }
+  .jvh::after{ content:""; position:absolute; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 1px, transparent 1px 3px); }
+  .jvh.sort{ animation:jvhOut .6s ease-in forwards; }
+  @keyframes jvhIn{ from{ opacity:0; transform:translate(-50%, 30px) scale(.96); } }
+  @keyframes jvhOut{ to{ opacity:0; transform:translate(-50%, 20px) scale(.97); } }
+  .jvh-noyau{ width:96px; height:96px; flex:none; }
+  .jvh-noyau svg{ width:100%; height:100%; overflow:visible; filter:drop-shadow(0 0 calc(4px + var(--niv) * 14px) rgba(228,230,59,.8)); }
+  .jvh-noyau .a{ fill:none; stroke-width:2; transform-origin:50px 50px; }
+  .jvh-noyau .a0{ stroke:#E4E63B; animation:jvbTourne 9s linear infinite; }
+  .jvh-noyau .a1{ stroke:#F06A1F; animation:jvbTourne 6s linear infinite reverse; }
+  .jvh-noyau .a2{ stroke:#6B3BD8; animation:jvbTourne 4s linear infinite; }
+  .jvh-noyau .c{ fill:rgba(228,230,59,.14); stroke:#E4E63B; stroke-width:1.2; transform-origin:50px 50px; transform:scale(calc(1 + var(--niv) * .45)); transition:transform .08s; }
+  .jvh-noyau .c2{ fill:#FFFDE8; transform-origin:50px 50px; transform:scale(calc(.8 + var(--niv) * .7)); transition:transform .08s; }
+  .jvh-corps{ flex:1; min-width:0; display:flex; flex-direction:column; gap:6px; }
+  .jvh-tete{ display:flex; align-items:center; gap:10px; font-family:"Space Mono", ui-monospace, monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#9A9FB0; }
+  .jvh-tete b{ font-family:"Unbounded", ui-sans-serif, sans-serif; color:#E4E63B; letter-spacing:.22em; font-size:13px; }
+  .jvh-etat::before{ content:"● "; color:#E4E63B; animation:jvPt 1s infinite; }
+  .jvh-stop{ margin-left:auto; font:inherit; letter-spacing:.1em; color:#EEF1F8; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:20px; padding:4px 10px; cursor:pointer; }
+  .jvh-spectre{ width:100%; height:44px; display:block; }
+  .jvh-texte{ margin:0; font-size:17px; line-height:1.45; min-height:2.9em; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+  .jvh-texte .pass{ color:#7F8597; } .jvh-texte .vient{ color:#BBC0CE; }
+  .jvh-texte .cour{ color:#17170A; background:#E4E63B; border-radius:4px; padding:0 3px; box-shadow:0 0 12px rgba(228,230,59,.6); }
+  body.ru-pres .jvh{ width:min(1180px, calc(100vw - 32px)); } body.ru-pres .jvh-texte{ font-size:22px; } body.ru-pres .jvh-noyau{ width:120px; height:120px; }
+  body.jvh-on .ru-pbar{ margin-bottom:150px; }
+  body.jvh-on .jv-btn{ opacity:.25; pointer-events:none; }
+  @media (max-width:700px){ .jvh{ gap:10px; padding:10px 12px 10px 10px; } .jvh-noyau{ width:60px; height:60px; } .jvh-texte{ font-size:14px; } .jvh-spectre{ height:30px; } }
+  .ru-jv{ font:inherit; font-size:12.5px; color:var(--lime-ink); background:var(--lime); border:0; border-radius:20px; padding:4px 10px; cursor:pointer; white-space:nowrap; }
+  .ru-hud{ display:flex; gap:8px; align-items:center; font-size:13px; color:var(--ink-2); cursor:pointer; }
+  .ru-hud input{ width:17px; height:17px; accent-color:var(--lime); }
 </style>
 </head>
 <body class="studio">
@@ -5213,11 +5249,13 @@
           return '<li><button type="button" class="' + (s.ksf ? 'ksf' : '') + (RV.pres && RV.i === i ? ' on' : '') + '" data-rgo="' + i + '"><span class="n">' + (i < 9 ? '0' : '') + (i + 1) + '</span>' + esc(s.t) + '</button>'
             + '<input type="checkbox" data-rvu="' + s.k + '"' + (vu ? ' checked' : '') + ' aria-label="Point vu : ' + esc(s.t) + '"></li>'; }).join("") + '</ol>'
       + '<button type="button" class="btn lime ru-pbtn" data-rpres="1">' + (RV.pres ? 'Quitter la présentation' : '▶ Présenter en réunion') + '</button>'
+      + '<label class="ru-hud"><input type="checkbox" data-rhud' + (HUD.on ? ' checked' : '') + '> Animation Jarvis quand il parle</label>'
       + '<p class="ru-dim ru-aide">En présentation : ← → pour changer de point, Échap pour sortir.</p></aside><div class="ru-main">';
     S.forEach(function(s, i){
       var vu = vus.indexOf(s.k) >= 0;
       h += '<section class="ru-sec' + (s.ksf ? ' ksf' : '') + (RV.pres && RV.i !== i ? ' cache' : '') + (vu ? ' vu' : '') + '" id="ru-' + s.k + '">'
         + '<header><span class="n">' + (i < 9 ? '0' : '') + (i + 1) + '</span><h2>' + esc(s.t) + '</h2>'
+        + '<button type="button" class="ru-jv" data-rjv="' + s.k + '" title="Jarvis présente ce point à voix haute">🎙 Jarvis</button>'
         + '<label class="ru-vu"><input type="checkbox" data-rvu="' + s.k + '"' + (vu ? ' checked' : '') + '> vu</label></header>' + s.h + '</section>';
     });
     if(RV.pres) h += '<div class="ru-pbar"><button type="button" class="btn" data-rpas="-1"' + (RV.i ? '' : ' disabled') + '>← Précédent</button>'
@@ -5271,6 +5309,9 @@
     if(VUE !== "reunion") return;
     function aller(i){ RV.i = i; rendre(); var s = app.querySelectorAll(".ru-sec")[i]; if(s && !RV.pres) s.scrollIntoView({ behavior:"smooth", block:"start" }); else window.scrollTo(0, 0); }
     sur("[data-rgo]", "click", function(b){ aller(+b.dataset.rgo); });
+    sur("[data-rjv]", "click", function(b){ hudPresenter(b.dataset.rjv); });
+    sur("[data-rhud]", "change", function(el){ HUD.on = el.checked; try{ localStorage.setItem("sbtd-jarvis-hud", HUD.on ? "1" : "0"); }catch(e){} if(!HUD.on && HUD.el){ HUD.el.hidden = true; document.body.classList.remove("jvh-on"); }
+      toast(HUD.on ? "Animation Jarvis activée." : "Animation Jarvis désactivée."); });
     sur("[data-rpas]", "click", function(b){ aller(RV.i + (+b.dataset.rpas)); });
     sur("[data-rpres]", "click", function(){
       RV.pres = !RV.pres; RV.i = 0;
@@ -7759,7 +7800,7 @@
     var fil = el.querySelector(".jv-fil");
     fil.innerHTML = (JV.msgs.length ? '' : '<div class="jv-vide"><div class="jv-orbe grand" aria-hidden="true"><i></i></div><p>Bonjour' + (MOI ? ' ' + esc(MOI) : '') + '. Je connais les projets, les tâches, l’agenda et KSF. Que veux-tu savoir ?</p>'
         + '<div class="jv-sugg">' + JV_SUGG.map(function(s){ return '<button type="button" data-jvq="' + esc(s) + '">' + esc(s) + '</button>'; }).join("") + '</div></div>')
-      + JV.msgs.map(function(m){ return '<div class="jv-m ' + (m.role === "user" ? "moi" : "lui") + '">' + (m.role === "user" ? esc(m.content) : jvMd(m.content) || '<span class="jv-pense"><i></i><i></i><i></i></span>') + '</div>'; }).join("");
+      + JV.msgs.map(function(m){ return '<div class="jv-m ' + (m.role === "user" ? "moi" : "lui") + '">' + (m.role === "user" ? esc(m.vu || m.content) : jvMd(m.content) || '<span class="jv-pense"><i></i><i></i><i></i></span>') + '</div>'; }).join("");
     fil.scrollTop = fil.scrollHeight;
     el.querySelector("[data-jvvoix]").setAttribute("aria-pressed", JV.voix);
     el.querySelector("[data-jvenv]").disabled = JV.enCours; jvEtat();
@@ -7809,21 +7850,23 @@
   function jvVsParler(t, apres){
     var ph = jvVsPhrases(t), jeton = ++JV_VS.jeton, i = 0, suivante = ph.length ? jvVsGen(ph[0]) : null;
     if(!suivante){ if(apres) apres(); return; }
-    JV.parle = true; jvEtat();
-    function finir(){ if(jeton !== JV_VS.jeton) return; JV.parle = false; jvEtat(); if(apres) apres(); }
+    JV.parle = true; jvEtat(); hudDebut(ph.join(" "));
+    var debMots = ph.map(function(s, k){ return ph.slice(0, k).join(" ").split(" ").filter(Boolean).length; });
+    function finir(){ if(jeton !== JV_VS.jeton) return; JV.parle = false; jvEtat(); hudFin(); if(apres) apres(); }
     function lire(){
       if(jeton !== JV_VS.jeton) return;
       var cour = suivante; i++; suivante = i < ph.length ? jvVsGen(ph[i]) : null;
       cour.then(function(b){
         if(jeton !== JV_VS.jeton) return;
         var a = new Audio(URL.createObjectURL(b)); JV_VS.audio = a;
+        HUD.phraseDeb = debMots[i - 1] || 0; HUD.phraseMots = ph[i - 1].split(" ").filter(Boolean).length; HUD.idx = HUD.phraseDeb; hudTexte(); hudAudio(a);
         a.onended = a.onerror = function(){ URL.revokeObjectURL(a.src); if(suivante) lire(); else finir(); };
         a.play().catch(function(){ if(suivante) lire(); else finir(); });
       }, function(){ JV_VS.ok = false; finir(); });
     }
     lire();
   }
-  function jvTaire(){ JV_VS.jeton++; if(JV_VS.audio){ try{ JV_VS.audio.pause(); }catch(e){} JV_VS.audio = null; } if(window.speechSynthesis) speechSynthesis.cancel(); JV.parle = false; }
+  function jvTaire(){ if(HUD.actif) hudFin(); JV_VS.jeton++; if(JV_VS.audio){ try{ JV_VS.audio.pause(); }catch(e){} JV_VS.audio = null; } if(window.speechSynthesis) speechSynthesis.cancel(); JV.parle = false; }
   function jvParler(t, apres){
     if(!JV.voix){ if(apres) apres(); return; }
     jvTaire();
@@ -7836,8 +7879,9 @@
       var txt = String(t).replace(/\*\*/g, "").replace(/^\s*-\s+/gm, "").replace(/\n+/g, ". ").replace(/\.\s*\./g, ".");
       var u = new SpeechSynthesisUtterance(txt), v = jvVoixChoisie();
       if(v) u.voice = v; u.lang = v ? v.lang : "fr-FR"; u.rate = 0.97; u.pitch = 0.82;
-      JV.parle = true; jvEtat();
-      u.onend = u.onerror = function(){ JV.parle = false; jvEtat(); if(apres) apres(); };
+      JV.parle = true; jvEtat(); hudDebut(txt);
+      u.onboundary = function(ev){ hudMot(ev.charIndex); };
+      u.onend = u.onerror = function(){ JV.parle = false; jvEtat(); hudFin(); if(apres) apres(); };
       speechSynthesis.speak(u);
     }catch(e){ JV.parle = false; if(apres) apres(); }
   }
@@ -7848,10 +7892,10 @@
     var jv = document.getElementById("jarvis"); if(jv){ jv.classList.toggle("ecoute", !!JV.ecoute); jv.classList.toggle("parle", !!JV.parle); }
     var c = document.querySelector("[data-jvconv]"); if(c) c.setAttribute("aria-pressed", !!JV.conv);
   }
-  function jvDemander(q){
+  function jvDemander(q, vu){
     q = String(q || "").trim(); if(!q || JV.enCours) return;
     var histo = JV.msgs.slice(-12).map(function(m){ return { role:m.role, content:m.content }; });
-    JV.msgs.push({ role:"user", content:q }); var rep = { role:"assistant", content:"" }; JV.msgs.push(rep);
+    JV.msgs.push(vu ? { role:"user", content:q, vu:vu } : { role:"user", content:q }); var rep = { role:"assistant", content:"" }; JV.msgs.push(rep);
     JV.enCours = true; jvRendre();
     var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
     function fin(txt){ if(txt) rep.content = txt; JV.enCours = false; if(!rep.content) rep.content = "Je n’ai pas de réponse."; jvSauver(); jvRendre(); jvParler(rep.content, function(){ if(JV.conv && JV.ouvert) setTimeout(function(){ jvEcouter(true); }, 250); }); }
@@ -7959,6 +8003,87 @@
     var minuteur = setTimeout(fin, 4600);
     o.addEventListener("click", function(){ clearTimeout(minuteur); fin(); });
     document.addEventListener("keydown", function k(e){ if(e.key === "Escape"){ document.removeEventListener("keydown", k); clearTimeout(minuteur); fin(); } });
+  }
+
+
+  /* ---------- Visualiseur « Jarvis parle » (onglet Réunion) ----------
+     Bandeau holographique en bas de l'écran pendant que Jarvis parle : noyau et anneaux qui pulsent,
+     spectre de barres, sous-titres mot à mot. Avec la voix VoiceStudio, le spectre suit le vrai son
+     (Web Audio) ; avec la voix du navigateur, il suit les mots prononcés. Activable dans Réunion. */
+  var HUD = { on:true, el:null, mots:[], idx:-1, niveau:0, cible:0, raf:0, analyse:null, ac:null, actif:false, t0:0, dureeEst:0 };
+  try{ HUD.on = localStorage.getItem("sbtd-jarvis-hud") !== "0"; }catch(e){}
+  function hudVisible(){ return HUD.on && VUE === "reunion"; }
+  function hudCreer(){
+    if(HUD.el) return HUD.el;
+    var e = document.createElement("div"); e.id = "jvHud"; e.className = "jvh"; e.setAttribute("aria-live", "polite"); e.hidden = true;
+    var anneaux = ""; [[44, "14 6"], [36, "3 5"], [28, "40 10 4 10"]].forEach(function(a, i){ anneaux += '<circle class="a a' + i + '" cx="50" cy="50" r="' + a[0] + '" stroke-dasharray="' + a[1] + '"/>'; });
+    e.innerHTML = '<div class="jvh-noyau"><svg viewBox="0 0 100 100" aria-hidden="true">' + anneaux + '<circle class="c" cx="50" cy="50" r="16"/><circle class="c2" cx="50" cy="50" r="8"/></svg></div>'
+      + '<div class="jvh-corps"><div class="jvh-tete"><b>JARVIS</b><span class="jvh-etat">parle</span><button type="button" class="jvh-stop" aria-label="Arrêter Jarvis">■ Stop</button></div>'
+      + '<canvas class="jvh-spectre" width="900" height="70" aria-hidden="true"></canvas><p class="jvh-texte"></p></div>';
+    document.body.appendChild(e);
+    e.querySelector(".jvh-stop").addEventListener("click", function(){ jvTaire(); hudFin(); jvEtat(); });
+    HUD.el = e; return e;
+  }
+  function hudTexte(){
+    var p = HUD.el && HUD.el.querySelector(".jvh-texte"); if(!p) return;
+    var deb = Math.max(0, HUD.idx - 14), fin = Math.min(HUD.mots.length, deb + 30);
+    p.innerHTML = (deb > 0 ? '<span class="pass">… </span>' : '') + HUD.mots.slice(deb, fin).map(function(m, i){
+      var k = deb + i; return '<span class="' + (k < HUD.idx ? 'pass' : k === HUD.idx ? 'cour' : 'vient') + '">' + esc(m.w) + '</span>'; }).join(" ") + (fin < HUD.mots.length ? ' …' : '');
+  }
+  function hudDebut(texte){
+    if(!hudVisible()) return;
+    var e = hudCreer(), txt = String(texte).replace(/\*\*/g, "").replace(/^\s*-\s+/gm, "").replace(/\s+/g, " ").trim(), pos = 0;
+    HUD.mots = txt.split(" ").map(function(w){ var m = { w:w, c:txt.indexOf(w, pos) }; pos = m.c + w.length; return m; });
+    HUD.idx = 0; HUD.actif = true; HUD.t0 = performance.now(); HUD.dureeEst = Math.max(1500, HUD.mots.length * 360);
+    e.hidden = false; e.classList.remove("sort"); document.body.classList.add("jvh-on"); hudTexte();
+    if(!HUD.raf) HUD.raf = requestAnimationFrame(hudBoucle);
+  }
+  function hudMot(charIndex){ if(!HUD.actif) return; var k = 0; for(var i = 0; i < HUD.mots.length; i++){ if(HUD.mots[i].c <= charIndex) k = i; else break; } HUD.idx = k; HUD.cible = 1; hudTexte(); }
+  function hudFin(){
+    HUD.actif = false; HUD.analyse = null;
+    if(HUD.el){ HUD.idx = HUD.mots.length; hudTexte(); HUD.el.classList.add("sort"); setTimeout(function(){ if(!HUD.actif && HUD.el){ HUD.el.hidden = true; document.body.classList.remove("jvh-on"); } }, 700); }
+  }
+  /* Branche un élément <audio> (voix VoiceStudio) sur un analyseur pour le spectre réel. */
+  function hudAudio(a){
+    if(!HUD.actif) return;
+    try{
+      var C = window.AudioContext || window.webkitAudioContext; if(!C) return;
+      HUD.ac = HUD.ac || new C(); if(HUD.ac.state === "suspended") HUD.ac.resume();
+      var src = HUD.ac.createMediaElementSource(a), an = HUD.ac.createAnalyser(); an.fftSize = 128;
+      src.connect(an); an.connect(HUD.ac.destination); HUD.analyse = an;
+      a.addEventListener("timeupdate", function(){ if(a.duration) { var k = Math.floor(a.currentTime / a.duration * HUD.phraseMots) + HUD.phraseDeb; if(k !== HUD.idx){ HUD.idx = Math.min(k, HUD.mots.length - 1); hudTexte(); } } });
+    }catch(e){ HUD.analyse = null; }
+  }
+  function hudBoucle(t){
+    HUD.raf = 0; if(!HUD.el || HUD.el.hidden) return;
+    var cv = HUD.el.querySelector(".jvh-spectre"), g = cv.getContext("2d"), W = cv.width, H = cv.height, n = 48, v = [];
+    if(HUD.analyse){ var d = new Uint8Array(HUD.analyse.frequencyBinCount); HUD.analyse.getByteFrequencyData(d); for(var i = 0; i < n; i++) v.push(d[Math.floor(i * d.length / n * .8)] / 255); HUD.niveau = v.reduce(function(a, b){ return a + b; }, 0) / n * 1.6; }
+    else {
+      HUD.cible *= .9; if(HUD.actif && !window.speechSynthesis) HUD.cible = .5;
+      if(HUD.actif && performance.now() - HUD.t0 > 0) HUD.cible = Math.max(HUD.cible, .35 + .25 * Math.sin(t / 90));
+      HUD.niveau += ((HUD.actif ? HUD.cible : 0) - HUD.niveau) * .25;
+      for(var j = 0; j < n; j++){ var x = j / n; v.push(Math.max(0, HUD.niveau * (.35 + .65 * Math.abs(Math.sin(t / 140 + x * 9) * Math.cos(t / 230 + x * 5))))); }
+    }
+    g.clearRect(0, 0, W, H);
+    var cols = ["#F4C21B","#F06A1F","#D9284F","#B0308F","#6B3BD8","#2F6BE0","#1FB5C9"], bw = W / n;
+    for(var k = 0; k < n; k++){
+      var m = Math.min(n - 1, Math.abs(k - n / 2) * 2), h = Math.max(2, v[Math.floor(m)] * H * .95);
+      g.fillStyle = cols[Math.floor(k / n * cols.length)]; g.globalAlpha = .85;
+      g.fillRect(k * bw + 2, (H - h) / 2, bw - 4, h);
+    }
+    g.globalAlpha = 1;
+    HUD.el.style.setProperty("--niv", Math.min(1, HUD.niveau).toFixed(3));
+    if(HUD.actif || HUD.niveau > .02) HUD.raf = requestAnimationFrame(hudBoucle);
+  }
+  window.jarvisHud = { debut:hudDebut, mot:hudMot, fin:hudFin };   // pour les tests et la console
+  /* Jarvis présente un point de la réunion, à voix haute. */
+  function hudPresenter(k){
+    var s = document.getElementById("ru-" + k); if(!s) return;
+    var titre = (s.querySelector("h2") || {}).textContent || "", contenu = s.innerText.replace(/\s+\n/g, "\n").slice(0, 3500);
+    JV.voix = true; try{ localStorage.setItem("sbtd-jarvis-voix", "1"); }catch(e){}
+    if(!HUD.on){ toast("L’animation Jarvis est désactivée : Jarvis parle sans le visualiseur."); }
+    jvDemander("Présente à voix haute, en 3 à 5 phrases simples, le point « " + titre + " » de notre réunion du lundi. Va à l’essentiel, cite les noms des projets, termine par ce qu’il faut décider. Voici ce qu’affiche la Régie :\n" + contenu, "🎙 Présente le point « " + titre + " »");
+    toast("Jarvis prépare la présentation de ce point…");
   }
 
   function jvInit(){
