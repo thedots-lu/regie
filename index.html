@@ -1462,48 +1462,110 @@
 
   /* ---------- Jarvis ---------- */
   .jv-btn{ position:fixed; right:max(20px, env(safe-area-inset-right, 0px)); bottom:calc(20px + env(safe-area-inset-bottom, 0px)); z-index:60;
-    display:flex; align-items:center; gap:10px; padding:8px 16px 8px 8px; border-radius:40px; border:1px solid #1f3a4a; cursor:pointer;
-    background:#07141c; color:#dff6ff; font:inherit; font-weight:600; letter-spacing:.04em; box-shadow:0 10px 30px -10px rgba(0,180,255,.55); }
-  .jv-btn:hover{ box-shadow:0 10px 36px -8px rgba(0,200,255,.8); }
+    display:flex; align-items:center; gap:10px; padding:8px 16px 8px 8px; border-radius:40px; border:1px solid rgba(255,255,255,.12); cursor:pointer;
+    background:#0B0B11; color:#EEF1F8; font:inherit; font-weight:600; letter-spacing:.04em; box-shadow:0 10px 30px -10px rgba(228,230,59,.35); }
+  .jv-btn:hover{ box-shadow:0 10px 36px -8px rgba(228,230,59,.6); }
   body.jv-ouvert .jv-btn{ display:none; }
   body.ru-pres .jv-btn{ opacity:.35; } body.ru-pres .jv-btn:hover{ opacity:1; }
   .jv-orbe{ position:relative; width:34px; height:34px; border-radius:50%; flex:none;
-    background:radial-gradient(circle at 50% 50%, #e8fbff 0 14%, #3fd2ff 22%, #0a6f9c 48%, #06202d 70%); box-shadow:0 0 14px #2cc7ff, inset 0 0 8px #bff1ff; }
-  .jv-orbe i{ position:absolute; inset:-4px; border-radius:50%; border:2px solid transparent; border-top-color:#5fe0ff; border-left-color:rgba(95,224,255,.35); animation:jvTourne 2.4s linear infinite; }
+    background:radial-gradient(circle at 50% 50%, #FFFDE8 0 14%, #E4E63B 22%, #F06A1F 48%, #1A1020 70%); box-shadow:0 0 14px #E4E63B, inset 0 0 8px #FFF6B0; }
+  .jv-orbe i{ position:absolute; inset:-4px; border-radius:50%; border:2px solid transparent; border-top-color:#E4E63B; border-left-color:rgba(228,230,59,.35); animation:jvTourne 2.4s linear infinite; }
   .jv-orbe.grand{ width:74px; height:74px; } .jv-orbe.grand i{ inset:-7px; border-width:3px; }
   @keyframes jvTourne{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion: reduce){ .jv-orbe i{ animation:none; } }
   .jv{ position:fixed; right:max(16px, env(safe-area-inset-right, 0px)); bottom:calc(16px + env(safe-area-inset-bottom, 0px)); top:calc(16px + env(safe-area-inset-top, 0px)); z-index:61;
     width:min(440px, calc(100vw - 32px)); display:flex; flex-direction:column; border-radius:22px; overflow:hidden;
-    background:#06121a; color:#e3f4fb; border:1px solid #1d3a4b; box-shadow:0 24px 70px -20px rgba(0,0,0,.7), 0 0 0 1px rgba(63,210,255,.08); }
+    background:#0B0B11; color:#EEF1F8; border:1px solid rgba(255,255,255,.1); box-shadow:0 24px 70px -20px rgba(0,0,0,.7), 0 0 0 1px rgba(228,230,59,.08); }
   .jv[hidden]{ display:none !important; }
-  .jv-h{ display:flex; align-items:center; gap:12px; padding:14px 14px 12px; border-bottom:1px solid #14303e; background:linear-gradient(180deg, #0a2230, #06121a); }
-  .jv-h div{ flex:1; min-width:0; display:flex; flex-direction:column; } .jv-h b{ font-size:17px; letter-spacing:.08em; text-transform:uppercase; color:#8fe6ff; }
-  .jv-h small{ color:#7fa3b3; font-size:12px; }
-  .jv-ic{ font:inherit; font-size:15px; width:34px; height:34px; border-radius:10px; border:1px solid #1d3a4b; background:#0b1e29; color:#cfeefa; cursor:pointer; flex:none; }
-  .jv-ic[aria-pressed="true"], .jv-ic.on{ background:#3fd2ff; color:#03202d; border-color:#3fd2ff; }
+  .jv-h{ display:flex; align-items:center; gap:12px; padding:14px 14px 12px; border-bottom:1px solid rgba(255,255,255,.07); background:linear-gradient(180deg, #15151E, #0B0B11); }
+  .jv-h div{ flex:1; min-width:0; display:flex; flex-direction:column; } .jv-h b{ font-size:17px; letter-spacing:.08em; text-transform:uppercase; color:#E4E63B; }
+  .jv-h small{ color:#7F8597; font-size:12px; }
+  .jv-ic{ font:inherit; font-size:15px; width:34px; height:34px; border-radius:10px; border:1px solid rgba(255,255,255,.1); background:#16161F; color:#BBC0CE; cursor:pointer; flex:none; }
+  .jv-ic[aria-pressed="true"], .jv-ic.on{ background:#E4E63B; color:#17170A; border-color:#E4E63B; }
   .jv-ic.on{ animation:jvPulse 1.2s ease-in-out infinite; }
-  @keyframes jvPulse{ 50%{ box-shadow:0 0 0 6px rgba(63,210,255,.25); } }
+  @keyframes jvPulse{ 50%{ box-shadow:0 0 0 6px rgba(228,230,59,.25); } }
   .jv-fil{ flex:1; overflow-y:auto; padding:16px 14px; display:flex; flex-direction:column; gap:10px; }
-  .jv-vide{ margin:auto 0; display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; color:#b6d6e3; }
+  .jv-vide{ margin:auto 0; display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; color:#BBC0CE; }
   .jv-vide p{ margin:0; max-width:34ch; }
   .jv-sugg{ display:flex; flex-wrap:wrap; gap:6px; justify-content:center; }
-  .jv-sugg button{ font:inherit; font-size:13px; color:#cdeefb; background:#0b1e29; border:1px solid #1d3a4b; border-radius:20px; padding:6px 11px; cursor:pointer; }
-  .jv-sugg button:hover{ border-color:#3fd2ff; }
+  .jv-sugg button{ font:inherit; font-size:13px; color:#BBC0CE; background:#16161F; border:1px solid rgba(255,255,255,.1); border-radius:20px; padding:6px 11px; cursor:pointer; }
+  .jv-sugg button:hover{ border-color:#E4E63B; }
   .jv-m{ max-width:88%; padding:10px 13px; border-radius:16px; font-size:14.5px; line-height:1.5; overflow-wrap:anywhere; }
-  .jv-m.moi{ align-self:flex-end; background:#3fd2ff; color:#03202d; border-bottom-right-radius:5px; }
-  .jv-m.lui{ align-self:flex-start; background:#0d2331; border:1px solid #17384a; border-bottom-left-radius:5px; }
-  .jv-m p{ margin:0 0 6px; } .jv-m p:last-child{ margin-bottom:0; } .jv-m ul{ margin:4px 0 6px; padding-left:18px; } .jv-m li{ margin:2px 0; } .jv-m b{ color:#9feaff; }
-  .jv-pense{ display:inline-flex; gap:4px; } .jv-pense i{ width:7px; height:7px; border-radius:50%; background:#3fd2ff; animation:jvPt 1s infinite; }
+  .jv-m.moi{ align-self:flex-end; background:#E4E63B; color:#17170A; border-bottom-right-radius:5px; }
+  .jv-m.lui{ align-self:flex-start; background:#16161F; border:1px solid rgba(255,255,255,.08); border-bottom-left-radius:5px; }
+  .jv-m p{ margin:0 0 6px; } .jv-m p:last-child{ margin-bottom:0; } .jv-m ul{ margin:4px 0 6px; padding-left:18px; } .jv-m li{ margin:2px 0; } .jv-m b{ color:#E4E63B; }
+  .jv-pense{ display:inline-flex; gap:4px; } .jv-pense i{ width:7px; height:7px; border-radius:50%; background:#E4E63B; animation:jvPt 1s infinite; }
   .jv-pense i:nth-child(2){ animation-delay:.15s; } .jv-pense i:nth-child(3){ animation-delay:.3s; }
   @keyframes jvPt{ 50%{ opacity:.25; transform:translateY(-3px); } }
-  .jv-f{ display:flex; gap:8px; padding:12px; border-top:1px solid #14303e; background:#081822; }
-  .jv-f input{ flex:1; min-width:0; font:inherit; color:#e3f4fb; background:#0b1e29; border:1px solid #1d3a4b; border-radius:12px; padding:9px 12px; }
-  .jv-f input:focus{ outline:2px solid #3fd2ff; outline-offset:0; }
+  .jv-f{ display:flex; gap:8px; padding:12px; border-top:1px solid rgba(255,255,255,.07); background:#0E0E15; }
+  .jv-f input{ flex:1; min-width:0; font:inherit; color:#EEF1F8; background:#16161F; border:1px solid rgba(255,255,255,.1); border-radius:12px; padding:9px 12px; }
+  .jv-f input:focus{ outline:2px solid #E4E63B; outline-offset:0; }
   @media (max-width:760px){
     .jv-btn{ right:auto; left:max(16px, env(safe-area-inset-left, 0px)); padding:6px; } .jv-btn .jv-nom{ display:none; }
     .jv{ top:auto; height:min(78vh, 640px); right:8px; left:8px; width:auto; bottom:calc(8px + env(safe-area-inset-bottom, 0px)); }
   }
+
+  /* ---------- Jarvis : séquence de démarrage (toujours sur fond sombre) ---------- */
+  .jvb{ position:fixed; inset:0; z-index:200; background:radial-gradient(ellipse at center, #17131F 0%, #09090E 70%); color:#EEF1F8; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; cursor:pointer; animation:jvbIn .35s ease-out both; font-family:"Space Mono", ui-monospace, Menlo, monospace; }
+  .jvb.sort{ animation:jvbOut .55s ease-in forwards; }
+  @keyframes jvbIn{ from{ opacity:0; } } @keyframes jvbOut{ to{ opacity:0; transform:scale(1.15); filter:blur(6px); } }
+  .jvb-grille{ position:absolute; inset:-50%; background-image:linear-gradient(rgba(228,230,59,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(228,230,59,.07) 1px, transparent 1px);
+    background-size:44px 44px; transform:perspective(600px) rotateX(58deg) translateY(10%); animation:jvbGrille 6s linear infinite; mask-image:radial-gradient(ellipse at center, #000 20%, transparent 65%); }
+  @keyframes jvbGrille{ to{ background-position:0 44px, 0 0; } }
+  .jvb-scan{ position:absolute; left:0; right:0; height:120px; top:-120px; background:linear-gradient(180deg, transparent, rgba(228,230,59,.18), transparent); animation:jvbScan 2.2s .2s ease-in-out 2; }
+  @keyframes jvbScan{ to{ top:100%; } }
+  .jvb-coin{ position:absolute; width:70px; height:70px; border:2px solid #E4E63B; opacity:.7; animation:jvbCoin .6s .1s both; }
+  .jvb-coin.a{ top:24px; left:24px; border-right:0; border-bottom:0; } .jvb-coin.b{ top:24px; right:24px; border-left:0; border-bottom:0; }
+  .jvb-coin.c{ bottom:24px; left:24px; border-right:0; border-top:0; } .jvb-coin.d{ bottom:24px; right:24px; border-left:0; border-top:0; }
+  @keyframes jvbCoin{ from{ opacity:0; transform:scale(1.6); } }
+  .jvb-centre{ position:relative; width:min(62vmin, 520px); aspect-ratio:1; max-width:100%; }
+  .jvb-centre svg{ width:100%; height:100%; overflow:visible; filter:drop-shadow(0 0 6px rgba(228,230,59,.75)); }
+  .jvb-centre .grad line{ stroke:#E4E63B; stroke-width:.25; opacity:.55; }
+  .jvb-centre .grad{ transform-origin:50px 50px; animation:jvbTourne 30s linear infinite; }
+  .jvb-centre .r{ fill:none; stroke:#E4E63B; transform-origin:50px 50px; animation:jvbAnneau .9s cubic-bezier(.2,.8,.2,1) both, jvbTourne var(--d) linear infinite;
+    animation-direction:normal, var(--sens, normal); }
+  .jvb-centre .r1, .jvb-centre .r3{ --sens:reverse; stroke:#E4E63B; }
+  .jvb-centre .r0{ animation-delay:0s, 0s; } .jvb-centre .r1{ animation-delay:.15s, 0s; } .jvb-centre .r2{ animation-delay:.3s, 0s; } .jvb-centre .r3{ animation-delay:.45s, 0s; } .jvb-centre .r4{ animation-delay:.6s, 0s; }
+  @keyframes jvbAnneau{ from{ opacity:0; transform:scale(.3) rotate(-90deg); } }
+  @keyframes jvbTourne{ to{ transform:rotate(360deg); } }
+  .jvb-centre .coeur{ fill:rgba(228,230,59,.15); stroke:#FFF6B0; stroke-width:.6; animation:jvbCoeur 1.6s ease-in-out infinite; transform-origin:50px 50px; }
+  .jvb-centre .coeur2{ fill:#FFFFFF; transform-origin:50px 50px; animation:jvbCoeur 1.6s .2s ease-in-out infinite; }
+  @keyframes jvbCoeur{ 50%{ transform:scale(1.18); opacity:.75; } }
+  .jvb-nom{ position:absolute; left:50%; top:calc(100% + 18px); transform:translateX(-50%); text-align:center; white-space:nowrap; opacity:0; animation:jvbNom .6s 2.9s ease-out forwards; }
+  .jvb-nom b{ display:block; font-family:"Unbounded", ui-sans-serif, system-ui, sans-serif; font-size:clamp(30px, 6vmin, 54px); letter-spacing:.42em; padding-left:.42em; color:#FFFFFF; text-shadow:0 0 18px #E4E63B, 0 0 40px rgba(228,230,59,.6); }
+  .jvb-nom span{ font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:#9A9FB0; }
+  @keyframes jvbNom{ from{ opacity:0; letter-spacing:1em; } to{ opacity:1; } }
+  .jvb-log{ position:absolute; left:max(28px, 4vw); bottom:max(70px, 9vh); list-style:none; margin:0; padding:0; font-size:13px; line-height:1.9; color:#BBC0CE; max-width:calc(100vw - 56px); }
+  .jvb-log li{ opacity:0; animation:jvbLigne .25s calc(.35s + var(--i) * .38s) steps(12) forwards; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .jvb-log .ok{ color:#E4E63B; margin-right:10px; }
+  .jvb-log li:last-child{ color:#FFFFFF; font-weight:700; }
+  @keyframes jvbLigne{ from{ opacity:0; clip-path:inset(0 100% 0 0); } to{ opacity:1; clip-path:inset(0 0 0 0); } }
+  .jvb-data{ position:absolute; right:max(28px, 4vw); top:max(40px, 7vh); display:flex; flex-direction:column; align-items:flex-end; gap:4px; font-size:11px; letter-spacing:.14em; color:#9A9FB0; animation:jvbIn 1s .5s both; }
+  .jvb-pret{ position:absolute; left:50%; bottom:max(28px, 4vh); transform:translateX(-50%); font-size:13px; letter-spacing:.3em; text-transform:uppercase; color:#E4E63B; opacity:0; animation:jvbNom .5s 3.3s forwards; white-space:nowrap; }
+  .jvb-passer{ position:absolute; right:24px; bottom:24px; font:inherit; font-size:12px; letter-spacing:.1em; color:#9A9FB0; background:none; border:1px solid rgba(255,255,255,.15); border-radius:20px; padding:6px 12px; cursor:pointer; }
+  @media (max-width:600px){ .jvb-log{ font-size:11px; bottom:64px; } .jvb-data{ display:none; } .jvb-coin{ width:40px; height:40px; } }
+
+  /* DA Régie : liseré spectral, anneaux aux couleurs du spectre, états écoute / parole */
+  .jv-h{ position:relative; } .jv-h::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px;
+    background:linear-gradient(90deg,#F4C21B,#F06A1F 18%,#D9284F 36%,#B0308F 54%,#6B3BD8 72%,#2F6BE0 88%,#1FB5C9); }
+  .jv-h b{ font-family:"Unbounded", ui-sans-serif, sans-serif; font-weight:700; letter-spacing:.16em; }
+  .jv-btn .jv-nom{ font-family:"Space Mono", ui-monospace, monospace; letter-spacing:.12em; text-transform:uppercase; font-size:13px; }
+  .jv-orbe{ background:radial-gradient(circle at 50% 50%, #FFFDE8 0 14%, #E4E63B 24%, #F06A1F 46%, #6B3BD8 64%, #0B0B11 74%); box-shadow:0 0 14px rgba(228,230,59,.55), inset 0 0 8px rgba(255,246,176,.8); }
+  .jv-orbe i{ border-top-color:#E4E63B; border-left-color:rgba(240,106,31,.55); border-bottom-color:rgba(107,59,216,.45); }
+  .jv-m.moi{ background:#E4E63B; color:#17170A; }
+  .jv-etat{ padding:7px 14px; font-family:"Space Mono", ui-monospace, monospace; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#E4E63B; border-bottom:1px solid rgba(255,255,255,.07); background:#0E0E15; }
+  .jv-etat::before{ content:"● "; animation:jvPt 1s infinite; }
+  .jv.ecoute .jv-h .jv-orbe{ animation:jvEcoute .9s ease-in-out infinite; } .jv.parle .jv-h .jv-orbe{ animation:jvParle .35s ease-in-out infinite alternate; }
+  @keyframes jvEcoute{ 50%{ box-shadow:0 0 0 8px rgba(228,230,59,.18), 0 0 22px rgba(228,230,59,.7); } }
+  @keyframes jvParle{ to{ transform:scale(1.12); box-shadow:0 0 26px rgba(240,106,31,.8); } }
+  .jv-ic.jv-conv[aria-pressed="true"]{ background:linear-gradient(135deg,#F4C21B,#F06A1F 45%,#B0308F); color:#fff; border-color:transparent; }
+  .jvb-centre .r0{ stroke:#E4E63B; } .jvb-centre .r1{ stroke:#F06A1F; } .jvb-centre .r2{ stroke:#D9284F; } .jvb-centre .r3{ stroke:#6B3BD8; } .jvb-centre .r4{ stroke:#1FB5C9; }
+  .jvb-centre .grad line{ stroke:#EEF1F8; opacity:.35; }
+  .jvb-centre .coeur{ fill:rgba(228,230,59,.12); stroke:#E4E63B; } .jvb-centre .coeur2{ fill:#FFFDE8; }
+  .jvb::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:3px; background:linear-gradient(90deg,#F4C21B,#F06A1F 18%,#D9284F 36%,#B0308F 54%,#6B3BD8 72%,#2F6BE0 88%,#1FB5C9); animation:jvbCoin .8s .2s both; }
+  .jvb-nom b{ font-weight:700; letter-spacing:.3em; padding-left:.3em; }
+  .jvb-grille{ background-image:linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); }
 </style>
 </head>
 <body class="studio">
@@ -7700,12 +7762,37 @@
       + JV.msgs.map(function(m){ return '<div class="jv-m ' + (m.role === "user" ? "moi" : "lui") + '">' + (m.role === "user" ? esc(m.content) : jvMd(m.content) || '<span class="jv-pense"><i></i><i></i><i></i></span>') + '</div>'; }).join("");
     fil.scrollTop = fil.scrollHeight;
     el.querySelector("[data-jvvoix]").setAttribute("aria-pressed", JV.voix);
-    el.querySelector("[data-jvenv]").disabled = JV.enCours;
+    el.querySelector("[data-jvenv]").disabled = JV.enCours; jvEtat();
     fil.querySelectorAll("[data-jvq]").forEach(function(x){ x.addEventListener("click", function(){ jvDemander(x.dataset.jvq); }); });
   }
-  function jvParler(t){
-    if(!JV.voix || !window.speechSynthesis) return;
-    try{ speechSynthesis.cancel(); var u = new SpeechSynthesisUtterance(t.replace(/\*\*/g, "").replace(/^\s*-\s+/gm, "")); u.lang = "fr-FR"; u.rate = 1.05; speechSynthesis.speak(u); }catch(e){}
+  /* La voix de Jarvis : une voix masculine française, grave et posée (celle du système : Thomas sur Mac). */
+  var JV_FEM = /am[ée]lie|audrey|aur[ée]lie|marie|virginie|c[ée]line|julie|hortense|l[ée]a|chantal|sylvie|denise|elsa|eloise|vivienne|joana|samantha|female|femme/i;
+  function jvVoixChoisie(){
+    if(!window.speechSynthesis) return null;
+    var v = speechSynthesis.getVoices().filter(function(x){ return /^fr/i.test(x.lang); });
+    var pref = ["Thomas", "Nicolas", "Henri", "Paul", "Jacques", "Daniel", "Google français"];
+    for(var i = 0; i < pref.length; i++){ var m = v.filter(function(x){ return x.name.indexOf(pref[i]) >= 0 && !JV_FEM.test(x.name); })[0]; if(m) return m; }
+    return v.filter(function(x){ return !JV_FEM.test(x.name) && /fr-FR/i.test(x.lang); })[0] || v.filter(function(x){ return /fr-FR/i.test(x.lang); })[0] || v[0] || null;
+  }
+  if(window.speechSynthesis) try{ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = function(){}; }catch(e){}
+  function jvParler(t, apres){
+    if(!JV.voix || !window.speechSynthesis){ if(apres) apres(); return; }
+    try{
+      speechSynthesis.cancel();
+      var txt = String(t).replace(/\*\*/g, "").replace(/^\s*-\s+/gm, "").replace(/\n+/g, ". ").replace(/\.\s*\./g, ".");
+      var u = new SpeechSynthesisUtterance(txt), v = jvVoixChoisie();
+      if(v) u.voice = v; u.lang = v ? v.lang : "fr-FR"; u.rate = 0.97; u.pitch = 0.82;
+      JV.parle = true; jvEtat();
+      u.onend = u.onerror = function(){ JV.parle = false; jvEtat(); if(apres) apres(); };
+      speechSynthesis.speak(u);
+    }catch(e){ JV.parle = false; if(apres) apres(); }
+  }
+  function jvEtat(){
+    var e = document.querySelector("#jarvis .jv-etat"); if(!e) return;
+    var t = JV.ecoute ? "Je t’écoute…" : JV.parle ? "Jarvis parle…" : JV.enCours ? "Je cherche dans la Régie…" : JV.conv ? "Mode conversation actif" : "";
+    e.textContent = t; e.hidden = !t;
+    var jv = document.getElementById("jarvis"); if(jv){ jv.classList.toggle("ecoute", !!JV.ecoute); jv.classList.toggle("parle", !!JV.parle); }
+    var c = document.querySelector("[data-jvconv]"); if(c) c.setAttribute("aria-pressed", !!JV.conv);
   }
   function jvDemander(q){
     q = String(q || "").trim(); if(!q || JV.enCours) return;
@@ -7713,7 +7800,7 @@
     JV.msgs.push({ role:"user", content:q }); var rep = { role:"assistant", content:"" }; JV.msgs.push(rep);
     JV.enCours = true; jvRendre();
     var code = ""; try{ code = sessionStorage.getItem("sbtd-regie-code") || ""; }catch(e){}
-    function fin(txt){ if(txt) rep.content = txt; JV.enCours = false; if(!rep.content) rep.content = "Je n’ai pas de réponse."; jvSauver(); jvRendre(); jvParler(rep.content); }
+    function fin(txt){ if(txt) rep.content = txt; JV.enCours = false; if(!rep.content) rep.content = "Je n’ai pas de réponse."; jvSauver(); jvRendre(); jvParler(rep.content, function(){ if(JV.conv && JV.ouvert) setTimeout(function(){ jvEcouter(true); }, 250); }); }
     if(!EN_LIGNE){ fin("Jarvis a besoin de la connexion à la Régie (mode démonstration)."); return; }
     fetch(CFG.SUPABASE_URL.replace(/\/+$/, "") + "/functions/v1/regie-jarvis", {
       method:"POST", headers:{ "apikey":CFG.SUPABASE_KEY, "x-regie-code":code, "Content-Type":"application/json" },
@@ -7732,18 +7819,92 @@
       return lire();
     }).catch(function(){ fin("Pas de connexion : je n’ai pas pu joindre la Régie."); });
   }
-  function jvMicro(){
+  /* Écoute : une phrase, envoyée dès qu'on se tait. En mode conversation, Jarvis répond à voix haute puis réécoute. */
+  var JV_STOP = /^(stop|arr[êe]te|merci jarvis|c'est tout|au revoir|fin de la conversation)\b/i;
+  function jvEcouter(conv){
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SR){ toast("La dictée vocale n’est pas disponible dans ce navigateur (essaie Chrome ou Safari)."); return; }
+    if(!SR){ toast("La reconnaissance vocale n’est pas disponible dans ce navigateur : utilise Chrome ou Safari."); JV.conv = false; jvEtat(); return; }
     if(JV.ecoute){ try{ JV.ecoute.stop(); }catch(e){} return; }
-    var r = new SR(), champ = document.getElementById("jvIn"), btn = document.querySelector("[data-jvmic]");
+    if(JV.enCours) return;
+    if(window.speechSynthesis) speechSynthesis.cancel();
+    var r = new SR(), champ = document.getElementById("jvIn"), btn = document.querySelector("[data-jvmic]"), entendu = false;
     r.lang = "fr-FR"; r.interimResults = true; r.continuous = false;
-    r.onresult = function(e){ var t = ""; for(var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; champ.value = t; };
-    r.onend = function(){ JV.ecoute = null; btn.classList.remove("on"); if(champ.value.trim()){ var q = champ.value; champ.value = ""; jvDemander(q); } };
-    r.onerror = function(){ JV.ecoute = null; btn.classList.remove("on"); };
-    JV.ecoute = r; btn.classList.add("on"); try{ r.start(); }catch(e){ JV.ecoute = null; btn.classList.remove("on"); }
+    r.onresult = function(e){ var t = ""; for(var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; champ.value = t; entendu = true; };
+    r.onend = function(){
+      JV.ecoute = null; if(btn) btn.classList.remove("on");
+      var q = champ.value.trim(); champ.value = "";
+      if(q && JV_STOP.test(q)){ JV.conv = false; jvEtat(); jvParler("À ton service."); return; }
+      if(q){ JV.vides = 0; jvDemander(q); return; }
+      jvEtat();
+      if(conv && JV.conv && JV.ouvert && (JV.vides = (JV.vides || 0) + 1) < 3) setTimeout(function(){ jvEcouter(true); }, 300);
+      else if(conv && JV.conv){ JV.conv = false; JV.vides = 0; jvEtat(); toast("Mode conversation en pause : je n’entendais plus rien."); }
+    };
+    r.onerror = function(e){ if(e && (e.error === "not-allowed" || e.error === "service-not-allowed")){ JV.conv = false; toast("Autorise le micro pour parler à Jarvis (icône de la barre d’adresse)."); } };
+    JV.ecoute = r; if(btn) btn.classList.add("on"); jvEtat();
+    try{ r.start(); }catch(e){ JV.ecoute = null; if(btn) btn.classList.remove("on"); jvEtat(); }
   }
-  function jvOuvrir(v){ JV.ouvert = v == null ? !JV.ouvert : v; jvRendre(); if(JV.ouvert){ var c = document.getElementById("jvIn"); if(c) setTimeout(function(){ c.focus(); }, 50); } }
+  function jvMicro(){ jvEcouter(false); }
+  function jvConversation(){
+    JV.conv = !JV.conv; JV.vides = 0;
+    if(JV.conv){ JV.voix = true; try{ localStorage.setItem("sbtd-jarvis-voix", "1"); }catch(e){} jvRendre(); jvParler("Je t’écoute.", function(){ jvEcouter(true); }); }
+    else { if(JV.ecoute) try{ JV.ecoute.abort(); }catch(e){} JV.ecoute = null; if(window.speechSynthesis) speechSynthesis.cancel(); JV.parle = false; jvRendre(); }
+  }
+  function jvOuvrir(v){ JV.ouvert = v == null ? !JV.ouvert : v; if(!JV.ouvert && JV.conv) jvConversation(); jvRendre(); if(JV.ouvert){ var c = document.getElementById("jvIn"); if(c) setTimeout(function(){ c.focus(); }, 50); } }
+
+  /* ---------- Jarvis : séquence de démarrage façon HUD ----------
+     Plein écran, ~4 s : anneaux holographiques, balayage, lignes de diagnostic avec les vrais chiffres
+     de la Régie, puis « JARVIS — en ligne » et ouverture du volet. Son synthétisé discret (Web Audio).
+     Jouée à la première ouverture de la session et avec le bouton ✦ du volet. Échap ou clic pour passer. */
+  function jvSon(){
+    try{
+      var C = window.AudioContext || window.webkitAudioContext; if(!C) return;
+      var ac = new C(), t = ac.currentTime, g = ac.createGain(); g.gain.value = 0.05; g.connect(ac.destination);
+      function bip(f, d, deb, type){ var o = ac.createOscillator(), e = ac.createGain(); o.type = type || "sine"; o.frequency.value = f;
+        e.gain.setValueAtTime(0, t + deb); e.gain.linearRampToValueAtTime(1, t + deb + .02); e.gain.exponentialRampToValueAtTime(.001, t + deb + d);
+        o.connect(e); e.connect(g); o.start(t + deb); o.stop(t + deb + d + .05); }
+      var o = ac.createOscillator(), e = ac.createGain(); o.type = "sawtooth"; o.frequency.setValueAtTime(70, t); o.frequency.exponentialRampToValueAtTime(420, t + 2.4);
+      e.gain.setValueAtTime(0, t); e.gain.linearRampToValueAtTime(.35, t + .4); e.gain.linearRampToValueAtTime(0, t + 2.6);
+      var f = ac.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = 900; o.connect(f); f.connect(e); e.connect(g); o.start(t); o.stop(t + 2.7);
+      [.5, .9, 1.3, 1.7, 2.1].forEach(function(d, i){ bip(880 + i * 110, .08, d, "square"); });
+      bip(1320, .5, 3.0); bip(1760, .7, 3.1);
+      setTimeout(function(){ try{ ac.close(); }catch(x){} }, 4500);
+    }catch(e){}
+  }
+  function jvBoot(apres){
+    if(document.getElementById("jvBoot")) return;
+    var reduit = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduit){ if(apres) apres(); return; }
+    var auj = iso(new Date());
+    var nTg = 0; P.forEach(function(p){ (p.jours || []).forEach(function(j){ if(j.date && j.date >= auj && j.date <= kAdd(auj, 7)) nTg++; }); });
+    var nTa = TA.filter(function(t){ return t.statut !== "terminee"; }).length, nAt = TA.filter(function(t){ return t.statut === "attente"; }).length;
+    var nK = KS.filter(function(p){ return p.date >= auj && p.date <= kAdd(auj, 7) && p.type !== "story"; }).length;
+    var lignes = ["Initialisation du noyau", "Connexion à la Régie · " + P.length + " projets", nTg + " journée" + (nTg > 1 ? "s" : "") + " de tournage dans les 7 jours",
+      nTa + " tâches ouvertes · " + nAt + " en attente", "Kamel Sans Filtre · " + nK + " publication" + (nK > 1 ? "s" : "") + " cette semaine", "Calibrage de la voix · fr-FR", "Tous les systèmes sont en ligne"];
+    var anneaux = "";
+    [[46, 7, "12 8", 9, 1], [40, 2, "2 4", 14, -1], [34, 5, "40 14 6 14", 7, 1], [27, 1.5, "1 3", 20, -1], [21, 3, "60 30", 5, 1]].forEach(function(a, i){
+      anneaux += '<circle class="r r' + i + '" cx="50" cy="50" r="' + a[0] + '" stroke-width="' + a[1] / 4 + '" stroke-dasharray="' + a[2] + '" style="--d:' + a[3] + 's;--s:' + a[4] + '"/>'; });
+    var graduations = ""; for(var i = 0; i < 72; i++){ var an = i * 5 * Math.PI / 180, r1 = 48.5, r2 = i % 6 ? 47.6 : 46.6;
+      graduations += '<line x1="' + (50 + r1 * Math.cos(an)).toFixed(2) + '" y1="' + (50 + r1 * Math.sin(an)).toFixed(2) + '" x2="' + (50 + r2 * Math.cos(an)).toFixed(2) + '" y2="' + (50 + r2 * Math.sin(an)).toFixed(2) + '"/>'; }
+    var o = document.createElement("div");
+    o.id = "jvBoot"; o.className = "jvb"; o.setAttribute("role", "status"); o.setAttribute("aria-label", "Démarrage de Jarvis");
+    o.innerHTML = '<div class="jvb-grille"></div><div class="jvb-scan"></div>'
+      + '<div class="jvb-coin a"></div><div class="jvb-coin b"></div><div class="jvb-coin c"></div><div class="jvb-coin d"></div>'
+      + '<div class="jvb-centre"><svg viewBox="0 0 100 100" aria-hidden="true"><g class="grad">' + graduations + '</g>' + anneaux
+      + '<circle class="coeur" cx="50" cy="50" r="12"/><circle class="coeur2" cx="50" cy="50" r="6"/></svg>'
+      + '<div class="jvb-nom"><b>JARVIS</b><span>Assistant de la Régie</span></div></div>'
+      + '<ol class="jvb-log">' + lignes.map(function(l, i){ return '<li style="--i:' + i + '"><span class="ok">' + (i === lignes.length - 1 ? '●' : '✓') + '</span>' + esc(l) + '</li>'; }).join("") + '</ol>'
+      + '<div class="jvb-data"><span>SYS ' + Math.floor(Math.random() * 900 + 100) + '.' + Math.floor(Math.random() * 90 + 10) + '</span><span>LAT 49.62 N · LON 6.07 E</span><span>' + esc(new Date().toLocaleTimeString("fr-FR")) + '</span></div>'
+      + '<div class="jvb-pret">En ligne' + (MOI ? ' · bonjour ' + esc(MOI) : '') + '</div><button type="button" class="jvb-passer">Passer ›</button>';
+    document.body.appendChild(o);
+    jvSon();
+    var fini = false;
+    function fin(){ if(fini) return; fini = true; o.classList.add("sort"); setTimeout(function(){ o.remove(); }, 600); if(apres) apres();
+      if(JV.voix) jvParler("Bonjour" + (MOI ? " " + MOI : "") + ". Tous les systèmes sont en ligne. Que puis-je faire pour toi ?"); }
+    var minuteur = setTimeout(fin, 4600);
+    o.addEventListener("click", function(){ clearTimeout(minuteur); fin(); });
+    document.addEventListener("keydown", function k(e){ if(e.key === "Escape"){ document.removeEventListener("keydown", k); clearTimeout(minuteur); fin(); } });
+  }
+
   function jvInit(){
     if(document.getElementById("jvBtn")) return;
     var b = document.createElement("button");
@@ -7751,20 +7912,27 @@
     b.innerHTML = '<span class="jv-orbe" aria-hidden="true"><i></i></span><span class="jv-nom">Jarvis</span>';
     var p = document.createElement("section");
     p.id = "jarvis"; p.className = "jv"; p.hidden = true; p.setAttribute("aria-label", "Jarvis");
-    p.innerHTML = '<header class="jv-h"><span class="jv-orbe" aria-hidden="true"><i></i></span><div><b>Jarvis</b><small>Assistant de la Régie · lit les projets, tâches, agenda et KSF</small></div>'
+    p.innerHTML = '<header class="jv-h"><span class="jv-orbe" aria-hidden="true"><i></i></span><div><b>Jarvis</b><small>Assistant de la Régie</small></div>'
+      + '<button type="button" class="jv-ic jv-conv" data-jvconv aria-pressed="false" title="Mode conversation : parle-lui, il répond à voix haute">🗣</button>'
+      + '<button type="button" class="jv-ic" data-jvboot title="Lancer la séquence de démarrage">✦</button>'
       + '<button type="button" class="jv-ic" data-jvvoix aria-pressed="false" title="Lire les réponses à voix haute">🔊</button>'
       + '<button type="button" class="jv-ic" data-jvnet title="Nouvelle conversation">↺</button>'
       + '<button type="button" class="jv-ic" data-jvferme aria-label="Fermer">✕</button></header>'
-      + '<div class="jv-fil" aria-live="polite"></div>'
+      + '<div class="jv-etat" hidden></div><div class="jv-fil" aria-live="polite"></div>'
       + '<form class="jv-f"><button type="button" class="jv-ic" data-jvmic title="Poser la question à voix haute">🎙</button>'
       + '<input id="jvIn" type="text" autocomplete="off" placeholder="Pose ta question…" aria-label="Question pour Jarvis">'
       + '<button type="submit" class="btn lime" data-jvenv>Envoyer</button></form>';
     document.body.appendChild(b); document.body.appendChild(p);
-    b.addEventListener("click", function(){ jvOuvrir(); });
+    b.addEventListener("click", function(){
+      var vu = false; try{ vu = sessionStorage.getItem("sbtd-jarvis-boot") === "1"; sessionStorage.setItem("sbtd-jarvis-boot", "1"); }catch(e){ vu = true; }
+      if(vu) jvOuvrir(); else jvBoot(function(){ jvOuvrir(true); });
+    });
+    p.querySelector("[data-jvboot]").addEventListener("click", function(){ jvOuvrir(false); jvBoot(function(){ jvOuvrir(true); }); });
     p.querySelector("[data-jvferme]").addEventListener("click", function(){ jvOuvrir(false); });
     p.querySelector("[data-jvnet]").addEventListener("click", function(){ if(JV.enCours) return; JV.msgs = []; jvSauver(); jvRendre(); });
     p.querySelector("[data-jvvoix]").addEventListener("click", function(){ JV.voix = !JV.voix; try{ localStorage.setItem("sbtd-jarvis-voix", JV.voix ? "1" : "0"); }catch(e){} if(!JV.voix && window.speechSynthesis) speechSynthesis.cancel(); jvRendre(); });
     p.querySelector("[data-jvmic]").addEventListener("click", jvMicro);
+    p.querySelector("[data-jvconv]").addEventListener("click", jvConversation);
     p.querySelector(".jv-f").addEventListener("submit", function(e){ e.preventDefault(); var c = document.getElementById("jvIn"); var q = c.value; c.value = ""; jvDemander(q); });
     document.addEventListener("keydown", function(e){
       if((e.metaKey || e.ctrlKey) && (e.key === "j" || e.key === "J")){ e.preventDefault(); jvOuvrir(); }
