@@ -1602,6 +1602,69 @@
   .ru-jv{ font:inherit; font-size:12.5px; color:var(--lime-ink); background:var(--lime); border:0; border-radius:20px; padding:4px 10px; cursor:pointer; white-space:nowrap; }
   .ru-hud{ display:flex; gap:8px; align-items:center; font-size:13px; color:var(--ink-2); cursor:pointer; }
   .ru-hud input{ width:17px; height:17px; accent-color:var(--lime); }
+
+  /* ---------- Brief Jarvis : hologrammes (DA Régie, fond sombre) ---------- */
+  .br{ position:fixed; inset:0; z-index:205; overflow:hidden; color:#EEF1F8; font-family:"Inter Tight", "IBM Plex Sans", ui-sans-serif, sans-serif;
+    background:radial-gradient(ellipse at 50% 35%, #1a1424 0%, #0B0B11 55%, #060609 100%); display:flex; flex-direction:column; animation:jvbIn .4s ease-out both; }
+  .br.sort{ animation:jvbOut .5s ease-in forwards; }
+  .br::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:3px; background:linear-gradient(90deg,#F4C21B,#F06A1F 18%,#D9284F 36%,#B0308F 54%,#6B3BD8 72%,#2F6BE0 88%,#1FB5C9); }
+  .br .jvb-scan{ animation-iteration-count:infinite; animation-duration:6s; opacity:.6; }
+  body.br-on .jvh{ z-index:230; } body.br-on .jv-btn, body.br-on .jv{ display:none !important; }
+  .br-h{ position:relative; z-index:2; display:flex; align-items:center; gap:12px; padding:22px max(28px, 3vw) 0; font-family:"Space Mono", ui-monospace, monospace; letter-spacing:.18em; text-transform:uppercase; font-size:12px; color:#9A9FB0; }
+  .br-h b{ font-family:"Unbounded", ui-sans-serif, sans-serif; color:#E4E63B; letter-spacing:.28em; font-size:15px; text-shadow:0 0 14px rgba(228,230,59,.6); }
+  .br-prog{ position:relative; z-index:2; margin:10px max(28px, 3vw) 0; height:2px; background:rgba(255,255,255,.08); }
+  .br-prog i{ display:block; height:100%; background:#E4E63B; box-shadow:0 0 10px #E4E63B; transition:width .6s; }
+  .br-scene{ position:relative; z-index:2; flex:1; display:flex; flex-direction:column; justify-content:center; gap:22px; padding:10px max(28px, 4vw) 190px; perspective:1400px; min-height:0; overflow:hidden; }
+  .br-p{ position:relative; background:linear-gradient(160deg, rgba(228,230,59,.08), rgba(255,255,255,.015) 40%, rgba(107,59,216,.06));
+    border:1px solid rgba(228,230,59,.32); border-radius:16px; padding:16px 18px; display:flex; flex-direction:column; gap:4px; min-width:0;
+    box-shadow:0 0 28px rgba(228,230,59,.12), inset 0 0 24px rgba(228,230,59,.05); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+    animation:brIn .8s cubic-bezier(.2,.8,.2,1) var(--d, 0s) both, brFlick 5s var(--d, 0s) infinite; overflow:hidden; }
+  .br-p::after{ content:""; position:absolute; inset:0; background:linear-gradient(105deg, transparent 40%, rgba(255,255,255,.09) 50%, transparent 60%); transform:translateX(-120%); animation:brReflet 3.5s calc(var(--d, 0s) + .6s) ease-in-out infinite; pointer-events:none; }
+  @keyframes brIn{ from{ opacity:0; transform:translateZ(-260px) rotateX(28deg) scale(.88); filter:blur(8px); } 60%{ filter:blur(0); } }
+  @keyframes brFlick{ 0%, 96%, 100%{ opacity:1; } 97%{ opacity:.7; } 98%{ opacity:1; } 99%{ opacity:.85; } }
+  @keyframes brReflet{ 0%{ transform:translateX(-120%); } 40%, 100%{ transform:translateX(120%); } }
+  .br-p small{ font-family:"Space Mono", ui-monospace, monospace; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:#9A9FB0; }
+  .br-p b{ font-size:18px; font-weight:600; overflow-wrap:anywhere; } .br-p span{ color:#BBC0CE; font-size:14.5px; }
+  .br-p em{ font-style:normal; font-size:12.5px; font-weight:700; } .br-p em.up, .br-p em.ok{ color:#A8FF1F; } .br-p em.down{ color:#ff7a6b; } .br-p em.warn{ color:#FFB45C; }
+  .br-p.rouge{ border-color:rgba(255,107,107,.6); box-shadow:0 0 30px rgba(255,107,107,.25), inset 0 0 24px rgba(255,107,107,.08); }
+  .br-p.auj{ border-color:#E4E63B; box-shadow:0 0 34px rgba(228,230,59,.35); }
+  .br-titre{ display:flex; flex-direction:column; align-items:center; text-align:center; animation:brIn .8s both; }
+  .br-titre small{ font-family:"Space Mono", ui-monospace, monospace; letter-spacing:.3em; text-transform:uppercase; color:#9A9FB0; font-size:13px; }
+  .br-titre b{ font-family:"Unbounded", ui-sans-serif, sans-serif; font-size:clamp(30px, 5vw, 64px); color:#fff; text-shadow:0 0 22px rgba(228,230,59,.55), 0 0 60px rgba(240,106,31,.35); text-transform:capitalize; }
+  .br-titre.petit b{ font-size:clamp(40px, 6vw, 80px); color:#E4E63B; }
+  .br-n{ font-family:"Unbounded", ui-sans-serif, sans-serif; font-size:clamp(40px, 5vw, 68px) !important; line-height:1; color:#E4E63B; text-shadow:0 0 18px rgba(228,230,59,.7); }
+  .br-grille4{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:16px; }
+  .br-p.chiffre{ align-items:center; text-align:center; padding:22px 14px; }
+  .br-frise{ display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:10px; align-items:start; }
+  .br-jour{ display:flex; align-items:baseline; gap:6px; } .br-jour b{ font-family:"Unbounded", ui-sans-serif, sans-serif; font-size:24px; color:#fff; }
+  .br-ev{ font-size:13px; line-height:1.3; padding:6px 8px; border-radius:8px; background:rgba(255,255,255,.05); border-left:3px solid #1FB5C9; display:flex; flex-direction:column; color:#EEF1F8; }
+  .br-ev em{ font-style:normal; font-size:11.5px; color:#9A9FB0; } .br-ev.ks{ border-left-color:#E4E63B; } .br-ev.tg{ border-left-color:#2F6BE0; }
+  .br-alerte{ font-family:"Space Mono", ui-monospace, monospace; font-size:11.5px; color:#ff7a6b; letter-spacing:.1em; text-transform:uppercase; animation:jvPt 1s infinite; }
+  .br-pile{ display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; max-width:1200px; width:100%; margin:0 auto; }
+  .br-p.ligne{ display:grid; grid-template-columns:12px minmax(0,1fr); column-gap:12px; } .br-p.ligne > *:not(.br-pt){ grid-column:2; }
+  .br-pt{ grid-row:1 / span 2; width:10px; height:10px; border-radius:50%; margin-top:7px; background:#E4E63B; box-shadow:0 0 10px currentColor; }
+  .br-pt.att{ background:#9d8cff; } .br-pt.ret{ background:#ff6b6b; } .br-pt.maj{ background:#F06A1F; } .br-pt.q{ background:#E4E63B; }
+  .br-ksf{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:14px; max-width:1200px; width:100%; margin:0 auto; }
+  .br-p.graph{ grid-row:span 2; }
+  .br-barres{ display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:10px; height:220px; align-items:end; }
+  .br-barres div{ display:flex; align-items:flex-end; justify-content:center; gap:3px; height:100%; position:relative; padding-bottom:20px; }
+  .br-barres i{ width:40%; border-radius:4px 4px 0 0; display:block; }
+  .br-barres i.b{ background:rgba(255,255,255,.14); } .br-barres i.a{ background:linear-gradient(0deg, #F06A1F, #E4E63B); box-shadow:0 0 14px rgba(228,230,59,.6); transform-origin:bottom; animation:brBarre .9s var(--d) cubic-bezier(.2,.8,.2,1) both; }
+  .br-barres span{ position:absolute; bottom:0; font-family:"Space Mono", ui-monospace, monospace; font-size:11px; color:#9A9FB0; text-transform:capitalize; }
+  @keyframes brBarre{ from{ transform:scaleY(0); } }
+  .br-cartes{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px; max-width:1300px; width:100%; margin:0 auto; }
+  .br-p.carte b{ font-size:20px; }
+  .br-fin{ display:flex; justify-content:center; } .br-p.fin{ align-items:center; padding:40px 60px; } .br-p.fin b{ font-family:"Unbounded", ui-sans-serif, sans-serif; font-size:clamp(30px, 4vw, 54px); color:#E4E63B; text-shadow:0 0 22px rgba(228,230,59,.6); }
+  .br-nav{ position:absolute; z-index:240; right:max(24px, 3vw); top:16px; display:flex; gap:8px; }
+  .br-nav button{ font:inherit; width:38px; height:38px; border-radius:50%; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.05); color:#EEF1F8; cursor:pointer; }
+  .br-nav button:hover{ border-color:#E4E63B; color:#E4E63B; }
+  @media (max-width:900px){ .br-grille4{ grid-template-columns:1fr 1fr; } .br-frise{ grid-template-columns:repeat(2, minmax(0,1fr)); } .br-pile, .br-ksf{ grid-template-columns:1fr; } .br-scene{ justify-content:flex-start; overflow-y:auto; } }
+  @media (prefers-reduced-motion: reduce){ .br-p, .br-p::after, .br .jvb-scan{ animation:none !important; } }
+  .ru-brief{ width:100%; font-family:"Unbounded", ui-sans-serif, sans-serif; font-size:13px; letter-spacing:.06em; padding:11px 12px; border-radius:14px; border:1px solid rgba(228,230,59,.5); cursor:pointer;
+    color:#E4E63B; background:radial-gradient(circle at 20% 50%, rgba(228,230,59,.18), rgba(11,11,17,.9) 70%); box-shadow:0 0 18px rgba(228,230,59,.2); }
+  .ru-brief:hover{ box-shadow:0 0 26px rgba(228,230,59,.4); }
+  .ru-ecoute{ width:100%; font:inherit; font-size:13px; display:flex; gap:8px; align-items:center; justify-content:center; padding:8px 10px; border-radius:12px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); cursor:pointer; }
+  .ru-ecoute[aria-pressed="true"]{ border-color:var(--lime); color:var(--lime); animation:jvEcoute 1.6s ease-in-out infinite; }
 </style>
 </head>
 <body class="studio">
@@ -5249,6 +5312,8 @@
           return '<li><button type="button" class="' + (s.ksf ? 'ksf' : '') + (RV.pres && RV.i === i ? ' on' : '') + '" data-rgo="' + i + '"><span class="n">' + (i < 9 ? '0' : '') + (i + 1) + '</span>' + esc(s.t) + '</button>'
             + '<input type="checkbox" data-rvu="' + s.k + '"' + (vu ? ' checked' : '') + ' aria-label="Point vu : ' + esc(s.t) + '"></li>'; }).join("") + '</ol>'
       + '<button type="button" class="btn lime ru-pbtn" data-rpres="1">' + (RV.pres ? 'Quitter la présentation' : '▶ Présenter en réunion') + '</button>'
+      + '<button type="button" class="ru-brief" data-rbrief>◉ Brief Jarvis</button>'
+      + '<button type="button" class="ru-ecoute" data-rjvw aria-pressed="' + JVW.voulu + '">🎙 <span>' + (JVW.voulu ? 'J’écoute « Jarvis, brief »…' : 'Écoute « Jarvis, brief »') + '</span></button>'
       + '<label class="ru-hud"><input type="checkbox" data-rhud' + (HUD.on ? ' checked' : '') + '> Animation Jarvis quand il parle</label>'
       + '<p class="ru-dim ru-aide">En présentation : ← → pour changer de point, Échap pour sortir.</p></aside><div class="ru-main">';
     S.forEach(function(s, i){
@@ -5306,10 +5371,13 @@
       kMaj(p.id, { promo:{ le:new Date().toISOString(), budget:f.budget.value, jours:f.jours.value, vuesAvant:kIgVues(p) } }).then(function(){ toast("Promotion notée."); }, kEchec);
     });
     document.body.classList.toggle("ru-pres", VUE === "reunion" && RV.pres);
+    if(VUE !== "reunion" && JVW.voulu) jvwStop();
     if(VUE !== "reunion") return;
     function aller(i){ RV.i = i; rendre(); var s = app.querySelectorAll(".ru-sec")[i]; if(s && !RV.pres) s.scrollIntoView({ behavior:"smooth", block:"start" }); else window.scrollTo(0, 0); }
     sur("[data-rgo]", "click", function(b){ aller(+b.dataset.rgo); });
     sur("[data-rjv]", "click", function(b){ hudPresenter(b.dataset.rjv); });
+    sur("[data-rbrief]", "click", function(){ brLancer(); });
+    sur("[data-rjvw]", "click", function(){ if(JVW.voulu){ jvwStop(); toast("Écoute arrêtée."); } else { JVW.voulu = true; jvwStart(); toast("Je t’écoute : dis « Jarvis, fais-moi le brief »."); } });
     sur("[data-rhud]", "change", function(el){ HUD.on = el.checked; try{ localStorage.setItem("sbtd-jarvis-hud", HUD.on ? "1" : "0"); }catch(e){} if(!HUD.on && HUD.el){ HUD.el.hidden = true; document.body.classList.remove("jvh-on"); }
       toast(HUD.on ? "Animation Jarvis activée." : "Animation Jarvis désactivée."); });
     sur("[data-rpas]", "click", function(b){ aller(RV.i + (+b.dataset.rpas)); });
@@ -7844,7 +7912,9 @@
     var fd = new FormData();
     fd.append("text", txt); fd.append("engine", "omnivoice"); fd.append("profile_id", JV_VS.profil); fd.append("language", "fr");
     fd.append("effect_preset", "cinematic"); fd.append("num_step", "16");
-    return fetch(JV_VS.url + "/generate", { method:"POST", body:fd }).then(function(r){ if(!r.ok) throw new Error("vs " + r.status); return r.blob(); });
+    var pr = fetch(JV_VS.url + "/generate", { method:"POST", body:fd }).then(function(r){ if(!r.ok) throw new Error("vs " + r.status); return r.blob(); });
+    pr.catch(function(){});   // une phrase préparée d'avance peut échouer sans être lue : pas d'erreur non traitée
+    return pr;
   }
   /* Phrase par phrase : la suivante se fabrique pendant que la précédente est lue. */
   function jvVsParler(t, apres){
@@ -8085,6 +8155,183 @@
     jvDemander("Présente à voix haute, en 3 à 5 phrases simples, le point « " + titre + " » de notre réunion du lundi. Va à l’essentiel, cite les noms des projets, termine par ce qu’il faut décider. Voici ce qu’affiche la Régie :\n" + contenu, "🎙 Présente le point « " + titre + " »");
     toast("Jarvis prépare la présentation de ce point…");
   }
+
+
+  /* ---------- Brief Jarvis : présentation holographique de la réunion ----------
+     Plein écran, scène par scène, construit à partir des données de la Régie (rien n'est inventé) :
+     ouverture, semaine, points bloquants, KSF, prochains tournages, décisions, clôture.
+     Jarvis raconte chaque scène (voix VoiceStudio ou navigateur, sous-titres), puis passe à la suivante.
+     Lancement : bouton « Brief Jarvis » ou, en mode écoute, « Jarvis… brief / réunion ». */
+  var BR = { actif:false, i:0, scenes:[], pause:false, jeton:0, voixAvant:false };
+  function brH(h){ if(!h) return ""; var m = String(h).match(/^(\d{1,2}):(\d{2})/); return m ? (+m[1]) + " h" + (m[2] !== "00" ? " " + m[2] : "") : h; }
+  function brCourt(m){
+    var s = String(m || "").trim(); if(!s) return "";
+    var x = s.match(/attend\w*\s+(?:toujours\s+|encore\s+)?(?:les?\s+|la\s+|des\s+|du\s+|l['’]\s*|un\s+|une\s+)?(.+)/i); if(x) s = x[1];
+    s = s.split(/\s+(?:car|pour|parce|afin|pendant|avant|mais)\s+|[.;:(,]/i)[0].trim();
+    var w = s.split(/\s+/); return w.slice(0, 6).join(" ");
+  }
+  function brPrenoms(q){ return String(q || "").split(/,|\s+et\s+|&|\//).map(function(x){ return x.trim().split(/\s+/)[0]; }).filter(Boolean).join(", "); }
+  function brListeDire(a){ return a.length < 2 ? a.join("") : a.slice(0, -1).join(", ") + " et " + a[a.length - 1]; }
+  function brNb(n, s, p){ return n + " " + (n > 1 ? (p || s + "s") : s); }
+  function brPanneau(html, d, cls){ return '<div class="br-p' + (cls ? ' ' + cls : '') + '" style="--d:' + (d || 0) + 's">' + html + '</div>'; }
+
+  function brScenes(){
+    var auj = iso(new Date()), fin = kAdd(auj, 7), S = [];
+    var jSem = rJours(auj, fin), actifs = P.filter(function(p){ return p.statut !== "Publié"; });
+    var ouv = TA.filter(function(t){ return t.statut !== "terminee"; }), att = TA.filter(function(t){ return t.statut === "attente"; });
+    var kSem = kTri(KS.filter(function(p){ return p.type !== "story" && p.date >= auj && p.date < fin; }));
+
+    // 1. ouverture
+    var chiffres = [[actifs.length, "projets actifs"], [jSem.length, "journées de tournage · 7 j"], [ouv.length, "tâches ouvertes"], [kSem.length, "publications KSF"]];
+    S.push({ t:"Ouverture", html:'<div class="br-titre"><small>Brief de réunion</small><b>' + esc(jourLong(auj)) + '</b></div><div class="br-grille4">'
+        + chiffres.map(function(c, i){ return brPanneau('<b class="br-n">' + c[0] + '</b><span>' + esc(c[1]) + '</span>', .4 + i * .25, "chiffre"); }).join("") + '</div>',
+      dire:"Bonjour" + (MOI ? " " + MOI : "") + ". Voici le brief du " + jourLong(auj) + ". Nous avons " + brNb(actifs.length, "projet actif", "projets actifs") + ", "
+        + brNb(jSem.length, "journée de tournage", "journées de tournage") + " dans les sept prochains jours, " + brNb(ouv.length, "tâche ouverte", "tâches ouvertes")
+        + (att.length ? " dont " + att.length + " en attente" : "") + ", et " + brNb(kSem.length, "publication", "publications") + " Kamel Sans Filtre cette semaine." });
+
+    // 2. la semaine, avec les conflits d'horaire
+    var jours = [], conflits = [];
+    for(var i = 0; i < 7; i++){
+      var d = kAdd(auj, i), tg = rJours(d, kAdd(d, 1)), ks = kSem.filter(function(p){ return p.date === d; });
+      tg.forEach(function(x, a){ tg.forEach(function(y, b){
+        if(b <= a || !x.j.heureEquipe || !y.j.heureEquipe) return;
+        var fx = x.j.heureFin || "23:59", fy = y.j.heureFin || "23:59";
+        if(x.j.heureEquipe < fy && y.j.heureEquipe < fx) conflits.push({ d:d, h:x.j.heureEquipe > y.j.heureEquipe ? x.j.heureEquipe : y.j.heureEquipe, a:rNomP(x.p), b:rNomP(y.p) });
+      }); });
+      jours.push({ d:d, tg:tg, ks:ks });
+    }
+    var dits = jSem.slice(0, 5).map(function(x){ return jourLong(x.j.date).split(" ").slice(0, 2).join(" ") + (x.j.heureEquipe ? " à " + brH(x.j.heureEquipe) : "") + ", " + (x.p.client || x.p.projet); });
+    S.push({ t:"La semaine", html:'<div class="br-frise">' + jours.map(function(j, k){
+        var dd = dateObj(j.d), cf = conflits.some(function(c){ return c.d === j.d; });
+        return brPanneau('<div class="br-jour"><small>' + esc(dd.toLocaleDateString("fr-FR", { weekday:"short" })) + '</small><b>' + dd.getDate() + '</b></div>'
+          + j.tg.map(function(x){ return '<div class="br-ev tg">🎬 ' + esc(x.p.client || x.p.projet || "") + (x.j.heureEquipe ? '<em>' + esc(x.j.heureEquipe) + '</em>' : '') + '</div>'; }).join("")
+          + j.ks.slice(0, 2).map(function(p){ return '<div class="br-ev ks">' + (p.type === "podcast" ? "🎙" : "📱") + ' ' + esc(String(p.title || "KSF").slice(0, 34)) + '</div>'; }).join("")
+          + (cf ? '<div class="br-alerte">⚠ conflit</div>' : ''), .2 + k * .15, (j.d === auj ? "auj" : "") + (cf ? " rouge" : "")); }).join("") + '</div>',
+      dire:(jSem.length ? "Cette semaine : " + brListeDire(dits) + (jSem.length > 5 ? ", et " + (jSem.length - 5) + " autres journées" : "") + ". " : "Aucun tournage prévu dans les sept jours. ")
+        + (conflits.length ? "Attention, " + brNb(conflits.length, "conflit") + " d'horaire : " + conflits.map(function(c){ return jourLong(c.d).split(" ").slice(0, 2).join(" ") + " à " + brH(c.h) + ", " + c.a + " et " + c.b + " en même temps"; }).join(" ; ") + ". Il faut décider qui va où." : "") });
+
+    // 3. ce qui bloque
+    var bl = [];
+    att.forEach(function(t){ var a = t.attente || {}; bl.push({ n:t.titre || t.projet, q:(a.qui ? "attente " + brPrenoms(a.qui) : "en attente") + (brCourt(a.motif) ? " · " + brCourt(a.motif) : ""), c:"att" }); });
+    TA.filter(tEnRetard).filter(function(t){ return t.statut !== "attente"; }).forEach(function(t){ bl.push({ n:t.titre || t.projet, q:"en retard depuis le " + jourCourt(t.echeance), c:"ret" }); });
+    P.forEach(function(p){ var n = pSansRetour(p), ro = retoursOuverts(p);
+      if(pGroupe(p) === "passe") bl.push({ n:rNomP(p), q:"statut à mettre à jour", c:"maj" });
+      if(ro && p.statut !== "Publié") bl.push({ n:rNomP(p), q:ro + " retour" + (ro > 1 ? "s" : "") + " client à traiter", c:"ret" });
+      if(n) bl.push({ n:rNomP(p), q:"J+" + n + " sans retour du client", c:"ret" }); });
+    S.push({ t:"Ce qui bloque", html:'<div class="br-titre petit"><small>Points bloquants</small><b>' + bl.length + '</b></div><div class="br-pile">'
+        + (bl.length ? bl.slice(0, 8).map(function(x, k){ return brPanneau('<i class="br-pt ' + x.c + '"></i><b>' + esc(x.n) + '</b><span>' + esc(x.q) + '</span>', .3 + k * .18, "ligne " + x.c); }).join("")
+                     : brPanneau('<b>Rien ne bloque.</b>', .3)) + '</div>',
+      dire:bl.length ? brNb(bl.length, "point bloque", "points bloquent") + ". " + bl.slice(0, 4).map(function(x){ return x.n + " : " + x.q; }).join(". ") + "." + (bl.length > 4 ? " Le détail des autres est dans l'onglet Réunion." : "")
+                     : "Bonne nouvelle : rien ne bloque cette semaine." });
+
+    // 4. KSF
+    var sp = KB.posts ? kStatPosts().filter(function(x){ return x.platform !== "Facebook"; }) : [], d0 = kAdd(auj, -6), dA = kAdd(d0, -7);
+    function som(a, b){ return sp.filter(function(x){ return x.date >= a && x.date <= b; }).reduce(function(s, x){ return s + x.metric; }, 0); }
+    var A = som(d0, auj), B = som(dA, kAdd(d0, -1)), ev = B ? Math.round((A / B - 1) * 100) : null, barres = [];
+    for(var q = 0; q < 7; q++){ var x0 = kAdd(d0, q); barres.push({ l:dateObj(x0).toLocaleDateString("fr-FR", { weekday:"short" }).replace(".", ""), a:som(x0, x0), b:som(kAdd(x0, -7), kAdd(x0, -7)) }); }
+    var mx = Math.max.apply(null, [1].concat(barres.map(function(b){ return Math.max(b.a, b.b); })));
+    var top = sp.filter(function(x){ return x.date >= d0; }).sort(function(a, b){ return b.metric - a.metric; })[0];
+    S.push({ t:"Kamel Sans Filtre", html:'<div class="br-ksf">' + brPanneau('<small>Vues · 7 jours</small><b class="br-n">' + (KB.posts ? kK(A) : "—") + '</b>'
+          + (ev == null ? '' : '<em class="' + (ev >= 0 ? 'up' : 'down') + '">' + (ev >= 0 ? '▲ +' : '▼ ') + ev + ' %</em>'), .3, "chiffre")
+        + brPanneau('<div class="br-barres">' + barres.map(function(b, k){ return '<div><i class="b" style="height:' + Math.round(b.b / mx * 100) + '%"></i><i class="a" style="height:' + Math.round(b.a / mx * 100) + '%;--d:' + (.8 + k * .1) + 's"></i><span>' + esc(b.l) + '</span></div>'; }).join("") + '</div>', .5, "graph")
+        + brPanneau('<small>À sortir cette semaine</small>' + (kSem.length ? kSem.slice(0, 4).map(function(p){ return '<div class="br-ev ks">' + esc(jourCourt(p.date)) + ' · ' + esc(String(p.title || "Sans titre").slice(0, 40)) + '</div>'; }).join("") : '<p>Rien de programmé.</p>'), .8)
+        + (top ? brPanneau('<small>Le plus vu</small><b>' + kNf(top.metric) + ' vues</b><span>' + esc(top.text.replace(/\s+/g, " ").slice(0, 80)) + '</span>', 1.1) : '') + '</div>',
+      dire:"Côté Kamel Sans Filtre" + (KB.posts ? " : " + kNf(A) + " vues sur sept jours" + (ev == null ? "" : ", " + (ev >= 0 ? "en hausse de " : "en baisse de ") + Math.abs(ev) + " pour cent par rapport à la semaine d'avant") : "") + ". "
+        + (kSem.length ? brNb(kSem.length, "publication prévue", "publications prévues") + " cette semaine" + (kSem.filter(function(p){ return !p.title || p.status === "todo"; }).length ? ", dont " + kSem.filter(function(p){ return !p.title || p.status === "todo"; }).length + " encore à préparer" : "") + "." : "Rien de programmé cette semaine.") });
+
+    // 5. prochains tournages et invités
+    var proch = P.filter(function(p){ return pGroupe(p) === "avenir"; }).sort(parDebut).slice(0, 4);
+    S.push({ t:"Prochains tournages", html:'<div class="br-cartes">' + (proch.length ? proch.map(function(p, k){
+        var pj = prochaine(p), manque = controlesProjet(p).filter(function(c){ return c.n === "vide"; }).length;
+        return brPanneau('<small>' + esc(jourLong(pj.date)) + (pj.heureEquipe ? ' · ' + esc(pj.heureEquipe) : '') + '</small><b>' + esc(rNomP(p)) + '</b><span>' + esc(libType(p) || "") + ' · ' + esc(pj.lieu === "Notre studio" ? "au studio" : (pj.adresse || pj.lieu || "lieu à préciser")) + '</span>'
+          + '<span>' + esc(equipeDe(pj).length ? equipeDe(pj).join(", ") : "personne d’assigné") + '</span>' + (manque ? '<em class="warn">' + manque + ' info' + (manque > 1 ? 's' : '') + ' manquante' + (manque > 1 ? 's' : '') + '</em>' : '<em class="ok">fiche complète</em>'), .3 + k * .25, "carte"); }).join("")
+        : brPanneau('<b>Aucun tournage à venir.</b>', .3)) + '</div>',
+      dire:proch.length ? "Les prochains tournages : " + brListeDire(proch.map(function(p){ var pj = prochaine(p); return (p.client || p.projet) + " le " + jourLong(pj.date).split(" ").slice(0, 2).join(" "); })) + ". "
+          + (proch.filter(function(p){ return controlesProjet(p).some(function(c){ return c.n === "vide"; }); }).length ? "Certaines fiches sont incomplètes, on fait le point dessus." : "Les fiches sont complètes.") : "Aucun tournage à venir dans la Régie." });
+
+    // 6. décisions à prendre
+    var R = rReu(iso(lundi(new Date()))) || {}, qs = (R.questions || []).filter(function(x){ return !x.fait; });
+    S.push({ t:"À décider", html:'<div class="br-titre petit"><small>Questions à trancher</small><b>' + qs.length + '</b></div><div class="br-pile">'
+        + (qs.length ? qs.slice(0, 6).map(function(x, k){ return brPanneau('<i class="br-pt q"></i><b>' + esc(String(x.txt).slice(0, 150)) + '</b>' + (x.projet ? '<span>' + esc(x.projet) + '</span>' : ''), .3 + k * .2, "ligne"); }).join("")
+                     : brPanneau('<b>Aucune question en attente.</b>', .3)) + '</div>',
+      dire:qs.length ? "Il reste " + brNb(qs.length, "question à trancher", "questions à trancher") + ". " + qs.slice(0, 3).map(function(x){ return String(x.txt).split(/[?:.]/)[0]; }).join(". ") + "." : "Aucune question en attente de décision." });
+
+    // 7. clôture
+    S.push({ t:"Fin du brief", html:'<div class="br-fin">' + brPanneau('<b>Fin du brief.</b><span>À vous la parole.</span>', .3, "fin") + '</div>',
+      dire:"Fin du brief. Je reste à l'écoute si vous avez une question." });
+    return S;
+  }
+
+  function brRendre(){
+    var o = document.getElementById("jvBrief"); if(!o) return;
+    var s = BR.scenes[BR.i];
+    o.querySelector(".br-scene").outerHTML = '<div class="br-scene">' + s.html + '</div>';
+    o.querySelector(".br-etape").textContent = "Brief · " + (BR.i < 9 ? "0" : "") + (BR.i + 1) + " / " + (BR.scenes.length < 10 ? "0" : "") + BR.scenes.length + " — " + s.t;
+    o.querySelector(".br-prog i").style.width = Math.round((BR.i + 1) / BR.scenes.length * 100) + "%";
+    o.querySelector("[data-brpause]").textContent = BR.pause ? "▶" : "❚❚";
+  }
+  function brJouer(i){
+    if(!BR.actif) return;
+    if(i >= BR.scenes.length){ brFermer(); return; }
+    BR.i = Math.max(0, i); var jeton = ++BR.jeton; brRendre();
+    var s = BR.scenes[BR.i], fini = { voix:false, temps:false };
+    function suite(){ if(jeton !== BR.jeton || BR.pause || !BR.actif) return; if(fini.voix && fini.temps) setTimeout(function(){ if(jeton === BR.jeton && !BR.pause) brJouer(BR.i + 1); }, 900); }
+    setTimeout(function(){ fini.temps = true; suite(); }, Math.max(4500, s.dire.split(" ").length * 330));
+    setTimeout(function(){ if(jeton !== BR.jeton) return; jvParler(s.dire, function(){ fini.voix = true; suite(); }); }, 900);
+  }
+  function brLancer(){
+    if(BR.actif) return;
+    if(JVW.on) jvwStop(true);
+    BR.scenes = brScenes(); BR.actif = true; BR.pause = false; BR.voixAvant = JV.voix; JV.voix = true;
+    var o = document.createElement("div"); o.id = "jvBrief"; o.className = "br"; o.setAttribute("role", "dialog"); o.setAttribute("aria-label", "Brief Jarvis");
+    o.innerHTML = '<div class="jvb-grille"></div><div class="jvb-scan"></div><div class="jvb-coin a"></div><div class="jvb-coin b"></div><div class="jvb-coin c"></div><div class="jvb-coin d"></div>'
+      + '<header class="br-h"><span class="jv-orbe" aria-hidden="true"><i></i></span><b>JARVIS</b><span class="br-etape"></span></header>'
+      + '<div class="br-scene"></div><div class="br-prog"><i></i></div>'
+      + '<nav class="br-nav"><button type="button" data-brnav="-1" aria-label="Scène précédente">‹</button><button type="button" data-brpause aria-label="Pause">❚❚</button>'
+      + '<button type="button" data-brnav="1" aria-label="Scène suivante">›</button><button type="button" data-brquit aria-label="Quitter le brief">✕</button></nav>';
+    document.body.appendChild(o); document.body.classList.add("br-on");
+    o.querySelector("[data-brquit]").addEventListener("click", brFermer);
+    o.querySelectorAll("[data-brnav]").forEach(function(b){ b.addEventListener("click", function(){ jvTaire(); BR.pause = false; brJouer(BR.i + (+b.dataset.brnav)); }); });
+    o.querySelector("[data-brpause]").addEventListener("click", brPause);
+    jvSon();
+    brJouer(0);
+  }
+  function brPause(){ BR.pause = !BR.pause; if(BR.pause){ BR.jeton++; jvTaire(); } brRendre(); if(!BR.pause) brJouer(BR.i); }
+  function brFermer(){
+    if(!BR.actif) return;
+    BR.actif = false; BR.jeton++; jvTaire(); JV.voix = BR.voixAvant;
+    var o = document.getElementById("jvBrief"); if(o){ o.classList.add("sort"); setTimeout(function(){ o.remove(); }, 500); }
+    document.body.classList.remove("br-on");
+    if(JVW.voulu && VUE === "reunion") setTimeout(jvwStart, 800);
+  }
+  document.addEventListener("keydown", function(e){
+    if(!BR.actif) return;
+    if(e.key === "Escape"){ e.preventDefault(); brFermer(); }
+    else if(e.key === "ArrowRight"){ e.preventDefault(); jvTaire(); BR.pause = false; brJouer(BR.i + 1); }
+    else if(e.key === "ArrowLeft"){ e.preventDefault(); jvTaire(); BR.pause = false; brJouer(BR.i - 1); }
+    else if(e.key === " "){ e.preventDefault(); brPause(); }
+  }, true);
+
+  /* Mode écoute : « Jarvis… brief » ou « Jarvis… on est en réunion » lance le brief. */
+  var JVW = { on:false, voulu:false, rec:null };
+  var JVW_RE = /jarvis|jarvi|djarvis|jar vis/i, JVW_BRIEF = /brief|briefing|r[ée]union|le point|fais[- ]moi/i;
+  function jvwStart(){
+    var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SR){ toast("L’écoute vocale n’est pas disponible dans ce navigateur : utilise Chrome ou Safari."); JVW.voulu = false; return; }
+    if(JVW.on || BR.actif) return;
+    var r = new SR(); r.lang = "fr-FR"; r.continuous = true; r.interimResults = false;
+    r.onresult = function(e){
+      var t = ""; for(var i = e.resultIndex; i < e.results.length; i++) t += e.results[i][0].transcript + " ";
+      if(JVW_RE.test(t) && JVW_BRIEF.test(t)){ jvwStop(true); brLancer(); }
+    };
+    r.onerror = function(e){ if(e && (e.error === "not-allowed" || e.error === "service-not-allowed")){ JVW.voulu = false; toast("Autorise le micro pour parler à Jarvis (icône dans la barre d’adresse)."); } };
+    r.onend = function(){ JVW.on = false; JVW.rec = null; jvwMaj(); if(JVW.voulu && !BR.actif && VUE === "reunion") setTimeout(jvwStart, 400); };
+    JVW.rec = r; JVW.on = true; jvwMaj();
+    try{ r.start(); }catch(e){ JVW.on = false; jvwMaj(); }
+  }
+  function jvwStop(garder){ if(!garder) JVW.voulu = false; if(JVW.rec) try{ JVW.rec.abort(); }catch(e){} JVW.rec = null; JVW.on = false; jvwMaj(); }
+  function jvwMaj(){ var b = document.querySelector("[data-rjvw]"); if(b){ b.setAttribute("aria-pressed", JVW.voulu); b.querySelector("span").textContent = JVW.voulu ? "J’écoute « Jarvis, brief »…" : "Écoute « Jarvis, brief »"; } }
+  window.jarvisBrief = { lancer:brLancer, fermer:brFermer };   // pour les tests et la console
 
   function jvInit(){
     if(document.getElementById("jvBtn")) return;
