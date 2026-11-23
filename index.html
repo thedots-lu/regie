@@ -7775,8 +7775,62 @@
     return v.filter(function(x){ return !JV_FEM.test(x.name) && /fr-FR/i.test(x.lang); })[0] || v.filter(function(x){ return /fr-FR/i.test(x.lang); })[0] || v[0] || null;
   }
   if(window.speechSynthesis) try{ speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = function(){}; }catch(e){}
+  /* Voix « Jarvis » de VoiceStudio, l'application de voix locale du Mac (profil créé le 23/11/2026).
+     Si VoiceStudio n'est pas ouvert ou n'autorise pas la Régie, on garde la voix du navigateur. */
+  var JV_VS = { url:"http://localhost:3900", profil:"7ea360ba", nom:"Jarvis", ok:null, verifie:0, audio:null, jeton:0 };
+  function jvVsDispo(){
+    if(JV_VS.ok !== null && Date.now() - JV_VS.verifie < 60000) return Promise.resolve(JV_VS.ok);
+    var c = new AbortController(); setTimeout(function(){ c.abort(); }, 1500);
+    return fetch(JV_VS.url + "/profiles", { signal:c.signal }).then(function(r){ return r.ok ? r.json() : null; }).then(function(l){
+      l = Array.isArray(l) ? l : (l && l.profiles) || [];
+      var p = l.filter(function(x){ return x.id === JV_VS.profil; })[0] || l.filter(function(x){ return x.name === JV_VS.nom; })[0];
+      if(p) JV_VS.profil = p.id;
+      JV_VS.ok = !!p; JV_VS.verifie = Date.now(); return JV_VS.ok;
+    }).catch(function(){ JV_VS.ok = false; JV_VS.verifie = Date.now(); return false; });
+  }
+  function jvVsPhrases(t){
+    var out = [], cur = "";
+    String(t).replace(/\*\*/g, "").replace(/^\s*-\s+/gm, "").split(/\n+/).forEach(function(l){
+      (l.match(/[^.!?…;:]+[.!?…;:]*\s*/g) || []).forEach(function(s){
+        s = s.trim(); if(!s) return;
+        if((cur + " " + s).length > 180 && cur){ out.push(cur); cur = s; } else cur = cur ? cur + " " + s : s;
+      });
+      if(cur){ out.push(cur); cur = ""; }
+    });
+    return out.filter(function(s){ return /[\wÀ-ÿ]/.test(s); });
+  }
+  function jvVsGen(txt){
+    var fd = new FormData();
+    fd.append("text", txt); fd.append("engine", "omnivoice"); fd.append("profile_id", JV_VS.profil); fd.append("language", "fr");
+    fd.append("effect_preset", "cinematic"); fd.append("num_step", "16");
+    return fetch(JV_VS.url + "/generate", { method:"POST", body:fd }).then(function(r){ if(!r.ok) throw new Error("vs " + r.status); return r.blob(); });
+  }
+  /* Phrase par phrase : la suivante se fabrique pendant que la précédente est lue. */
+  function jvVsParler(t, apres){
+    var ph = jvVsPhrases(t), jeton = ++JV_VS.jeton, i = 0, suivante = ph.length ? jvVsGen(ph[0]) : null;
+    if(!suivante){ if(apres) apres(); return; }
+    JV.parle = true; jvEtat();
+    function finir(){ if(jeton !== JV_VS.jeton) return; JV.parle = false; jvEtat(); if(apres) apres(); }
+    function lire(){
+      if(jeton !== JV_VS.jeton) return;
+      var cour = suivante; i++; suivante = i < ph.length ? jvVsGen(ph[i]) : null;
+      cour.then(function(b){
+        if(jeton !== JV_VS.jeton) return;
+        var a = new Audio(URL.createObjectURL(b)); JV_VS.audio = a;
+        a.onended = a.onerror = function(){ URL.revokeObjectURL(a.src); if(suivante) lire(); else finir(); };
+        a.play().catch(function(){ if(suivante) lire(); else finir(); });
+      }, function(){ JV_VS.ok = false; finir(); });
+    }
+    lire();
+  }
+  function jvTaire(){ JV_VS.jeton++; if(JV_VS.audio){ try{ JV_VS.audio.pause(); }catch(e){} JV_VS.audio = null; } if(window.speechSynthesis) speechSynthesis.cancel(); JV.parle = false; }
   function jvParler(t, apres){
-    if(!JV.voix || !window.speechSynthesis){ if(apres) apres(); return; }
+    if(!JV.voix){ if(apres) apres(); return; }
+    jvTaire();
+    jvVsDispo().then(function(ok){ if(ok) jvVsParler(t, apres); else jvParlerNav(t, apres); });
+  }
+  function jvParlerNav(t, apres){
+    if(!window.speechSynthesis){ if(apres) apres(); return; }
     try{
       speechSynthesis.cancel();
       var txt = String(t).replace(/\*\*/g, "").replace(/^\s*-\s+/gm, "").replace(/\n+/g, ". ").replace(/\.\s*\./g, ".");
@@ -7826,7 +7880,7 @@
     if(!SR){ toast("La reconnaissance vocale n’est pas disponible dans ce navigateur : utilise Chrome ou Safari."); JV.conv = false; jvEtat(); return; }
     if(JV.ecoute){ try{ JV.ecoute.stop(); }catch(e){} return; }
     if(JV.enCours) return;
-    if(window.speechSynthesis) speechSynthesis.cancel();
+    jvTaire();
     var r = new SR(), champ = document.getElementById("jvIn"), btn = document.querySelector("[data-jvmic]"), entendu = false;
     r.lang = "fr-FR"; r.interimResults = true; r.continuous = false;
     r.onresult = function(e){ var t = ""; for(var i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; champ.value = t; entendu = true; };
@@ -7847,9 +7901,11 @@
   function jvConversation(){
     JV.conv = !JV.conv; JV.vides = 0;
     if(JV.conv){ JV.voix = true; try{ localStorage.setItem("sbtd-jarvis-voix", "1"); }catch(e){} jvRendre(); jvParler("Je t’écoute.", function(){ jvEcouter(true); }); }
-    else { if(JV.ecoute) try{ JV.ecoute.abort(); }catch(e){} JV.ecoute = null; if(window.speechSynthesis) speechSynthesis.cancel(); JV.parle = false; jvRendre(); }
+    else { if(JV.ecoute) try{ JV.ecoute.abort(); }catch(e){} JV.ecoute = null; jvTaire(); jvRendre(); }
   }
-  function jvOuvrir(v){ JV.ouvert = v == null ? !JV.ouvert : v; if(!JV.ouvert && JV.conv) jvConversation(); jvRendre(); if(JV.ouvert){ var c = document.getElementById("jvIn"); if(c) setTimeout(function(){ c.focus(); }, 50); } }
+  /* Préchauffe la voix VoiceStudio à l'ouverture (le modèle met ~10 s à se charger la première fois). */
+  function jvPrechauffer(){ if(!JV.voix || JV_VS.chaud) return; jvVsDispo().then(function(ok){ if(ok && !JV_VS.chaud){ JV_VS.chaud = true; jvVsGen("Bonjour.").catch(function(){ JV_VS.chaud = false; }); } }); }
+  function jvOuvrir(v){ JV.ouvert = v == null ? !JV.ouvert : v; if(JV.ouvert) jvPrechauffer(); if(!JV.ouvert && JV.conv) jvConversation(); jvRendre(); if(JV.ouvert){ var c = document.getElementById("jvIn"); if(c) setTimeout(function(){ c.focus(); }, 50); } }
 
   /* ---------- Jarvis : séquence de démarrage façon HUD ----------
      Plein écran, ~4 s : anneaux holographiques, balayage, lignes de diagnostic avec les vrais chiffres
@@ -7930,7 +7986,7 @@
     p.querySelector("[data-jvboot]").addEventListener("click", function(){ jvOuvrir(false); jvBoot(function(){ jvOuvrir(true); }); });
     p.querySelector("[data-jvferme]").addEventListener("click", function(){ jvOuvrir(false); });
     p.querySelector("[data-jvnet]").addEventListener("click", function(){ if(JV.enCours) return; JV.msgs = []; jvSauver(); jvRendre(); });
-    p.querySelector("[data-jvvoix]").addEventListener("click", function(){ JV.voix = !JV.voix; try{ localStorage.setItem("sbtd-jarvis-voix", JV.voix ? "1" : "0"); }catch(e){} if(!JV.voix && window.speechSynthesis) speechSynthesis.cancel(); jvRendre(); });
+    p.querySelector("[data-jvvoix]").addEventListener("click", function(){ JV.voix = !JV.voix; try{ localStorage.setItem("sbtd-jarvis-voix", JV.voix ? "1" : "0"); }catch(e){} if(!JV.voix) jvTaire(); jvRendre(); });
     p.querySelector("[data-jvmic]").addEventListener("click", jvMicro);
     p.querySelector("[data-jvconv]").addEventListener("click", jvConversation);
     p.querySelector(".jv-f").addEventListener("submit", function(e){ e.preventDefault(); var c = document.getElementById("jvIn"); var q = c.value; c.value = ""; jvDemander(q); });
